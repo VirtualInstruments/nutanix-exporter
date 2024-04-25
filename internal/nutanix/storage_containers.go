@@ -31,11 +31,20 @@ func (e *StorageContainerExporter) Describe(ch chan<- *prometheus.Desc) {
 	data := json.NewDecoder(resp.Body)
 	data.Decode(&e.result)
 
-	entities, _ := e.result["entities"].([]interface{})
+	var entities []interface{} = nil
+	if obj, ok := e.result["entities"]; ok {
+		entities = obj.([]interface{})
+	}
+	if entities == nil {
+		return
+	}
 
 	for _, entity := range entities {
+		var usageStats map[string]interface{} = nil
 		ent := entity.(map[string]interface{})
-		usageStat := ent["usage_stats"].(map[string]interface{})
+		if obj, ok := ent["usage_stats"]; ok {
+			usageStats = obj.(map[string]interface{})
+		}
 
 		// Publish host properties as separate record
 		key := KEY_STORAGE_CONTAINER_PROPERTIES
@@ -44,16 +53,17 @@ func (e *StorageContainerExporter) Describe(ch chan<- *prometheus.Desc) {
 			Name:      key, Help: "..."}, e.properties)
 		e.metrics[key].Describe(ch)
 
-		for key := range usageStat {
-			key = e.normalizeKey(key)
+		if usageStats != nil {
+			for key := range usageStats {
+				key = e.normalizeKey(key)
 
-			e.metrics[key] = prometheus.NewGaugeVec(prometheus.GaugeOpts{
-				Namespace: "nutanix_storage_containers",
-				Name:      key, Help: "..."}, []string{"storage_container_uuid", "cluster_uuid"})
+				e.metrics[key] = prometheus.NewGaugeVec(prometheus.GaugeOpts{
+					Namespace: "nutanix_storage_containers",
+					Name:      key, Help: "..."}, []string{"storage_container_uuid", "cluster_uuid"})
 
-			e.metrics[key].Describe(ch)
+				e.metrics[key].Describe(ch)
+			}
 		}
-
 	}
 
 }
@@ -61,11 +71,20 @@ func (e *StorageContainerExporter) Describe(ch chan<- *prometheus.Desc) {
 // Collect - Implement prometheus.Collector interface
 // See https://github.com/prometheus/client_golang/blob/master/prometheus/collector.go
 func (e *StorageContainerExporter) Collect(ch chan<- prometheus.Metric) {
-	entities, _ := e.result["entities"].([]interface{})
+	var entities []interface{} = nil
+	if obj, ok := e.result["entities"]; ok {
+		entities = obj.([]interface{})
+	}
+	if entities == nil {
+		return
+	}
 
 	for _, entity := range entities {
+		var usageStats map[string]interface{} = nil
 		ent := entity.(map[string]interface{})
-		usageStats := ent["usage_stats"].(map[string]interface{})
+		if obj, ok := ent["usage_stats"]; ok {
+			usageStats = obj.(map[string]interface{})
+		}
 
 		key := KEY_STORAGE_CONTAINER_PROPERTIES
 		var property_values []string
@@ -77,12 +96,14 @@ func (e *StorageContainerExporter) Collect(ch chan<- prometheus.Metric) {
 		g.Set(1)
 		g.Collect(ch)
 
-		for key, value := range usageStats {
-			key = e.normalizeKey(key)
+		if usageStats != nil {
+			for key, value := range usageStats {
+				key = e.normalizeKey(key)
 
-			g := e.metrics[key].WithLabelValues(ent["storage_container_uuid"].(string), ent["cluster_uuid"].(string))
-			g.Set(e.valueToFloat64(value))
-			g.Collect(ch)
+				g := e.metrics[key].WithLabelValues(ent["storage_container_uuid"].(string), ent["cluster_uuid"].(string))
+				g.Set(e.valueToFloat64(value))
+				g.Collect(ch)
+			}
 		}
 	}
 }

@@ -32,9 +32,15 @@ func (e *ClusterExporter) Describe(ch chan<- *prometheus.Desc) {
 	data := json.NewDecoder(resp.Body)
 	data.Decode(&e.result)
 
+	var stats, usageStats map[string]interface{} = nil, nil
+
 	ent := e.result
-	stats := ent["stats"].(map[string]interface{})
-	usageStats := ent["usage_stats"].(map[string]interface{})
+	if obj, ok := ent["stats"]; ok {
+		stats = obj.(map[string]interface{})
+	}
+	if obj, ok := ent["usage_stats"]; ok {
+		usageStats = obj.(map[string]interface{})
+	}
 
 	// Publish cluster properties as separate record
 	key := KEY_CLUSTER_PROPERTIES
@@ -43,25 +49,28 @@ func (e *ClusterExporter) Describe(ch chan<- *prometheus.Desc) {
 		Name:      key, Help: "..."}, e.properties)
 	e.metrics[key].Describe(ch)
 
-	for key := range usageStats {
-		key = e.normalizeKey(key)
+	if usageStats != nil {
+		for key := range usageStats {
+			key = e.normalizeKey(key)
 
-		e.metrics[key] = prometheus.NewGaugeVec(prometheus.GaugeOpts{
-			Namespace: e.namespace,
-			Name:      key, Help: "..."}, []string{"uuid"})
+			e.metrics[key] = prometheus.NewGaugeVec(prometheus.GaugeOpts{
+				Namespace: e.namespace,
+				Name:      key, Help: "..."}, []string{"uuid"})
 
-		e.metrics[key].Describe(ch)
+			e.metrics[key].Describe(ch)
+		}
 	}
-	for key := range stats {
-		key = e.normalizeKey(key)
+	if stats != nil {
+		for key := range stats {
+			key = e.normalizeKey(key)
 
-		e.metrics[key] = prometheus.NewGaugeVec(prometheus.GaugeOpts{
-			Namespace: e.namespace,
-			Name:      key, Help: "..."}, []string{"uuid"})
+			e.metrics[key] = prometheus.NewGaugeVec(prometheus.GaugeOpts{
+				Namespace: e.namespace,
+				Name:      key, Help: "..."}, []string{"uuid"})
 
-		e.metrics[key].Describe(ch)
+			e.metrics[key].Describe(ch)
+		}
 	}
-
 	for _, key := range e.fields {
 		e.metrics[key] = prometheus.NewGaugeVec(prometheus.GaugeOpts{
 			Namespace: e.namespace,
@@ -75,9 +84,15 @@ func (e *ClusterExporter) Describe(ch chan<- *prometheus.Desc) {
 func (e *ClusterExporter) Collect(ch chan<- prometheus.Metric) {
 	// entities, _ := e.result.([]interface{})
 
+	var stats, usageStats map[string]interface{} = nil, nil
+
 	ent := e.result
-	stats := ent["stats"].(map[string]interface{})
-	usageStats := ent["usage_stats"].(map[string]interface{})
+	if obj, ok := ent["stats"]; ok {
+		stats = obj.(map[string]interface{})
+	}
+	if obj, ok := ent["usage_stats"]; ok {
+		usageStats = obj.(map[string]interface{})
+	}
 
 	key := KEY_CLUSTER_PROPERTIES
 	var property_values []string
@@ -89,25 +104,28 @@ func (e *ClusterExporter) Collect(ch chan<- prometheus.Metric) {
 	g.Set(1)
 	g.Collect(ch)
 
-	for key, value := range usageStats {
-		key = e.normalizeKey(key)
+	if usageStats != nil {
+		for key, value := range usageStats {
+			key = e.normalizeKey(key)
 
-		v := e.valueToFloat64(value)
+			v := e.valueToFloat64(value)
 
-		g := e.metrics[key].WithLabelValues(ent["uuid"].(string))
-		g.Set(v)
-		g.Collect(ch)
+			g := e.metrics[key].WithLabelValues(ent["uuid"].(string))
+			g.Set(v)
+			g.Collect(ch)
+		}
 	}
-	for key, value := range stats {
-		key = e.normalizeKey(key)
+	if stats != nil {
+		for key, value := range stats {
+			key = e.normalizeKey(key)
 
-		v := e.valueToFloat64(value)
+			v := e.valueToFloat64(value)
 
-		g := e.metrics[key].WithLabelValues(ent["uuid"].(string))
-		g.Set(v)
-		g.Collect(ch)
+			g := e.metrics[key].WithLabelValues(ent["uuid"].(string))
+			g.Set(v)
+			g.Collect(ch)
+		}
 	}
-
 	for _, key := range e.fields {
 		log.Debugf("%s > %s", key, ent[key])
 		g := e.metrics[key].WithLabelValues(ent["uuid"].(string))

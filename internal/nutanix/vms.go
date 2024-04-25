@@ -38,18 +38,23 @@ func (e *VmsExporter) Describe(ch chan<- *prometheus.Desc) {
 		Name:      key, Help: "..."}, e.properties)
 	e.metrics[key].Describe(ch)
 
-	metadata := e.result["metadata"].(map[string]interface{})
-	for key := range metadata {
-		key = e.normalizeKey(key)
-		log.Debugf("Register Key %s", key)
-
-		e.metrics[key] = prometheus.NewGaugeVec(prometheus.GaugeOpts{
-			Namespace: e.namespace,
-			Name:      key, Help: "..."}, []string{})
-
-		e.metrics[key].Describe(ch)
+	var metadata map[string]interface{} = nil
+	if obj, ok := e.result["metadata"]; ok {
+		metadata = obj.(map[string]interface{})
 	}
 
+	if metadata != nil {
+		for key := range metadata {
+			key = e.normalizeKey(key)
+			log.Debugf("Register Key %s", key)
+
+			e.metrics[key] = prometheus.NewGaugeVec(prometheus.GaugeOpts{
+				Namespace: e.namespace,
+				Name:      key, Help: "..."}, []string{})
+
+			e.metrics[key].Describe(ch)
+		}
+	}
 	for _, key := range e.fields {
 		key = e.normalizeKey(key)
 
@@ -68,20 +73,32 @@ func (e *VmsExporter) Describe(ch chan<- *prometheus.Desc) {
 // See https://github.com/prometheus/client_golang/blob/master/prometheus/collector.go
 func (e *VmsExporter) Collect(ch chan<- prometheus.Metric) {
 
-	metadata := e.result["metadata"].(map[string]interface{})
-	for key, value := range metadata {
-		key = e.normalizeKey(key)
-		log.Debugf("Collect Key %s", key)
-
-		g := e.metrics[key].WithLabelValues()
-		g.Set(e.valueToFloat64(value))
-		g.Collect(ch)
+	var metadata map[string]interface{} = nil
+	if obj, ok := e.result["metadata"]; ok {
+		metadata = obj.(map[string]interface{})
 	}
 
+	if metadata != nil {
+		for key, value := range metadata {
+			key = e.normalizeKey(key)
+			log.Debugf("Collect Key %s", key)
+
+			g := e.metrics[key].WithLabelValues()
+			g.Set(e.valueToFloat64(value))
+			g.Collect(ch)
+		}
+	}
 	var key string
 	var g prometheus.Gauge
 
-	entities, _ := e.result["entities"].([]interface{})
+	var entities []interface{} = nil
+	if obj, ok := e.result["entities"]; ok {
+		entities = obj.([]interface{})
+	}
+	if entities == nil {
+		return
+	}
+
 	for _, entity := range entities {
 		var ent = entity.(map[string]interface{})
 
