@@ -27,30 +27,46 @@ type VmsExporter struct {
 // Describe - Implement prometheus.Collector interface
 // See https://github.com/prometheus/client_golang/blob/master/prometheus/collector.go
 func (e *VmsExporter) Describe(ch chan<- *prometheus.Desc) {
-	resp, _ := e.api.makeRequest("GET", "/vms/")
+	resp, _ := e.api.makeV1Request("GET", "/vms/")
 	data := json.NewDecoder(resp.Body)
 	data.Decode(&e.result)
 
-	// Publish VM properties as separate record
-	key := KEY_VM_PROPERTIES
-	e.metrics[key] = prometheus.NewGaugeVec(prometheus.GaugeOpts{
-		Namespace: e.namespace,
-		Name:      key, Help: "..."}, e.properties)
-	e.metrics[key].Describe(ch)
-
-	var metadata map[string]interface{} = nil
-	if obj, ok := e.result["metadata"]; ok {
-		metadata = obj.(map[string]interface{})
+	var entities []interface{} = nil
+	if obj, ok := e.result["entities"]; ok {
+		entities = obj.([]interface{})
+	}
+	if entities == nil || len(entities) == 0 {
+		return
 	}
 
-	if metadata != nil {
-		for key := range metadata {
+	// Publish VM properties as separate record
+	key := KEY_VM_PROPERTIES
+	property_keys := []string{}
+	for _, key := range e.properties {
+		// Renaming keys
+		switch key {
+		case "hostUuid":
+			key = "host_uuid"
+		}
+		property_keys = append(property_keys, key)
+	}
+	e.metrics[key] = prometheus.NewGaugeVec(prometheus.GaugeOpts{
+		Namespace: e.namespace,
+		Name:      key, Help: "..."}, property_keys)
+	e.metrics[key].Describe(ch)
+
+	ent := entities[0].(map[string]interface{})
+	var stats map[string]interface{} = nil
+	if obj, ok := ent["stats"]; ok {
+		stats = obj.(map[string]interface{})
+	}
+	if stats != nil {
+		for key := range stats {
 			key = e.normalizeKey(key)
-			log.Debugf("Register Key %s", key)
 
 			e.metrics[key] = prometheus.NewGaugeVec(prometheus.GaugeOpts{
 				Namespace: e.namespace,
-				Name:      key, Help: "..."}, []string{})
+				Name:      key, Help: "..."}, []string{"uuid", "host_uuid"})
 
 			e.metrics[key].Describe(ch)
 		}
@@ -73,21 +89,6 @@ func (e *VmsExporter) Describe(ch chan<- *prometheus.Desc) {
 // See https://github.com/prometheus/client_golang/blob/master/prometheus/collector.go
 func (e *VmsExporter) Collect(ch chan<- prometheus.Metric) {
 
-	var metadata map[string]interface{} = nil
-	if obj, ok := e.result["metadata"]; ok {
-		metadata = obj.(map[string]interface{})
-	}
-
-	if metadata != nil {
-		for key, value := range metadata {
-			key = e.normalizeKey(key)
-			log.Debugf("Collect Key %s", key)
-
-			g := e.metrics[key].WithLabelValues()
-			g.Set(e.valueToFloat64(value))
-			g.Collect(ch)
-		}
-	}
 	var key string
 	var g prometheus.Gauge
 
@@ -95,12 +96,17 @@ func (e *VmsExporter) Collect(ch chan<- prometheus.Metric) {
 	if obj, ok := e.result["entities"]; ok {
 		entities = obj.([]interface{})
 	}
-	if entities == nil {
+	if entities == nil || len(entities) == 0 {
 		return
 	}
 
 	for _, entity := range entities {
 		var ent = entity.(map[string]interface{})
+
+		var stats map[string]interface{} = nil
+		if obj, ok := ent["stats"]; ok {
+			stats = obj.(map[string]interface{})
+		}
 
 		key = KEY_VM_PROPERTIES
 		var property_values []string
@@ -112,18 +118,33 @@ func (e *VmsExporter) Collect(ch chan<- prometheus.Metric) {
 		g.Set(1)
 		g.Collect(ch)
 
+		val := ent["hostUuid"]
+		var hostUUID string = ""
+		if val != nil {
+			hostUUID = val.(string)
+		}
+
+		if stats != nil {
+			for key, value := range stats {
+				val := e.valueToFloat64(value)
+				// ignore stats which are not available
+				if val == -1 {
+					continue
+				}
+				key = e.normalizeKey(key)
+				g := e.metrics[key].WithLabelValues(ent["uuid"].(string), hostUUID)
+				g.Set(val)
+				g.Collect(ch)
+			}
+		}
+
 		for _, key := range e.fields {
 			key = e.normalizeKey(key)
 			log.Debugf("Collect Key %s", key)
 
-			val := ent["host_uuid"]
-			var hostUUID string = ""
-			if val != nil {
-				hostUUID = val.(string)
-			}
 			g = e.metrics[key].WithLabelValues(ent["uuid"].(string), hostUUID)
 
-			if key == "power_state" {
+			if key == "powerState" {
 				if ent[key] == "on" {
 					g.Set(1)
 				} else {
@@ -147,7 +168,7 @@ func NewVmsCollector(_api *Nutanix) *VmsExporter {
 			api:        *_api,
 			metrics:    make(map[string]*prometheus.GaugeVec),
 			namespace:  "nutanix_vms",
-			fields:     []string{"num_cores_per_vcpu", "memory_mb", "num_vcpus", "power_state", "vcpu_reservation_hz"},
-			properties: []string{"uuid", "host_uuid", "name", "memory_mb", "num_vcpus", "power_state"},
+			fields:     []string{"memoryCapacityInBytes", "numVCpus", "powerState", "cpuReservedInHz"},
+			properties: []string{"uuid", "hostUuid", "vmName", "memoryCapacityInBytes", "numVCpus", "powerState"},
 		}}
 }

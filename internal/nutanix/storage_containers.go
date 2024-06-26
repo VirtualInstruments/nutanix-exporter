@@ -27,7 +27,7 @@ type StorageContainerExporter struct {
 func (e *StorageContainerExporter) Describe(ch chan<- *prometheus.Desc) {
 	// prometheus.DescribeByCollect(e, ch)
 
-	resp, _ := e.api.makeRequest("GET", "/storage_containers/")
+	resp, _ := e.api.makeV2Request("GET", "/storage_containers/")
 	data := json.NewDecoder(resp.Body)
 	data.Decode(&e.result)
 
@@ -98,10 +98,14 @@ func (e *StorageContainerExporter) Collect(ch chan<- prometheus.Metric) {
 
 		if usageStats != nil {
 			for key, value := range usageStats {
+				val := e.valueToFloat64(value)
+				// ignore stats which are not available
+				if val == -1 {
+					continue
+				}
 				key = e.normalizeKey(key)
-
 				g := e.metrics[key].WithLabelValues(ent["storage_container_uuid"].(string), ent["cluster_uuid"].(string))
-				g.Set(e.valueToFloat64(value))
+				g.Set(val)
 				g.Collect(ch)
 			}
 		}

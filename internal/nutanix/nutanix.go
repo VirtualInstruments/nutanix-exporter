@@ -19,6 +19,11 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
+const (
+	PRISM_API_PATH_VERSION_V1 = "v1/"
+	PRISM_API_PATH_VERSION_V2 = "v2.0/"
+)
+
 type RequestParams struct {
 	body, header string
 	params       url.Values
@@ -30,13 +35,17 @@ type Nutanix struct {
 	password string
 }
 
-func (g *Nutanix) makeRequest(reqType string, action string) (*http.Response, error) {
-	return g.makeRequestWithParams(reqType, action, RequestParams{})
+func (g *Nutanix) makeV1Request(reqType string, action string) (*http.Response, error) {
+	return g.makeRequestWithParams(PRISM_API_PATH_VERSION_V1, reqType, action, RequestParams{})
 }
 
-func (g *Nutanix) makeRequestWithParams(reqType string, action string, p RequestParams) (*http.Response, error) {
+func (g *Nutanix) makeV2Request(reqType string, action string) (*http.Response, error) {
+	return g.makeRequestWithParams(PRISM_API_PATH_VERSION_V2, reqType, action, RequestParams{})
+}
+
+func (g *Nutanix) makeRequestWithParams(versionPath, reqType, action string, p RequestParams) (*http.Response, error) {
 	_url := strings.Trim(g.url, "/")
-	_url += "/PrismGateway/services/rest/v2.0/"
+	_url += "/PrismGateway/services/rest/" + versionPath
 	_url += strings.Trim(action, "/") + "/"
 
 	log.Debugf("URL: %s", _url)

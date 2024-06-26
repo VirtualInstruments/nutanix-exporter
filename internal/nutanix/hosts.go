@@ -27,7 +27,7 @@ type HostsExporter struct {
 // Describe - Implemente prometheus.Collector interface
 // See https://github.com/prometheus/client_golang/blob/master/prometheus/collector.go
 func (e *HostsExporter) Describe(ch chan<- *prometheus.Desc) {
-	resp, _ := e.api.makeRequest("GET", "/hosts/")
+	resp, _ := e.api.makeV2Request("GET", "/hosts/")
 	data := json.NewDecoder(resp.Body)
 
 	data.Decode(&e.result)
@@ -126,19 +126,27 @@ func (e *HostsExporter) Collect(ch chan<- prometheus.Metric) {
 
 		if usageStats != nil {
 			for key, value := range usageStats {
+				val := e.valueToFloat64(value)
+				// ignore stats which are not available
+				if val == -1 {
+					continue
+				}
 				key = e.normalizeKey(key)
-
 				g := e.metrics[key].WithLabelValues(ent["uuid"].(string), ent["cluster_uuid"].(string))
-				g.Set(e.valueToFloat64(value))
+				g.Set(val)
 				g.Collect(ch)
 			}
 		}
 		if stats != nil {
 			for key, value := range stats {
+				val := e.valueToFloat64(value)
+				// ignore stats which are not available
+				if val == -1 {
+					continue
+				}
 				key = e.normalizeKey(key)
-
 				g := e.metrics[key].WithLabelValues(ent["uuid"].(string), ent["cluster_uuid"].(string))
-				g.Set(e.valueToFloat64(value))
+				g.Set(val)
 				g.Collect(ch)
 			}
 		}

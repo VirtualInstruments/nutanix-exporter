@@ -28,7 +28,7 @@ type ClusterExporter struct {
 // See https://github.com/prometheus/client_golang/blob/master/prometheus/collector.go
 func (e *ClusterExporter) Describe(ch chan<- *prometheus.Desc) {
 
-	resp, _ := e.api.makeRequest("GET", "/cluster/")
+	resp, _ := e.api.makeV2Request("GET", "/cluster/")
 	data := json.NewDecoder(resp.Body)
 	data.Decode(&e.result)
 
@@ -106,10 +106,12 @@ func (e *ClusterExporter) Collect(ch chan<- prometheus.Metric) {
 
 	if usageStats != nil {
 		for key, value := range usageStats {
-			key = e.normalizeKey(key)
-
 			v := e.valueToFloat64(value)
-
+			// ignore stats which are not available
+			if v == -1 {
+				continue
+			}
+			key = e.normalizeKey(key)
 			g := e.metrics[key].WithLabelValues(ent["uuid"].(string))
 			g.Set(v)
 			g.Collect(ch)
@@ -117,10 +119,12 @@ func (e *ClusterExporter) Collect(ch chan<- prometheus.Metric) {
 	}
 	if stats != nil {
 		for key, value := range stats {
-			key = e.normalizeKey(key)
-
 			v := e.valueToFloat64(value)
-
+			// ignore stats which are not available
+			if v == -1 {
+				continue
+			}
+			key = e.normalizeKey(key)
 			g := e.metrics[key].WithLabelValues(ent["uuid"].(string))
 			g.Set(v)
 			g.Collect(ch)
