@@ -28,7 +28,7 @@ func (e *SnapshotsExporter) Describe(ch chan<- *prometheus.Desc) {
 	e.metrics["count"] = prometheus.NewGaugeVec(prometheus.GaugeOpts{
 		Namespace: e.namespace,
 		Name:      "total",
-		Help: "Count Snapshots on the cluster"}, []string{})
+		Help:      "Count Snapshots on the cluster"}, []string{})
 	e.metrics["count"].Describe(ch)
 
 	for _, key := range e.fields {
@@ -45,8 +45,8 @@ func (e *SnapshotsExporter) Describe(ch chan<- *prometheus.Desc) {
 func (e *SnapshotsExporter) Collect(ch chan<- prometheus.Metric) {
 	var snapshots map[string]interface{}
 
-	resp, _ := e.api.makeRequest("GET", "/snapshots/")
-	data := json.NewDecoder(resp.Body)	
+	resp, _ := e.api.makeV2Request("GET", "/snapshots/")
+	data := json.NewDecoder(resp.Body)
 	data.Decode(&snapshots)
 
 	metadata, _ := snapshots["metadata"].(map[string]interface{})
