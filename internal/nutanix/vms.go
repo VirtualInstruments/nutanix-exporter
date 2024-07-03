@@ -120,7 +120,7 @@ func (e *VmsExporter) Collect(ch chan<- prometheus.Metric) {
 				if obj != nil {
 					floatval := e.valueToFloat64(obj)
 					floatval = floatval / (1024 * 1024)
-					val = strconv.FormatFloat(floatval, 'f', -1, 64)
+					val = strconv.FormatFloat(floatval, 'f', 0, 64)
 				}
 			case "cpuReservedInMHz":
 				propname := strings.Replace(property, "MHz", "Hz", 1)
@@ -128,13 +128,13 @@ func (e *VmsExporter) Collect(ch chan<- prometheus.Metric) {
 				if obj != nil {
 					floatval := e.valueToFloat64(obj)
 					floatval = floatval / 1000000
-					val = strconv.FormatFloat(floatval, 'f', -1, 64)
+					val = strconv.FormatFloat(floatval, 'f', 0, 64)
 				}
 			case "numVCpus":
 				obj := ent[property]
 				if obj != nil {
 					floatval := e.valueToFloat64(obj)
-					val = strconv.FormatFloat(floatval, 'f', -1, 64)
+					val = strconv.FormatFloat(floatval, 'f', 0, 64)
 				}
 			case "ipAddresses":
 				obj := ent[property]
