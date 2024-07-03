@@ -126,6 +126,10 @@ func main() {
 			log.Debugf("Register Snapshots")
 			registry.MustRegister(nutanix.NewSnapshotsCollector(nutanixAPI))
 		}
+		if checkCollect(config[section].Collect, "virtual_disks") {
+			log.Debugf("Register VirtualDisksCollector")
+			registry.MustRegister(nutanix.NewVirtualDisksCollector(nutanixAPI))
+		}
 
 		h := promhttp.HandlerFor(registry, promhttp.HandlerOpts{})
 		h.ServeHTTP(w, r)

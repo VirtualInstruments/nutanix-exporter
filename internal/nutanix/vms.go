@@ -11,10 +11,10 @@ package nutanix
 
 import (
 	"encoding/json"
-	"fmt"
-
 	"github.com/prometheus/client_golang/prometheus"
 	log "github.com/sirupsen/logrus"
+	"strconv"
+	"strings"
 )
 
 const KEY_VM_PROPERTIES = "properties"
@@ -111,7 +111,46 @@ func (e *VmsExporter) Collect(ch chan<- prometheus.Metric) {
 		key = KEY_VM_PROPERTIES
 		var property_values []string
 		for _, property := range e.properties {
-			val := fmt.Sprintf("%v", ent[property])
+			var val string = ""
+			// format properties
+			switch property {
+			case "memoryCapacityInMB", "memoryReservedCapacityInMB", "diskCapacityInMB":
+				propname := strings.Replace(property, "MB", "Bytes", 1)
+				obj := ent[propname]
+				if obj != nil {
+					floatval := e.valueToFloat64(obj)
+					floatval = floatval / (1024 * 1024)
+					val = strconv.FormatFloat(floatval, 'f', -1, 64)
+				}
+			case "cpuReservedInMHz":
+				propname := strings.Replace(property, "MHz", "Hz", 1)
+				obj := ent[propname]
+				if obj != nil {
+					floatval := e.valueToFloat64(obj)
+					floatval = floatval / 1000000
+					val = strconv.FormatFloat(floatval, 'f', -1, 64)
+				}
+			case "numVCpus":
+				obj := ent[property]
+				if obj != nil {
+					floatval := e.valueToFloat64(obj)
+					val = strconv.FormatFloat(floatval, 'f', -1, 64)
+				}
+			case "ipAddresses":
+				obj := ent[property]
+				if obj != nil {
+					strarr := []string{}
+					for _, addr := range obj.([]interface{}) {
+						strarr = append(strarr, addr.(string))
+					}
+					val = strings.Join(strarr, ",")
+				}
+			default:
+				obj := ent[property]
+				if obj != nil {
+					val = ent[property].(string)
+				}
+			}
 			property_values = append(property_values, val)
 		}
 		g = e.metrics[key].WithLabelValues(property_values...)
@@ -169,6 +208,6 @@ func NewVmsCollector(_api *Nutanix) *VmsExporter {
 			metrics:    make(map[string]*prometheus.GaugeVec),
 			namespace:  "nutanix_vms",
 			fields:     []string{"memoryCapacityInBytes", "numVCpus", "powerState", "cpuReservedInHz"},
-			properties: []string{"uuid", "hostUuid", "vmName", "memoryCapacityInBytes", "numVCpus", "powerState"},
+			properties: []string{"uuid", "hostUuid", "vmName", "memoryCapacityInMB", "memoryReservedCapacityInMB", "numVCpus", "powerState", "cpuReservedInMHz", "diskCapacityInMB", "ipAddresses"},
 		}}
 }
