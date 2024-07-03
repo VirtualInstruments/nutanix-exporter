@@ -22,6 +22,12 @@ clean:
 docker:
 	@echo ">> Compile using docker container"
 	@docker build -t "$(DOCKER_IMAGE_NAME)" .
+	@echo $NEXUS_PASSWORD | docker login -u $NEXUS_USER --password-stdin $NEXUS_SERVER
+	@echo $AWS_PASSWORD | docker login -u AWS --password-stdin AWS_ECR_REGISTRY
+	@docker tag $(DOCKER_IMAGE_NAME):$(TAG) $(NEXUS_SERVER)/$(DOCKER_IMAGE_NAME):$(TAG)
+	@docker push $(NEXUS_SERVER)/$(DOCKER_IMAGE_NAME):$(TAG) 
+	@docker tag $(DOCKER_IMAGE_NAME):$(TAG) $(AWS_ECR_REGISTRY)/$(DOCKER_IMAGE_NAME):$(TAG)
+	@docker push $(AWS_ECR_REGISTRY)/$(DOCKER_IMAGE_NAME):$(TAG) 
 
 windows: prepare
 	$(eval export GOOS=windows)
