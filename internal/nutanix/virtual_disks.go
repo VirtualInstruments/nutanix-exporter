@@ -2,7 +2,7 @@ package nutanix
 
 import (
 	"encoding/json"
-	"fmt"
+	"strconv"
 	"strings"
 
 	"github.com/prometheus/client_golang/prometheus"
@@ -136,7 +136,23 @@ func (e *VirtualDisksExporter) Collect(ch chan<- prometheus.Metric) {
 		key := KEY_HOST_PROPERTIES
 		var property_values []string
 		for _, property := range e.properties {
-			val := fmt.Sprintf("%v", ent[property])
+			var val string = ""
+			// format properties
+			switch property {
+			case "disk_capacity_in_mb":
+				propname := "disk_capacity_in_bytes"
+				obj := ent[propname]
+				if obj != nil {
+					floatval := e.valueToFloat64(obj)
+					floatval = floatval / (1024 * 1024)
+					val = strconv.FormatFloat(floatval, 'f', 0, 64)
+				}
+			default:
+				obj := ent[property]
+				if obj != nil {
+					val = ent[property].(string)
+				}
+			}
 			property_values = append(property_values, val)
 		}
 		g := e.metrics[key].WithLabelValues(property_values...)
@@ -184,6 +200,6 @@ func NewVirtualDisksCollector(_api *Nutanix) *VirtualDisksExporter {
 			metrics:    make(map[string]*prometheus.GaugeVec),
 			namespace:  "nutanix_vdisks",
 			fields:     []string{"disk_capacity_in_bytes"},
-			properties: []string{"uuid", "attached_vm_uuid", "attached_vmname", "storage_container_uuid", "cluster_uuid", "nutanix_nfsfile_path", "disk_address", "disk_capacity_in_bytes"},
+			properties: []string{"uuid", "attached_vm_uuid", "attached_vmname", "storage_container_uuid", "cluster_uuid", "disk_address", "disk_capacity_in_mb"},
 		}}
 }
