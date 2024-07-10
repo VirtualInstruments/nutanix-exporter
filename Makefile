@@ -7,12 +7,11 @@ export GOBUILD_ARGS = -a -tags netgo -ldflags -w
 export GOARCH ?= amd64
 # export GOOS ?= linux
 
-all: linux windows docker
+all: linux docker
 
 linux: prepare
 	$(eval export GOOS=linux)
 	go build $(GOBUILD_ARGS) -o ./bin/$(BIN_NAME)
-	zip ./bin/$(BIN_NAME)-$(GOOS)-$(GOARCH).zip ./bin/$(BIN_NAME)
 
 clean:
 	@echo "Clean up"
@@ -22,11 +21,6 @@ clean:
 docker:
 	@echo ">> Compile using docker container"
 	@docker build -t "$(DOCKER_IMAGE_NAME)" .
-
-windows: prepare
-	$(eval export GOOS=windows)
-	go build $(GOBUILD_ARGS) -o ./bin/$(BIN_NAME).exe
-	zip ./bin/$(BIN_NAME)-$(GOOS)-$(GOARCH).zip ./bin/$(BIN_NAME).exe
 
 prepare:	
 	@echo "Create output directory ./bin/"
