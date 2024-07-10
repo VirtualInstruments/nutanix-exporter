@@ -7,7 +7,7 @@ export GOBUILD_ARGS = -a -tags netgo -ldflags -w
 export GOARCH ?= amd64
 # export GOOS ?= linux
 
-all: linux docker
+all: linux
 
 linux: prepare
 	$(eval export GOOS=linux)
