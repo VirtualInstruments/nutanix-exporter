@@ -17,7 +17,11 @@ import (
 	"strings"
 )
 
-const KEY_VM_PROPERTIES = "properties"
+const (
+	KEY_VM_PROPERTIES      = "properties"
+	METRIC_MEM_FREE_BYTES  = "memory_free_bytes"
+	METRIC_MEM_USAGE_BYTES = "memory_usage_bytes"
+)
 
 // VmsExporter
 type VmsExporter struct {
@@ -55,20 +59,23 @@ func (e *VmsExporter) Describe(ch chan<- *prometheus.Desc) {
 		Name:      key, Help: "..."}, property_keys)
 	e.metrics[key].Describe(ch)
 
-	ent := entities[0].(map[string]interface{})
-	var stats map[string]interface{} = nil
-	if obj, ok := ent["stats"]; ok {
-		stats = obj.(map[string]interface{})
-	}
-	if stats != nil {
-		for key := range stats {
-			key = e.normalizeKey(key)
+	for _, entity := range entities {
+		ent := entity.(map[string]interface{})
+		var stats map[string]interface{} = nil
+		if obj, ok := ent["stats"]; ok {
+			stats = obj.(map[string]interface{})
+		}
+		if stats != nil {
+			e.addCalculatedStats(ent, stats)
+			for key := range stats {
+				key = e.normalizeKey(key)
 
-			e.metrics[key] = prometheus.NewGaugeVec(prometheus.GaugeOpts{
-				Namespace: e.namespace,
-				Name:      key, Help: "..."}, []string{"uuid", "host_uuid"})
+				e.metrics[key] = prometheus.NewGaugeVec(prometheus.GaugeOpts{
+					Namespace: e.namespace,
+					Name:      key, Help: "..."}, []string{"uuid", "host_uuid"})
 
-			e.metrics[key].Describe(ch)
+				e.metrics[key].Describe(ch)
+			}
 		}
 	}
 	for _, key := range e.fields {
@@ -83,6 +90,23 @@ func (e *VmsExporter) Describe(ch chan<- *prometheus.Desc) {
 		e.metrics[key].Describe(ch)
 	}
 
+}
+
+func (e *VmsExporter) addCalculatedStats(ent map[string]interface{}, stats map[string]interface{}) {
+	if stats == nil {
+		return
+	}
+	// Add free memory stat
+	mem_total := e.valueToFloat64(ent["memoryCapacityInBytes"])
+	var mem_usage float64 = 0
+	val, ok := stats["guest.memory_usage_bytes"]
+	if ok {
+		v := e.valueToFloat64(val)
+		if v > 0 {
+			mem_usage = v
+		}
+	}
+	stats[METRIC_MEM_FREE_BYTES] = mem_total - mem_usage
 }
 
 // Collect - Implemente prometheus.Collector interface
@@ -178,10 +202,10 @@ func (e *VmsExporter) Collect(ch chan<- prometheus.Metric) {
 		}
 
 		for _, key := range e.fields {
-			key = e.normalizeKey(key)
+			normalized_key := e.normalizeKey(key)
 			log.Debugf("Collect Key %s", key)
 
-			g = e.metrics[key].WithLabelValues(ent["uuid"].(string), hostUUID)
+			g = e.metrics[normalized_key].WithLabelValues(ent["uuid"].(string), hostUUID)
 
 			if key == "powerState" {
 				if ent[key] == "on" {

@@ -61,6 +61,7 @@ func (e *ClusterExporter) Describe(ch chan<- *prometheus.Desc) {
 		}
 	}
 	if stats != nil {
+		e.addCalculatedStats(stats)
 		for key := range stats {
 			key = e.normalizeKey(key)
 
@@ -77,6 +78,30 @@ func (e *ClusterExporter) Describe(ch chan<- *prometheus.Desc) {
 			Name:      key, Help: "..."}, []string{"uuid"})
 		e.metrics[key].Describe(ch)
 	}
+}
+
+func (e *ClusterExporter) addCalculatedStats(stats map[string]interface{}) {
+	if stats == nil {
+		return
+	}
+
+	// Calculate write io size
+	var total_size, read_size float64 = 0, 0
+	val, ok := stats["controller_total_io_size_kbytes"]
+	if ok {
+		v := e.valueToFloat64(val)
+		if v > 0 {
+			total_size = v
+		}
+	}
+	val, ok = stats["controller_total_read_io_size_kbytes"]
+	if ok {
+		v := e.valueToFloat64(val)
+		if v > 0 {
+			read_size = v
+		}
+	}
+	stats[METRIC_TOTAL_WRITE_IO_SIZE] = total_size - read_size
 }
 
 // Collect - Implement prometheus.Collector interface
