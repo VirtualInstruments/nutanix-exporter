@@ -70,9 +70,9 @@ func (e *HostsExporter) Describe(ch chan<- *prometheus.Desc) {
 			}
 		}
 		if stats != nil {
+			e.addCalculatedStats(ent, stats)
 			for key := range stats {
 				key = e.normalizeKey(key)
-
 				e.metrics[key] = prometheus.NewGaugeVec(prometheus.GaugeOpts{
 					Namespace: e.namespace,
 					Name:      key, Help: "..."}, []string{"uuid", "cluster_uuid"})
@@ -89,6 +89,44 @@ func (e *HostsExporter) Describe(ch chan<- *prometheus.Desc) {
 
 	}
 
+}
+
+func (e *HostsExporter) addCalculatedStats(ent map[string]interface{}, stats map[string]interface{}) {
+	if stats == nil {
+		return
+	}
+
+	// Calculate write io size
+	var total_size, read_size float64 = 0, 0
+	val, ok := stats["controller_total_io_size_kbytes"]
+	if ok {
+		v := e.valueToFloat64(val)
+		if v > 0 {
+			total_size = v
+		}
+	}
+	val, ok = stats["controller_total_read_io_size_kbytes"]
+	if ok {
+		v := e.valueToFloat64(val)
+		if v > 0 {
+			read_size = v
+		}
+	}
+	stats[METRIC_TOTAL_WRITE_IO_SIZE] = total_size - read_size
+
+	// Add free memory stat
+	mem_total := e.valueToFloat64(ent["memory_capacity_in_bytes"])
+	var mem_usage_ppm float64 = 0
+	val, ok = stats["hypervisor_memory_usage_ppm"]
+	if ok {
+		v := e.valueToFloat64(val)
+		if v > 0 {
+			mem_usage_ppm = v
+		}
+	}
+	mem_used := (mem_usage_ppm / 1000000) * mem_total
+	stats[METRIC_MEM_USAGE_BYTES] = mem_used
+	stats[METRIC_MEM_FREE_BYTES] = mem_total - mem_used
 }
 
 // Collect - Implement prometheus.Collector interface
