@@ -51,6 +51,9 @@ func (e *ClusterExporter) Describe(ch chan<- *prometheus.Desc) {
 
 	if usageStats != nil {
 		for key := range usageStats {
+			if _, ok := e.filter_stats[key]; !ok {
+				continue
+			}
 			key = e.normalizeKey(key)
 
 			e.metrics[key] = prometheus.NewGaugeVec(prometheus.GaugeOpts{
@@ -63,6 +66,10 @@ func (e *ClusterExporter) Describe(ch chan<- *prometheus.Desc) {
 	if stats != nil {
 		e.addCalculatedStats(stats)
 		for key := range stats {
+			if _, ok := e.filter_stats[key]; !ok {
+				continue
+			}
+
 			key = e.normalizeKey(key)
 
 			e.metrics[key] = prometheus.NewGaugeVec(prometheus.GaugeOpts{
@@ -131,6 +138,10 @@ func (e *ClusterExporter) Collect(ch chan<- prometheus.Metric) {
 
 	if usageStats != nil {
 		for key, value := range usageStats {
+			if _, ok := e.filter_stats[key]; !ok {
+				continue
+			}
+
 			v := e.valueToFloat64(value)
 			// ignore stats which are not available
 			if v == -1 {
@@ -144,6 +155,10 @@ func (e *ClusterExporter) Collect(ch chan<- prometheus.Metric) {
 	}
 	if stats != nil {
 		for key, value := range stats {
+			if _, ok := e.filter_stats[key]; !ok {
+				continue
+			}
+
 			v := e.valueToFloat64(value)
 			// ignore stats which are not available
 			if v == -1 {
@@ -174,7 +189,26 @@ func NewClusterCollector(_api *Nutanix) *ClusterExporter {
 			namespace:  "nutanix_cluster",
 			fields:     []string{"num_nodes"},
 			properties: []string{"uuid", "name", "cluster_external_ipaddress", "version"},
-		}}
+			filter_stats: map[string]bool{
+				"storage.capacity_bytes":               true,
+				"storage.usage_bytes":                  true,
+				"storage.logical_usage_bytes":          true,
+				"controller_total_read_io_size_kbytes": true,
+				"controller_total_io_size_kbytes":      true,
+				"num_read_iops":                        true,
+				"num_write_iops":                       true,
+				"avg_read_io_latency_usecs":            true,
+				"avg_write_io_latency_usecs":           true,
+				"hypervisor_cpu_usage_ppm":             true,
+				"cpu_capacity_in_hz":                   true,
+				"hypervisor_memory_usage_ppm":          true,
+				"hypervisor_num_received_bytes":        true,
+				"hypervisor_num_transmitted_bytes":     true,
+				// Calculated
+				METRIC_TOTAL_WRITE_IO_SIZE: true,
+			},
+		},
+	}
 
 	return exporter
 
