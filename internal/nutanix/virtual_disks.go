@@ -51,6 +51,10 @@ func (e *VirtualDisksExporter) Describe(ch chan<- *prometheus.Desc) {
 		if stats != nil {
 			e.addCalculatedStats(stats)
 			for key := range stats {
+				if _, ok := e.filter_stats[key]; !ok {
+					continue
+				}
+
 				key = e.normalizeKey(key)
 
 				e.metrics[key] = prometheus.NewGaugeVec(prometheus.GaugeOpts{
@@ -167,6 +171,10 @@ func (e *VirtualDisksExporter) Collect(ch chan<- prometheus.Metric) {
 
 		if stats != nil {
 			for key, value := range stats {
+				if _, ok := e.filter_stats[key]; !ok {
+					continue
+				}
+
 				val := e.valueToFloat64(value)
 				// ignore stats which are not available
 				if val == -1 {
@@ -201,5 +209,24 @@ func NewVirtualDisksCollector(_api *Nutanix) *VirtualDisksExporter {
 			namespace:  "nutanix_vdisks",
 			fields:     []string{"disk_capacity_in_bytes"},
 			properties: []string{"uuid", "attached_vm_uuid", "attached_vmname", "storage_container_uuid", "cluster_uuid", "disk_address", "disk_capacity_in_mb"},
-		}}
+			filter_stats: map[string]bool{
+				"controller_total_read_io_size_kbytes":  true,
+				"controller_total_io_size_kbytes":       true,
+				"controller_num_read_iops":              true,
+				"controller_num_write_iops":             true,
+				"controller_avg_read_io_latency_usecs":  true,
+				"controller_avg_write_io_latency_usecs": true,
+				//usage stats
+				"controller.storage_tier.cloud.pinned_usage_bytes":    true,
+				"controller.storage_tier.cloud.usage_bytes":           true,
+				"controller.storage_tier.das-sata.pinned_usage_bytes": true,
+				"controller.storage_tier.das-sata.usage_bytes":        true,
+				"controller.storage_tier.ssd.pinned_usage_bytes":      true,
+				"controller.storage_tier.ssd.usage_bytes":             true,
+				// Calculated
+				METRIC_TOTAL_WRITE_IO_SIZE: true,
+				METRIC_TOTAL_USAGE_BYTES:   true,
+			},
+		},
+	}
 }

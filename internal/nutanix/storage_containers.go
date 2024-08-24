@@ -58,6 +58,10 @@ func (e *StorageContainerExporter) Describe(ch chan<- *prometheus.Desc) {
 
 		if usageStats != nil {
 			for key := range usageStats {
+				if _, ok := e.filter_stats[key]; !ok {
+					continue
+				}
+
 				key = e.normalizeKey(key)
 
 				e.metrics[key] = prometheus.NewGaugeVec(prometheus.GaugeOpts{
@@ -70,6 +74,10 @@ func (e *StorageContainerExporter) Describe(ch chan<- *prometheus.Desc) {
 		if stats != nil {
 			e.addCalculatedStats(stats)
 			for key := range stats {
+				if _, ok := e.filter_stats[key]; !ok {
+					continue
+				}
+
 				key = e.normalizeKey(key)
 				e.metrics[key] = prometheus.NewGaugeVec(prometheus.GaugeOpts{
 					Namespace: e.namespace,
@@ -138,6 +146,10 @@ func (e *StorageContainerExporter) Collect(ch chan<- prometheus.Metric) {
 
 		if usageStats != nil {
 			for key, value := range usageStats {
+				if _, ok := e.filter_stats[key]; !ok {
+					continue
+				}
+
 				val := e.valueToFloat64(value)
 				// ignore stats which are not available
 				if val == -1 {
@@ -151,6 +163,10 @@ func (e *StorageContainerExporter) Collect(ch chan<- prometheus.Metric) {
 		}
 		if stats != nil {
 			for key, value := range stats {
+				if _, ok := e.filter_stats[key]; !ok {
+					continue
+				}
+
 				val := e.valueToFloat64(value)
 				// ignore stats which are not available
 				if val == -1 {
@@ -174,5 +190,20 @@ func NewStorageContainersCollector(_api *Nutanix) *StorageContainerExporter {
 			metrics:    make(map[string]*prometheus.GaugeVec),
 			namespace:  "nutanix_storage_containers",
 			properties: []string{"storage_container_uuid", "cluster_uuid", "name", "replication_factor", "compression_enabled", "max_capacity"},
-		}}
+			filter_stats: map[string]bool{
+				"storage.usage_bytes":                       true,
+				"storage.capacity_bytes":                    true,
+				"storage.logical_usage_bytes":               true,
+				"storage.container_reserved_capacity_bytes": true,
+				"controller_total_read_io_size_kbytes":      true,
+				"controller_total_io_size_kbytes":           true,
+				"controller_num_read_iops":                  true,
+				"controller_num_write_iops":                 true,
+				"controller_avg_read_io_latency_usecs":      true,
+				"controller_avg_write_io_latency_usecs":     true,
+				// Calculated
+				METRIC_TOTAL_WRITE_IO_SIZE: true,
+			},
+		},
+	}
 }
