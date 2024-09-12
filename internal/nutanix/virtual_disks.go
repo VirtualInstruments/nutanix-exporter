@@ -20,9 +20,14 @@ type VirtualDisksExporter struct {
 }
 
 func (e *VirtualDisksExporter) Describe(ch chan<- *prometheus.Desc) {
-	resp, _ := e.api.makeV2Request("GET", "/virtual_disks/")
-	data := json.NewDecoder(resp.Body)
+	resp, err := e.api.makeV2Request("GET", "/virtual_disks/")
+	if err != nil {
+		e.result = nil
+		log.Error("Virtual disk discovery failed")
+		return
+	}
 
+	data := json.NewDecoder(resp.Body)
 	data.Decode(&e.result)
 
 	var entities []interface{} = nil
@@ -120,7 +125,9 @@ func (e *VirtualDisksExporter) addCalculatedStats(stats map[string]interface{}) 
 }
 
 func (e *VirtualDisksExporter) Collect(ch chan<- prometheus.Metric) {
-
+	if e.result != nil {
+		return
+	}
 	var entities []interface{} = nil
 	if obj, ok := e.result["entities"]; ok {
 		entities = obj.([]interface{})

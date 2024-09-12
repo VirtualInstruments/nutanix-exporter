@@ -28,7 +28,12 @@ type ClusterExporter struct {
 // See https://github.com/prometheus/client_golang/blob/master/prometheus/collector.go
 func (e *ClusterExporter) Describe(ch chan<- *prometheus.Desc) {
 
-	resp, _ := e.api.makeV2Request("GET", "/cluster/")
+	resp, err := e.api.makeV2Request("GET", "/cluster/")
+	if err != nil {
+		e.result = nil
+		log.Error("Cluster discovery failed")
+		return
+	}
 	data := json.NewDecoder(resp.Body)
 	data.Decode(&e.result)
 
@@ -119,6 +124,9 @@ func (e *ClusterExporter) Collect(ch chan<- prometheus.Metric) {
 	var stats, usageStats map[string]interface{} = nil, nil
 
 	ent := e.result
+	if ent == nil {
+		return
+	}
 	if obj, ok := ent["stats"]; ok {
 		stats = obj.(map[string]interface{})
 	}

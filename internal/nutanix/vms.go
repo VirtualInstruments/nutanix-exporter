@@ -31,7 +31,13 @@ type VmsExporter struct {
 // Describe - Implement prometheus.Collector interface
 // See https://github.com/prometheus/client_golang/blob/master/prometheus/collector.go
 func (e *VmsExporter) Describe(ch chan<- *prometheus.Desc) {
-	resp, _ := e.api.makeV1Request("GET", "/vms/")
+	resp, err := e.api.makeV1Request("GET", "/vms/")
+	if err != nil {
+		e.result = nil
+		log.Error("VM discovery failed")
+		return
+	}
+
 	data := json.NewDecoder(resp.Body)
 	data.Decode(&e.result)
 
@@ -116,7 +122,9 @@ func (e *VmsExporter) addCalculatedStats(ent map[string]interface{}, stats map[s
 // Collect - Implemente prometheus.Collector interface
 // See https://github.com/prometheus/client_golang/blob/master/prometheus/collector.go
 func (e *VmsExporter) Collect(ch chan<- prometheus.Metric) {
-
+	if e.result == nil {
+		return
+	}
 	var key string
 	var g prometheus.Gauge
 

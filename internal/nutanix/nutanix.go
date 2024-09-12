@@ -12,9 +12,11 @@ package nutanix
 import (
 	//	"os"
 	"crypto/tls"
+	"fmt"
 	"net/http"
 	"net/url"
 	"strings"
+	"time"
 
 	log "github.com/sirupsen/logrus"
 )
@@ -22,6 +24,7 @@ import (
 const (
 	PRISM_API_PATH_VERSION_V1 = "v1/"
 	PRISM_API_PATH_VERSION_V2 = "v2.0/"
+	HTTP_TIMEOUT              = 10 * time.Second
 )
 
 type RequestParams struct {
@@ -51,7 +54,10 @@ func (g *Nutanix) makeRequestWithParams(versionPath, reqType, action string, p R
 	log.Debugf("URL: %s", _url)
 
 	tr := &http.Transport{TLSClientConfig: &tls.Config{InsecureSkipVerify: true}}
-	var netClient = http.Client{Transport: tr}
+	var netClient = http.Client{
+		Transport: tr,
+		Timeout:   HTTP_TIMEOUT,
+	}
 
 	body := p.body
 
@@ -59,7 +65,8 @@ func (g *Nutanix) makeRequestWithParams(versionPath, reqType, action string, p R
 
 	req, err := http.NewRequest(reqType, _url, strings.NewReader(body))
 	if err != nil {
-		log.Fatal(err)
+		log.Errorf("failed to create request; error=%v\n", err)
+		return nil, err
 	}
 	//req.Header.Set("Content-Type", "text/JSON")
 
@@ -67,12 +74,12 @@ func (g *Nutanix) makeRequestWithParams(versionPath, reqType, action string, p R
 
 	resp, err := netClient.Do(req)
 	if err != nil {
-		log.Fatal(err)
+		log.Errorf("failed to execute request; error=%v\n", err)
 		return nil, err
 	}
 	if resp.StatusCode >= 400 {
-		log.Fatal(resp.Status)
-		return nil, nil
+		log.Errorf("error status from server; status=%v code=%v\n", resp.Status, resp.StatusCode)
+		return nil, fmt.Errorf("error status received")
 	}
 
 	return resp, nil

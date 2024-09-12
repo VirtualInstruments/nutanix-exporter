@@ -12,6 +12,7 @@ package nutanix
 import (
 	"encoding/json"
 	"fmt"
+	log "github.com/sirupsen/logrus"
 
 	"github.com/prometheus/client_golang/prometheus"
 )
@@ -27,7 +28,13 @@ type StorageContainerExporter struct {
 func (e *StorageContainerExporter) Describe(ch chan<- *prometheus.Desc) {
 	// prometheus.DescribeByCollect(e, ch)
 
-	resp, _ := e.api.makeV2Request("GET", "/storage_containers/")
+	resp, err := e.api.makeV2Request("GET", "/storage_containers/")
+	if err != nil {
+		e.result = nil
+		log.Error("Storage contianer discovery failed")
+		return
+	}
+
 	data := json.NewDecoder(resp.Body)
 	data.Decode(&e.result)
 
@@ -116,6 +123,9 @@ func (e *StorageContainerExporter) addCalculatedStats(stats map[string]interface
 // Collect - Implement prometheus.Collector interface
 // See https://github.com/prometheus/client_golang/blob/master/prometheus/collector.go
 func (e *StorageContainerExporter) Collect(ch chan<- prometheus.Metric) {
+	if e.result == nil {
+		return
+	}
 	var entities []interface{} = nil
 	if obj, ok := e.result["entities"]; ok {
 		entities = obj.([]interface{})

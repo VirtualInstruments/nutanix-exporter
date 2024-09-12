@@ -12,13 +12,13 @@ package main
 
 import (
 	"nutanix-exporter/internal/nutanix"
+	"os"
+	"time"
 
 	"flag"
 	"net/http"
 
 	"fmt"
-	"io/ioutil"
-
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	log "github.com/sirupsen/logrus"
@@ -32,6 +32,8 @@ var (
 	nutanixPassword = flag.String("nutanix.password", "", "Nutanix API User Password")
 	listenAddress   = flag.String("listen-address", ":9405", "The address to lisiten on for HTTP requests.")
 	nutanixConfig   = flag.String("nutanix.conf", "", "Which Nutanixconf.yml file should be used")
+
+	configModTime time.Time = time.Time{}
 )
 
 type cluster struct {
@@ -58,7 +60,7 @@ func main() {
 
 	if len(*nutanixConfig) > 0 {
 		//Read complete Config
-		file, err = ioutil.ReadFile(*nutanixConfig)
+		file, err = os.ReadFile(*nutanixConfig)
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -66,6 +68,9 @@ func main() {
 		file = []byte(fmt.Sprintf("default: {nutanix_host: %s, nutanix_user: %s, nutanix_password: %s}",
 			*nutanixURL, *nutanixUser, *nutanixPassword))
 	}
+
+	// add config file watch
+	go monitorConfigFileChange()
 
 	log.Debugf("Config File:\n%s\n", string(file))
 	err = yaml.Unmarshal(file, &config)
@@ -149,5 +154,24 @@ func main() {
 	err = http.ListenAndServe(*listenAddress, nil)
 	if err != nil {
 		log.Fatal(err)
+	}
+}
+
+func monitorConfigFileChange() {
+	for {
+		select {
+		case <-time.After(time.Minute):
+			fileInfo, err := os.Stat(*nutanixConfig)
+			if err != nil {
+				log.Errorf("Failed to get config file (%v) err : %v\n", *nutanixConfig, err.Error())
+			} else {
+				modTime := fileInfo.ModTime()
+				if !configModTime.IsZero() && configModTime != modTime {
+					log.Infof("Config %v file has changed. Restarting exporter...\n", *nutanixConfig)
+					os.Exit(0)
+				}
+				configModTime = modTime
+			}
+		}
 	}
 }

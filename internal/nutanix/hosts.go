@@ -27,9 +27,14 @@ type HostsExporter struct {
 // Describe - Implemente prometheus.Collector interface
 // See https://github.com/prometheus/client_golang/blob/master/prometheus/collector.go
 func (e *HostsExporter) Describe(ch chan<- *prometheus.Desc) {
-	resp, _ := e.api.makeV2Request("GET", "/hosts/")
-	data := json.NewDecoder(resp.Body)
+	resp, err := e.api.makeV2Request("GET", "/hosts/")
+	if err != nil {
+		e.result = nil
+		log.Error("Host discovery failed")
+		return
+	}
 
+	data := json.NewDecoder(resp.Body)
 	data.Decode(&e.result)
 
 	var entities []interface{} = nil
@@ -139,7 +144,9 @@ func (e *HostsExporter) addCalculatedStats(ent map[string]interface{}, stats map
 // Collect - Implement prometheus.Collector interface
 // See https://github.com/prometheus/client_golang/blob/master/prometheus/collector.go
 func (e *HostsExporter) Collect(ch chan<- prometheus.Metric) {
-
+	if e.result == nil {
+		return
+	}
 	var entities []interface{} = nil
 	if obj, ok := e.result["entities"]; ok {
 		entities = obj.([]interface{})
