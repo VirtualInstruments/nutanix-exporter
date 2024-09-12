@@ -125,7 +125,7 @@ func (e *VirtualDisksExporter) addCalculatedStats(stats map[string]interface{}) 
 }
 
 func (e *VirtualDisksExporter) Collect(ch chan<- prometheus.Metric) {
-	if e.result != nil {
+	if e.result == nil {
 		return
 	}
 	var entities []interface{} = nil
