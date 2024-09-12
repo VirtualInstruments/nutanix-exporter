@@ -45,7 +45,13 @@ func (e *SnapshotsExporter) Describe(ch chan<- *prometheus.Desc) {
 func (e *SnapshotsExporter) Collect(ch chan<- prometheus.Metric) {
 	var snapshots map[string]interface{}
 
-	resp, _ := e.api.makeV2Request("GET", "/snapshots/")
+	resp, err := e.api.makeV2Request("GET", "/snapshots/")
+	if err != nil {
+		e.result = nil
+		log.Error("Snapshots discovery failed")
+		return
+	}
+
 	data := json.NewDecoder(resp.Body)
 	data.Decode(&snapshots)
 

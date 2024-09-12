@@ -31,7 +31,13 @@ type VmsExporter struct {
 // Describe - Implement prometheus.Collector interface
 // See https://github.com/prometheus/client_golang/blob/master/prometheus/collector.go
 func (e *VmsExporter) Describe(ch chan<- *prometheus.Desc) {
-	resp, _ := e.api.makeV1Request("GET", "/vms/")
+	resp, err := e.api.makeV1Request("GET", "/vms/")
+	if err != nil {
+		e.result = nil
+		log.Error("VM discovery failed")
+		return
+	}
+
 	data := json.NewDecoder(resp.Body)
 	data.Decode(&e.result)
 
@@ -68,6 +74,10 @@ func (e *VmsExporter) Describe(ch chan<- *prometheus.Desc) {
 		if stats != nil {
 			e.addCalculatedStats(ent, stats)
 			for key := range stats {
+				if _, ok := e.filter_stats[key]; !ok {
+					continue
+				}
+
 				key = e.normalizeKey(key)
 
 				e.metrics[key] = prometheus.NewGaugeVec(prometheus.GaugeOpts{
@@ -112,7 +122,9 @@ func (e *VmsExporter) addCalculatedStats(ent map[string]interface{}, stats map[s
 // Collect - Implemente prometheus.Collector interface
 // See https://github.com/prometheus/client_golang/blob/master/prometheus/collector.go
 func (e *VmsExporter) Collect(ch chan<- prometheus.Metric) {
-
+	if e.result == nil {
+		return
+	}
 	var key string
 	var g prometheus.Gauge
 
@@ -189,6 +201,9 @@ func (e *VmsExporter) Collect(ch chan<- prometheus.Metric) {
 
 		if stats != nil {
 			for key, value := range stats {
+				if _, ok := e.filter_stats[key]; !ok {
+					continue
+				}
 				val := e.valueToFloat64(value)
 				// ignore stats which are not available
 				if val == -1 {
@@ -233,5 +248,13 @@ func NewVmsCollector(_api *Nutanix) *VmsExporter {
 			namespace:  "nutanix_vms",
 			fields:     []string{"memoryCapacityInBytes", "numVCpus", "powerState", "cpuReservedInHz"},
 			properties: []string{"uuid", "hostUuid", "vmName", "memoryCapacityInMB", "memoryReservedCapacityInMB", "numVCpus", "powerState", "cpuReservedInMHz", "diskCapacityInMB", "ipAddresses"},
+			filter_stats: map[string]bool{
+				"hypervisor_cpu_usage_ppm":         true,
+				"guest.memory_usage_bytes":         true,
+				"hypervisor_num_received_bytes":    true,
+				"hypervisor_num_transmitted_bytes": true,
+				// Calculated
+				METRIC_MEM_FREE_BYTES: true,
+			},
 		}}
 }

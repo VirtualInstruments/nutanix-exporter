@@ -27,9 +27,14 @@ type HostsExporter struct {
 // Describe - Implemente prometheus.Collector interface
 // See https://github.com/prometheus/client_golang/blob/master/prometheus/collector.go
 func (e *HostsExporter) Describe(ch chan<- *prometheus.Desc) {
-	resp, _ := e.api.makeV2Request("GET", "/hosts/")
-	data := json.NewDecoder(resp.Body)
+	resp, err := e.api.makeV2Request("GET", "/hosts/")
+	if err != nil {
+		e.result = nil
+		log.Error("Host discovery failed")
+		return
+	}
 
+	data := json.NewDecoder(resp.Body)
 	data.Decode(&e.result)
 
 	var entities []interface{} = nil
@@ -60,6 +65,10 @@ func (e *HostsExporter) Describe(ch chan<- *prometheus.Desc) {
 
 		if usageStats != nil {
 			for key := range usageStats {
+				if _, ok := e.filter_stats[key]; !ok {
+					continue
+				}
+
 				key = e.normalizeKey(key)
 
 				e.metrics[key] = prometheus.NewGaugeVec(prometheus.GaugeOpts{
@@ -72,6 +81,10 @@ func (e *HostsExporter) Describe(ch chan<- *prometheus.Desc) {
 		if stats != nil {
 			e.addCalculatedStats(ent, stats)
 			for key := range stats {
+				if _, ok := e.filter_stats[key]; !ok {
+					continue
+				}
+
 				key = e.normalizeKey(key)
 				e.metrics[key] = prometheus.NewGaugeVec(prometheus.GaugeOpts{
 					Namespace: e.namespace,
@@ -88,7 +101,6 @@ func (e *HostsExporter) Describe(ch chan<- *prometheus.Desc) {
 		}
 
 	}
-
 }
 
 func (e *HostsExporter) addCalculatedStats(ent map[string]interface{}, stats map[string]interface{}) {
@@ -132,7 +144,9 @@ func (e *HostsExporter) addCalculatedStats(ent map[string]interface{}, stats map
 // Collect - Implement prometheus.Collector interface
 // See https://github.com/prometheus/client_golang/blob/master/prometheus/collector.go
 func (e *HostsExporter) Collect(ch chan<- prometheus.Metric) {
-
+	if e.result == nil {
+		return
+	}
 	var entities []interface{} = nil
 	if obj, ok := e.result["entities"]; ok {
 		entities = obj.([]interface{})
@@ -164,6 +178,10 @@ func (e *HostsExporter) Collect(ch chan<- prometheus.Metric) {
 
 		if usageStats != nil {
 			for key, value := range usageStats {
+				if _, ok := e.filter_stats[key]; !ok {
+					continue
+				}
+
 				val := e.valueToFloat64(value)
 				// ignore stats which are not available
 				if val == -1 {
@@ -177,6 +195,10 @@ func (e *HostsExporter) Collect(ch chan<- prometheus.Metric) {
 		}
 		if stats != nil {
 			for key, value := range stats {
+				if _, ok := e.filter_stats[key]; !ok {
+					continue
+				}
+
 				val := e.valueToFloat64(value)
 				// ignore stats which are not available
 				if val == -1 {
@@ -207,5 +229,26 @@ func NewHostsCollector(_api *Nutanix) *HostsExporter {
 			namespace:  "nutanix_hosts",
 			fields:     []string{"num_vms", "num_cpu_cores", "num_cpu_sockets", "num_cpu_threads", "cpu_frequency_in_hz", "cpu_capacity_in_hz", "memory_capacity_in_bytes", "boot_time_in_usecs"},
 			properties: []string{"uuid", "cluster_uuid", "name", "host_type", "hypervisor_address", "serial"},
-		}}
+			filter_stats: map[string]bool{
+				"storage.capacity_bytes":               true,
+				"storage.usage_bytes":                  true,
+				"storage.logical_usage_bytes":          true,
+				"controller_total_read_io_size_kbytes": true,
+				"controller_total_io_size_kbytes":      true,
+				"num_read_iops":                        true,
+				"num_write_iops":                       true,
+				"avg_read_io_latency_usecs":            true,
+				"avg_write_io_latency_usecs":           true,
+				"hypervisor_cpu_usage_ppm":             true,
+				"cpu_capacity_in_hz":                   true,
+				"hypervisor_memory_usage_ppm":          true,
+				"hypervisor_num_received_bytes":        true,
+				"hypervisor_num_transmitted_bytes":     true,
+				// Calculated
+				METRIC_TOTAL_WRITE_IO_SIZE: true,
+				METRIC_MEM_USAGE_BYTES:     true,
+				METRIC_MEM_FREE_BYTES:      true,
+			},
+		},
+	}
 }
