@@ -12,6 +12,7 @@ package nutanix
 import (
 	"encoding/json"
 	"fmt"
+	"strconv"
 	log "github.com/sirupsen/logrus"
 
 	"github.com/prometheus/client_golang/prometheus"
@@ -147,8 +148,25 @@ func (e *StorageContainerExporter) Collect(ch chan<- prometheus.Metric) {
 		key := KEY_STORAGE_CONTAINER_PROPERTIES
 		var property_values []string
 		for _, property := range e.properties {
-			val := fmt.Sprintf("%v", ent[property])
-			property_values = append(property_values, val)
+			var val string = ""
+			// format properties
+			switch property {
+			case "max_capacity":
+				propname := "max_capacity"
+				obj := ent[propname]
+				if obj != nil {
+					floatval := e.valueToFloat64(obj)
+					floatval = floatval / (1024 * 1024) //byte to mb
+					val = strconv.FormatFloat(floatval, 'f', 0, 64)
+				}
+			default:
+				obj := ent[property]
+				if obj != nil {
+					// val = ent[property].(string)
+					val = fmt.Sprintf("%v", ent[property])
+				}
+			}
+			property_values = append(property_values, val) 
 		}
 		g := e.metrics[key].WithLabelValues(property_values...)
 		g.Set(1)
