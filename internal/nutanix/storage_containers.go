@@ -13,6 +13,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"strconv"
+
 	log "github.com/sirupsen/logrus"
 
 	"github.com/prometheus/client_golang/prometheus"
@@ -151,8 +152,8 @@ func (e *StorageContainerExporter) Collect(ch chan<- prometheus.Metric) {
 			var val string = ""
 			// format properties
 			switch property {
-			case "max_capacity":
-				propname := "max_capacity"
+			case "max_capacity_mb":
+				propname := "max_capacity_mb"
 				obj := ent[propname]
 				if obj != nil {
 					floatval := e.valueToFloat64(obj)
@@ -166,7 +167,7 @@ func (e *StorageContainerExporter) Collect(ch chan<- prometheus.Metric) {
 					val = fmt.Sprintf("%v", ent[property])
 				}
 			}
-			property_values = append(property_values, val) 
+			property_values = append(property_values, val)
 		}
 		g := e.metrics[key].WithLabelValues(property_values...)
 		g.Set(1)
@@ -217,7 +218,7 @@ func NewStorageContainersCollector(_api *Nutanix) *StorageContainerExporter {
 			api:        *_api,
 			metrics:    make(map[string]*prometheus.GaugeVec),
 			namespace:  "nutanix_storage_containers",
-			properties: []string{"storage_container_uuid", "cluster_uuid", "name", "replication_factor", "compression_enabled", "max_capacity"},
+			properties: []string{"storage_container_uuid", "cluster_uuid", "name", "replication_factor", "compression_enabled", "max_capacity_mb"},
 			filter_stats: map[string]bool{
 				"storage.usage_bytes":                       true,
 				"storage.capacity_bytes":                    true,
