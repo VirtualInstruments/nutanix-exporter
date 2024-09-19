@@ -1,0 +1,1287 @@
+# HELP nutanix_cluster_controller_total_io_size_kbytes ...
+# TYPE nutanix_cluster_controller_total_io_size_kbytes gauge
+nutanix_cluster_controller_total_io_size_kbytes{uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007"} 88473
+# HELP nutanix_cluster_controller_total_read_io_size_kbytes ...
+# TYPE nutanix_cluster_controller_total_read_io_size_kbytes gauge
+nutanix_cluster_controller_total_read_io_size_kbytes{uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007"} 5584
+# HELP nutanix_cluster_controller_total_write_io_size_kbytes ...
+# TYPE nutanix_cluster_controller_total_write_io_size_kbytes gauge
+nutanix_cluster_controller_total_write_io_size_kbytes{uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007"} 82889
+# HELP nutanix_cluster_hypervisor_cpu_usage_ppm ...
+# TYPE nutanix_cluster_hypervisor_cpu_usage_ppm gauge
+nutanix_cluster_hypervisor_cpu_usage_ppm{uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007"} 191925
+# HELP nutanix_cluster_hypervisor_memory_usage_ppm ...
+# TYPE nutanix_cluster_hypervisor_memory_usage_ppm gauge
+nutanix_cluster_hypervisor_memory_usage_ppm{uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007"} 442304
+# HELP nutanix_cluster_num_nodes ...
+# TYPE nutanix_cluster_num_nodes gauge
+nutanix_cluster_num_nodes{uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007"} 3
+# HELP nutanix_cluster_num_read_iops ...
+# TYPE nutanix_cluster_num_read_iops gauge
+nutanix_cluster_num_read_iops{uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007"} 44
+# HELP nutanix_cluster_num_write_iops ...
+# TYPE nutanix_cluster_num_write_iops gauge
+nutanix_cluster_num_write_iops{uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007"} 14
+# HELP nutanix_cluster_properties ...
+# TYPE nutanix_cluster_properties gauge
+nutanix_cluster_properties{cluster_external_ipaddress="10.20.10.40",name="syslab-ntx-c01.lab.vi.local",uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",version="6.5.6.5"} 1
+# HELP nutanix_cluster_storage_capacity_bytes ...
+# TYPE nutanix_cluster_storage_capacity_bytes gauge
+nutanix_cluster_storage_capacity_bytes{uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007"} 1.2513348011214e+13
+# HELP nutanix_cluster_storage_logical_usage_bytes ...
+# TYPE nutanix_cluster_storage_logical_usage_bytes gauge
+nutanix_cluster_storage_logical_usage_bytes{uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007"} 8.28020359168e+11
+# HELP nutanix_cluster_storage_usage_bytes ...
+# TYPE nutanix_cluster_storage_usage_bytes gauge
+nutanix_cluster_storage_usage_bytes{uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007"} 6.7521521664e+11
+# HELP nutanix_hosts_boot_time_in_usecs ...
+# TYPE nutanix_hosts_boot_time_in_usecs gauge
+nutanix_hosts_boot_time_in_usecs{cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",uuid="49009008-9783-460f-b04c-59265cde8ec9"} 1.725640862668614e+15
+nutanix_hosts_boot_time_in_usecs{cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",uuid="5033d23b-3712-4b1f-994f-acc112f9749f"} 1.725639746661913e+15
+nutanix_hosts_boot_time_in_usecs{cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",uuid="d77af9f2-f776-4479-b231-3e1cc9f24470"} 1.725638441908933e+15
+# HELP nutanix_hosts_controller_total_io_size_kbytes ...
+# TYPE nutanix_hosts_controller_total_io_size_kbytes gauge
+nutanix_hosts_controller_total_io_size_kbytes{cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",uuid="49009008-9783-460f-b04c-59265cde8ec9"} 32
+nutanix_hosts_controller_total_io_size_kbytes{cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",uuid="5033d23b-3712-4b1f-994f-acc112f9749f"} 1592
+nutanix_hosts_controller_total_io_size_kbytes{cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",uuid="d77af9f2-f776-4479-b231-3e1cc9f24470"} 10288
+# HELP nutanix_hosts_controller_total_read_io_size_kbytes ...
+# TYPE nutanix_hosts_controller_total_read_io_size_kbytes gauge
+nutanix_hosts_controller_total_read_io_size_kbytes{cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",uuid="49009008-9783-460f-b04c-59265cde8ec9"} 0
+nutanix_hosts_controller_total_read_io_size_kbytes{cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",uuid="5033d23b-3712-4b1f-994f-acc112f9749f"} 32
+nutanix_hosts_controller_total_read_io_size_kbytes{cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",uuid="d77af9f2-f776-4479-b231-3e1cc9f24470"} 8
+# HELP nutanix_hosts_controller_total_write_io_size_kbytes ...
+# TYPE nutanix_hosts_controller_total_write_io_size_kbytes gauge
+nutanix_hosts_controller_total_write_io_size_kbytes{cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",uuid="49009008-9783-460f-b04c-59265cde8ec9"} 32
+nutanix_hosts_controller_total_write_io_size_kbytes{cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",uuid="5033d23b-3712-4b1f-994f-acc112f9749f"} 1560
+nutanix_hosts_controller_total_write_io_size_kbytes{cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",uuid="d77af9f2-f776-4479-b231-3e1cc9f24470"} 10280
+# HELP nutanix_hosts_cpu_capacity_in_hz ...
+# TYPE nutanix_hosts_cpu_capacity_in_hz gauge
+nutanix_hosts_cpu_capacity_in_hz{cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",uuid="49009008-9783-460f-b04c-59265cde8ec9"} 3.3584e+10
+nutanix_hosts_cpu_capacity_in_hz{cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",uuid="5033d23b-3712-4b1f-994f-acc112f9749f"} 3.36e+10
+nutanix_hosts_cpu_capacity_in_hz{cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",uuid="d77af9f2-f776-4479-b231-3e1cc9f24470"} 3.3584e+10
+# HELP nutanix_hosts_cpu_frequency_in_hz ...
+# TYPE nutanix_hosts_cpu_frequency_in_hz gauge
+nutanix_hosts_cpu_frequency_in_hz{cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",uuid="49009008-9783-460f-b04c-59265cde8ec9"} 2.099e+09
+nutanix_hosts_cpu_frequency_in_hz{cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",uuid="5033d23b-3712-4b1f-994f-acc112f9749f"} 2.1e+09
+nutanix_hosts_cpu_frequency_in_hz{cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",uuid="d77af9f2-f776-4479-b231-3e1cc9f24470"} 2.099e+09
+# HELP nutanix_hosts_hypervisor_cpu_usage_ppm ...
+# TYPE nutanix_hosts_hypervisor_cpu_usage_ppm gauge
+nutanix_hosts_hypervisor_cpu_usage_ppm{cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",uuid="49009008-9783-460f-b04c-59265cde8ec9"} 97504
+nutanix_hosts_hypervisor_cpu_usage_ppm{cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",uuid="5033d23b-3712-4b1f-994f-acc112f9749f"} 139489
+nutanix_hosts_hypervisor_cpu_usage_ppm{cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",uuid="d77af9f2-f776-4479-b231-3e1cc9f24470"} 211343
+# HELP nutanix_hosts_hypervisor_memory_usage_ppm ...
+# TYPE nutanix_hosts_hypervisor_memory_usage_ppm gauge
+nutanix_hosts_hypervisor_memory_usage_ppm{cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",uuid="49009008-9783-460f-b04c-59265cde8ec9"} 335035
+nutanix_hosts_hypervisor_memory_usage_ppm{cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",uuid="5033d23b-3712-4b1f-994f-acc112f9749f"} 399647
+nutanix_hosts_hypervisor_memory_usage_ppm{cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",uuid="d77af9f2-f776-4479-b231-3e1cc9f24470"} 592231
+# HELP nutanix_hosts_hypervisor_num_received_bytes ...
+# TYPE nutanix_hosts_hypervisor_num_received_bytes gauge
+nutanix_hosts_hypervisor_num_received_bytes{cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",uuid="49009008-9783-460f-b04c-59265cde8ec9"} 2.271262414904e+12
+nutanix_hosts_hypervisor_num_received_bytes{cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",uuid="5033d23b-3712-4b1f-994f-acc112f9749f"} 1.039123503454e+12
+nutanix_hosts_hypervisor_num_received_bytes{cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",uuid="d77af9f2-f776-4479-b231-3e1cc9f24470"} 2.239858748487e+12
+# HELP nutanix_hosts_hypervisor_num_transmitted_bytes ...
+# TYPE nutanix_hosts_hypervisor_num_transmitted_bytes gauge
+nutanix_hosts_hypervisor_num_transmitted_bytes{cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",uuid="49009008-9783-460f-b04c-59265cde8ec9"} 1.312820535869e+12
+nutanix_hosts_hypervisor_num_transmitted_bytes{cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",uuid="5033d23b-3712-4b1f-994f-acc112f9749f"} 1.339138863165e+12
+nutanix_hosts_hypervisor_num_transmitted_bytes{cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",uuid="d77af9f2-f776-4479-b231-3e1cc9f24470"} 1.09639754267341e+14
+# HELP nutanix_hosts_memory_capacity_in_bytes ...
+# TYPE nutanix_hosts_memory_capacity_in_bytes gauge
+nutanix_hosts_memory_capacity_in_bytes{cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",uuid="49009008-9783-460f-b04c-59265cde8ec9"} 1.347944448e+11
+nutanix_hosts_memory_capacity_in_bytes{cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",uuid="5033d23b-3712-4b1f-994f-acc112f9749f"} 1.347944448e+11
+nutanix_hosts_memory_capacity_in_bytes{cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",uuid="d77af9f2-f776-4479-b231-3e1cc9f24470"} 1.347944448e+11
+# HELP nutanix_hosts_memory_free_bytes ...
+# TYPE nutanix_hosts_memory_free_bytes gauge
+nutanix_hosts_memory_free_bytes{cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",uuid="49009008-9783-460f-b04c-59265cde8ec9"} 8.9633587986432e+10
+nutanix_hosts_memory_free_bytes{cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",uuid="5033d23b-3712-4b1f-994f-acc112f9749f"} 8.09242493190144e+10
+nutanix_hosts_memory_free_bytes{cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",uuid="d77af9f2-f776-4479-b231-3e1cc9f24470"} 5.49649959616512e+10
+# HELP nutanix_hosts_memory_usage_bytes ...
+# TYPE nutanix_hosts_memory_usage_bytes gauge
+nutanix_hosts_memory_usage_bytes{cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",uuid="49009008-9783-460f-b04c-59265cde8ec9"} 4.5160856813568e+10
+nutanix_hosts_memory_usage_bytes{cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",uuid="5033d23b-3712-4b1f-994f-acc112f9749f"} 5.3870195480985596e+10
+nutanix_hosts_memory_usage_bytes{cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",uuid="d77af9f2-f776-4479-b231-3e1cc9f24470"} 7.98294488383488e+10
+# HELP nutanix_hosts_num_cpu_cores ...
+# TYPE nutanix_hosts_num_cpu_cores gauge
+nutanix_hosts_num_cpu_cores{cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",uuid="49009008-9783-460f-b04c-59265cde8ec9"} 16
+nutanix_hosts_num_cpu_cores{cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",uuid="5033d23b-3712-4b1f-994f-acc112f9749f"} 16
+nutanix_hosts_num_cpu_cores{cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",uuid="d77af9f2-f776-4479-b231-3e1cc9f24470"} 16
+# HELP nutanix_hosts_num_cpu_sockets ...
+# TYPE nutanix_hosts_num_cpu_sockets gauge
+nutanix_hosts_num_cpu_sockets{cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",uuid="49009008-9783-460f-b04c-59265cde8ec9"} 2
+nutanix_hosts_num_cpu_sockets{cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",uuid="5033d23b-3712-4b1f-994f-acc112f9749f"} 2
+nutanix_hosts_num_cpu_sockets{cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",uuid="d77af9f2-f776-4479-b231-3e1cc9f24470"} 2
+# HELP nutanix_hosts_num_cpu_threads ...
+# TYPE nutanix_hosts_num_cpu_threads gauge
+nutanix_hosts_num_cpu_threads{cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",uuid="49009008-9783-460f-b04c-59265cde8ec9"} 32
+nutanix_hosts_num_cpu_threads{cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",uuid="5033d23b-3712-4b1f-994f-acc112f9749f"} 32
+nutanix_hosts_num_cpu_threads{cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",uuid="d77af9f2-f776-4479-b231-3e1cc9f24470"} 32
+# HELP nutanix_hosts_num_read_iops ...
+# TYPE nutanix_hosts_num_read_iops gauge
+nutanix_hosts_num_read_iops{cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",uuid="49009008-9783-460f-b04c-59265cde8ec9"} 0
+nutanix_hosts_num_read_iops{cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",uuid="5033d23b-3712-4b1f-994f-acc112f9749f"} 17
+nutanix_hosts_num_read_iops{cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",uuid="d77af9f2-f776-4479-b231-3e1cc9f24470"} 0
+# HELP nutanix_hosts_num_vms ...
+# TYPE nutanix_hosts_num_vms gauge
+nutanix_hosts_num_vms{cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",uuid="49009008-9783-460f-b04c-59265cde8ec9"} 2
+nutanix_hosts_num_vms{cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",uuid="5033d23b-3712-4b1f-994f-acc112f9749f"} 2
+nutanix_hosts_num_vms{cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",uuid="d77af9f2-f776-4479-b231-3e1cc9f24470"} 3
+# HELP nutanix_hosts_num_write_iops ...
+# TYPE nutanix_hosts_num_write_iops gauge
+nutanix_hosts_num_write_iops{cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",uuid="49009008-9783-460f-b04c-59265cde8ec9"} 7
+nutanix_hosts_num_write_iops{cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",uuid="5033d23b-3712-4b1f-994f-acc112f9749f"} 8
+nutanix_hosts_num_write_iops{cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",uuid="d77af9f2-f776-4479-b231-3e1cc9f24470"} 1
+# HELP nutanix_hosts_properties ...
+# TYPE nutanix_hosts_properties gauge
+nutanix_hosts_properties{cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",host_type="HYPER_CONVERGED",hypervisor_address="10.20.10.41",name="syslab-ntx-n01",serial="ZM17CS018700",uuid="5033d23b-3712-4b1f-994f-acc112f9749f"} 1
+nutanix_hosts_properties{cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",host_type="HYPER_CONVERGED",hypervisor_address="10.20.10.42",name="syslab-ntx-n02",serial="ZM17CS018703",uuid="d77af9f2-f776-4479-b231-3e1cc9f24470"} 1
+nutanix_hosts_properties{cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",host_type="HYPER_CONVERGED",hypervisor_address="10.20.10.43",name="syslab-ntx-n03",serial="ZM17CS017334",uuid="49009008-9783-460f-b04c-59265cde8ec9"} 1
+# HELP nutanix_hosts_storage_capacity_bytes ...
+# TYPE nutanix_hosts_storage_capacity_bytes gauge
+nutanix_hosts_storage_capacity_bytes{cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",uuid="49009008-9783-460f-b04c-59265cde8ec9"} 4.171116003738e+12
+nutanix_hosts_storage_capacity_bytes{cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",uuid="5033d23b-3712-4b1f-994f-acc112f9749f"} 4.171116003738e+12
+nutanix_hosts_storage_capacity_bytes{cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",uuid="d77af9f2-f776-4479-b231-3e1cc9f24470"} 4.171116003738e+12
+# HELP nutanix_hosts_storage_logical_usage_bytes ...
+# TYPE nutanix_hosts_storage_logical_usage_bytes gauge
+nutanix_hosts_storage_logical_usage_bytes{cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",uuid="49009008-9783-460f-b04c-59265cde8ec9"} 2.60061167616e+11
+nutanix_hosts_storage_logical_usage_bytes{cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",uuid="5033d23b-3712-4b1f-994f-acc112f9749f"} 2.7348402176e+11
+nutanix_hosts_storage_logical_usage_bytes{cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",uuid="d77af9f2-f776-4479-b231-3e1cc9f24470"} 2.94475169792e+11
+# HELP nutanix_hosts_storage_usage_bytes ...
+# TYPE nutanix_hosts_storage_usage_bytes gauge
+nutanix_hosts_storage_usage_bytes{cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",uuid="49009008-9783-460f-b04c-59265cde8ec9"} 2.11235549184e+11
+nutanix_hosts_storage_usage_bytes{cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",uuid="5033d23b-3712-4b1f-994f-acc112f9749f"} 2.23034888192e+11
+nutanix_hosts_storage_usage_bytes{cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",uuid="d77af9f2-f776-4479-b231-3e1cc9f24470"} 2.40944779264e+11
+# HELP nutanix_storage_containers_controller_avg_read_io_latency_usecs ...
+# TYPE nutanix_storage_containers_controller_avg_read_io_latency_usecs gauge
+nutanix_storage_containers_controller_avg_read_io_latency_usecs{cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",storage_container_uuid="262d8c0f-b5bd-4540-bfc9-8ecee430275e"} 457
+nutanix_storage_containers_controller_avg_read_io_latency_usecs{cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",storage_container_uuid="a15035d4-f5a9-41d6-bfac-b71ad22eacb7"} 0
+# HELP nutanix_storage_containers_controller_avg_write_io_latency_usecs ...
+# TYPE nutanix_storage_containers_controller_avg_write_io_latency_usecs gauge
+nutanix_storage_containers_controller_avg_write_io_latency_usecs{cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",storage_container_uuid="262d8c0f-b5bd-4540-bfc9-8ecee430275e"} 5258
+nutanix_storage_containers_controller_avg_write_io_latency_usecs{cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",storage_container_uuid="a15035d4-f5a9-41d6-bfac-b71ad22eacb7"} 1373
+# HELP nutanix_storage_containers_controller_num_read_iops ...
+# TYPE nutanix_storage_containers_controller_num_read_iops gauge
+nutanix_storage_containers_controller_num_read_iops{cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",storage_container_uuid="262d8c0f-b5bd-4540-bfc9-8ecee430275e"} 5
+nutanix_storage_containers_controller_num_read_iops{cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",storage_container_uuid="a15035d4-f5a9-41d6-bfac-b71ad22eacb7"} 0
+# HELP nutanix_storage_containers_controller_num_write_iops ...
+# TYPE nutanix_storage_containers_controller_num_write_iops gauge
+nutanix_storage_containers_controller_num_write_iops{cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",storage_container_uuid="262d8c0f-b5bd-4540-bfc9-8ecee430275e"} 100
+nutanix_storage_containers_controller_num_write_iops{cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",storage_container_uuid="a15035d4-f5a9-41d6-bfac-b71ad22eacb7"} 0
+# HELP nutanix_storage_containers_controller_total_io_size_kbytes ...
+# TYPE nutanix_storage_containers_controller_total_io_size_kbytes gauge
+nutanix_storage_containers_controller_total_io_size_kbytes{cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",storage_container_uuid="262d8c0f-b5bd-4540-bfc9-8ecee430275e"} 58791
+nutanix_storage_containers_controller_total_io_size_kbytes{cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",storage_container_uuid="a15035d4-f5a9-41d6-bfac-b71ad22eacb7"} 190
+# HELP nutanix_storage_containers_controller_total_read_io_size_kbytes ...
+# TYPE nutanix_storage_containers_controller_total_read_io_size_kbytes gauge
+nutanix_storage_containers_controller_total_read_io_size_kbytes{cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",storage_container_uuid="262d8c0f-b5bd-4540-bfc9-8ecee430275e"} 3722
+nutanix_storage_containers_controller_total_read_io_size_kbytes{cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",storage_container_uuid="a15035d4-f5a9-41d6-bfac-b71ad22eacb7"} 0
+# HELP nutanix_storage_containers_controller_total_write_io_size_kbytes ...
+# TYPE nutanix_storage_containers_controller_total_write_io_size_kbytes gauge
+nutanix_storage_containers_controller_total_write_io_size_kbytes{cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",storage_container_uuid="262d8c0f-b5bd-4540-bfc9-8ecee430275e"} 55069
+nutanix_storage_containers_controller_total_write_io_size_kbytes{cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",storage_container_uuid="a15035d4-f5a9-41d6-bfac-b71ad22eacb7"} 190
+nutanix_storage_containers_controller_total_write_io_size_kbytes{cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",storage_container_uuid="ea31ff0c-af58-42d0-8145-292904a93cfb"} 0
+# HELP nutanix_storage_containers_properties ...
+# TYPE nutanix_storage_containers_properties gauge
+nutanix_storage_containers_properties{cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",compression_enabled="false",max_capacity_mb="11933659",name="SelfServiceContainer",replication_factor="2",storage_container_uuid="262d8c0f-b5bd-4540-bfc9-8ecee430275e"} 1
+nutanix_storage_containers_properties{cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",compression_enabled="false",max_capacity_mb="11933659",name="default-container-30478635002075",replication_factor="2",storage_container_uuid="a15035d4-f5a9-41d6-bfac-b71ad22eacb7"} 1
+nutanix_storage_containers_properties{cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",compression_enabled="true",max_capacity_mb="11933659",name="NutanixManagementShare",replication_factor="2",storage_container_uuid="ea31ff0c-af58-42d0-8145-292904a93cfb"} 1
+# HELP nutanix_storage_containers_storage_capacity_bytes ...
+# TYPE nutanix_storage_containers_storage_capacity_bytes gauge
+nutanix_storage_containers_storage_capacity_bytes{cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",storage_container_uuid="262d8c0f-b5bd-4540-bfc9-8ecee430275e"} 1.2322281403598e+13
+nutanix_storage_containers_storage_capacity_bytes{cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",storage_container_uuid="a15035d4-f5a9-41d6-bfac-b71ad22eacb7"} 1.191415658619e+13
+nutanix_storage_containers_storage_capacity_bytes{cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",storage_container_uuid="ea31ff0c-af58-42d0-8145-292904a93cfb"} 1.1951131804878e+13
+# HELP nutanix_storage_containers_storage_container_reserved_capacity_bytes ...
+# TYPE nutanix_storage_containers_storage_container_reserved_capacity_bytes gauge
+nutanix_storage_containers_storage_container_reserved_capacity_bytes{cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",storage_container_uuid="262d8c0f-b5bd-4540-bfc9-8ecee430275e"} 0
+nutanix_storage_containers_storage_container_reserved_capacity_bytes{cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",storage_container_uuid="a15035d4-f5a9-41d6-bfac-b71ad22eacb7"} 0
+nutanix_storage_containers_storage_container_reserved_capacity_bytes{cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",storage_container_uuid="ea31ff0c-af58-42d0-8145-292904a93cfb"} 0
+# HELP nutanix_storage_containers_storage_logical_usage_bytes ...
+# TYPE nutanix_storage_containers_storage_logical_usage_bytes gauge
+nutanix_storage_containers_storage_logical_usage_bytes{cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",storage_container_uuid="262d8c0f-b5bd-4540-bfc9-8ecee430275e"} 6.09283473408e+11
+nutanix_storage_containers_storage_logical_usage_bytes{cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",storage_container_uuid="a15035d4-f5a9-41d6-bfac-b71ad22eacb7"} 7.7858865152e+10
+nutanix_storage_containers_storage_logical_usage_bytes{cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",storage_container_uuid="ea31ff0c-af58-42d0-8145-292904a93cfb"} 1.41398376448e+11
+# HELP nutanix_storage_containers_storage_usage_bytes ...
+# TYPE nutanix_storage_containers_storage_usage_bytes gauge
+nutanix_storage_containers_storage_usage_bytes{cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",storage_container_uuid="262d8c0f-b5bd-4540-bfc9-8ecee430275e"} 4.85170511872e+11
+nutanix_storage_containers_storage_usage_bytes{cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",storage_container_uuid="a15035d4-f5a9-41d6-bfac-b71ad22eacb7"} 7.7045694464e+10
+nutanix_storage_containers_storage_usage_bytes{cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",storage_container_uuid="ea31ff0c-af58-42d0-8145-292904a93cfb"} 1.14020913152e+11
+# HELP nutanix_vdisks_controller_avg_read_io_latency_usecs ...
+# TYPE nutanix_vdisks_controller_avg_read_io_latency_usecs gauge
+nutanix_vdisks_controller_avg_read_io_latency_usecs{attached_vm_uuid="21238650-52aa-48fd-9049-ee25b966773f",uuid="69c794e8-7892-4396-9365-f1cad000ab44"} 0
+nutanix_vdisks_controller_avg_read_io_latency_usecs{attached_vm_uuid="79a94fb8-b666-4bcf-b97b-3171684149d4",uuid="f3c2fda3-bc80-47fc-a745-b1984d298c60"} 0
+nutanix_vdisks_controller_avg_read_io_latency_usecs{attached_vm_uuid="aea3ec23-ee5a-438f-ae88-2e09aedd16c7",uuid="307d27ce-617a-41de-82bb-14f7bbe9ffcb"} 464
+nutanix_vdisks_controller_avg_read_io_latency_usecs{attached_vm_uuid="aea3ec23-ee5a-438f-ae88-2e09aedd16c7",uuid="a0db6323-4e78-4ebe-a3ed-919028c1ae5a"} 0
+nutanix_vdisks_controller_avg_read_io_latency_usecs{attached_vm_uuid="aea3ec23-ee5a-438f-ae88-2e09aedd16c7",uuid="ec7f9356-3b52-4b62-b3c1-dae2d77b2ea3"} 0
+nutanix_vdisks_controller_avg_read_io_latency_usecs{attached_vm_uuid="db738597-c261-4f47-95c1-2267a284deda",uuid="40cbe18a-c896-431f-8d35-ba2ee34ff21f"} 576
+nutanix_vdisks_controller_avg_read_io_latency_usecs{attached_vm_uuid="db738597-c261-4f47-95c1-2267a284deda",uuid="4cc53beb-f0ec-440e-a600-6c02ad8127f0"} 541
+nutanix_vdisks_controller_avg_read_io_latency_usecs{attached_vm_uuid="db738597-c261-4f47-95c1-2267a284deda",uuid="68dc7916-3389-4ed4-8567-7cb359bcddfe"} 619
+nutanix_vdisks_controller_avg_read_io_latency_usecs{attached_vm_uuid="db738597-c261-4f47-95c1-2267a284deda",uuid="c02a3ca2-e0c0-402f-b509-390ca3c4e3aa"} 0
+nutanix_vdisks_controller_avg_read_io_latency_usecs{attached_vm_uuid="db738597-c261-4f47-95c1-2267a284deda",uuid="c7c6161c-08d0-43f2-b930-dc7d3e48ce4e"} 1004
+# HELP nutanix_vdisks_controller_avg_write_io_latency_usecs ...
+# TYPE nutanix_vdisks_controller_avg_write_io_latency_usecs gauge
+nutanix_vdisks_controller_avg_write_io_latency_usecs{attached_vm_uuid="21238650-52aa-48fd-9049-ee25b966773f",uuid="69c794e8-7892-4396-9365-f1cad000ab44"} 1373
+nutanix_vdisks_controller_avg_write_io_latency_usecs{attached_vm_uuid="79a94fb8-b666-4bcf-b97b-3171684149d4",uuid="f3c2fda3-bc80-47fc-a745-b1984d298c60"} 2456
+nutanix_vdisks_controller_avg_write_io_latency_usecs{attached_vm_uuid="aea3ec23-ee5a-438f-ae88-2e09aedd16c7",uuid="307d27ce-617a-41de-82bb-14f7bbe9ffcb"} 1258
+nutanix_vdisks_controller_avg_write_io_latency_usecs{attached_vm_uuid="aea3ec23-ee5a-438f-ae88-2e09aedd16c7",uuid="a0db6323-4e78-4ebe-a3ed-919028c1ae5a"} 0
+nutanix_vdisks_controller_avg_write_io_latency_usecs{attached_vm_uuid="aea3ec23-ee5a-438f-ae88-2e09aedd16c7",uuid="ec7f9356-3b52-4b62-b3c1-dae2d77b2ea3"} 987
+nutanix_vdisks_controller_avg_write_io_latency_usecs{attached_vm_uuid="db738597-c261-4f47-95c1-2267a284deda",uuid="40cbe18a-c896-431f-8d35-ba2ee34ff21f"} 2346
+nutanix_vdisks_controller_avg_write_io_latency_usecs{attached_vm_uuid="db738597-c261-4f47-95c1-2267a284deda",uuid="4cc53beb-f0ec-440e-a600-6c02ad8127f0"} 1290
+nutanix_vdisks_controller_avg_write_io_latency_usecs{attached_vm_uuid="db738597-c261-4f47-95c1-2267a284deda",uuid="68dc7916-3389-4ed4-8567-7cb359bcddfe"} 1527
+nutanix_vdisks_controller_avg_write_io_latency_usecs{attached_vm_uuid="db738597-c261-4f47-95c1-2267a284deda",uuid="c02a3ca2-e0c0-402f-b509-390ca3c4e3aa"} 6299
+nutanix_vdisks_controller_avg_write_io_latency_usecs{attached_vm_uuid="db738597-c261-4f47-95c1-2267a284deda",uuid="c7c6161c-08d0-43f2-b930-dc7d3e48ce4e"} 2490
+# HELP nutanix_vdisks_controller_num_read_iops ...
+# TYPE nutanix_vdisks_controller_num_read_iops gauge
+nutanix_vdisks_controller_num_read_iops{attached_vm_uuid="21238650-52aa-48fd-9049-ee25b966773f",uuid="69c794e8-7892-4396-9365-f1cad000ab44"} 0
+nutanix_vdisks_controller_num_read_iops{attached_vm_uuid="79a94fb8-b666-4bcf-b97b-3171684149d4",uuid="f3c2fda3-bc80-47fc-a745-b1984d298c60"} 0
+nutanix_vdisks_controller_num_read_iops{attached_vm_uuid="aea3ec23-ee5a-438f-ae88-2e09aedd16c7",uuid="307d27ce-617a-41de-82bb-14f7bbe9ffcb"} 3
+nutanix_vdisks_controller_num_read_iops{attached_vm_uuid="aea3ec23-ee5a-438f-ae88-2e09aedd16c7",uuid="a0db6323-4e78-4ebe-a3ed-919028c1ae5a"} 0
+nutanix_vdisks_controller_num_read_iops{attached_vm_uuid="aea3ec23-ee5a-438f-ae88-2e09aedd16c7",uuid="ec7f9356-3b52-4b62-b3c1-dae2d77b2ea3"} 0
+nutanix_vdisks_controller_num_read_iops{attached_vm_uuid="db738597-c261-4f47-95c1-2267a284deda",uuid="40cbe18a-c896-431f-8d35-ba2ee34ff21f"} 0
+nutanix_vdisks_controller_num_read_iops{attached_vm_uuid="db738597-c261-4f47-95c1-2267a284deda",uuid="4cc53beb-f0ec-440e-a600-6c02ad8127f0"} 0
+nutanix_vdisks_controller_num_read_iops{attached_vm_uuid="db738597-c261-4f47-95c1-2267a284deda",uuid="68dc7916-3389-4ed4-8567-7cb359bcddfe"} 0
+nutanix_vdisks_controller_num_read_iops{attached_vm_uuid="db738597-c261-4f47-95c1-2267a284deda",uuid="c02a3ca2-e0c0-402f-b509-390ca3c4e3aa"} 0
+nutanix_vdisks_controller_num_read_iops{attached_vm_uuid="db738597-c261-4f47-95c1-2267a284deda",uuid="c7c6161c-08d0-43f2-b930-dc7d3e48ce4e"} 0
+# HELP nutanix_vdisks_controller_num_write_iops ...
+# TYPE nutanix_vdisks_controller_num_write_iops gauge
+nutanix_vdisks_controller_num_write_iops{attached_vm_uuid="21238650-52aa-48fd-9049-ee25b966773f",uuid="69c794e8-7892-4396-9365-f1cad000ab44"} 0
+nutanix_vdisks_controller_num_write_iops{attached_vm_uuid="79a94fb8-b666-4bcf-b97b-3171684149d4",uuid="f3c2fda3-bc80-47fc-a745-b1984d298c60"} 0
+nutanix_vdisks_controller_num_write_iops{attached_vm_uuid="aea3ec23-ee5a-438f-ae88-2e09aedd16c7",uuid="307d27ce-617a-41de-82bb-14f7bbe9ffcb"} 4
+nutanix_vdisks_controller_num_write_iops{attached_vm_uuid="aea3ec23-ee5a-438f-ae88-2e09aedd16c7",uuid="a0db6323-4e78-4ebe-a3ed-919028c1ae5a"} 0
+nutanix_vdisks_controller_num_write_iops{attached_vm_uuid="aea3ec23-ee5a-438f-ae88-2e09aedd16c7",uuid="ec7f9356-3b52-4b62-b3c1-dae2d77b2ea3"} 3
+nutanix_vdisks_controller_num_write_iops{attached_vm_uuid="db738597-c261-4f47-95c1-2267a284deda",uuid="40cbe18a-c896-431f-8d35-ba2ee34ff21f"} 0
+nutanix_vdisks_controller_num_write_iops{attached_vm_uuid="db738597-c261-4f47-95c1-2267a284deda",uuid="4cc53beb-f0ec-440e-a600-6c02ad8127f0"} 0
+nutanix_vdisks_controller_num_write_iops{attached_vm_uuid="db738597-c261-4f47-95c1-2267a284deda",uuid="68dc7916-3389-4ed4-8567-7cb359bcddfe"} 0
+nutanix_vdisks_controller_num_write_iops{attached_vm_uuid="db738597-c261-4f47-95c1-2267a284deda",uuid="c02a3ca2-e0c0-402f-b509-390ca3c4e3aa"} 91
+nutanix_vdisks_controller_num_write_iops{attached_vm_uuid="db738597-c261-4f47-95c1-2267a284deda",uuid="c7c6161c-08d0-43f2-b930-dc7d3e48ce4e"} 0
+# HELP nutanix_vdisks_controller_storage_tier_cloud_pinned_usage_bytes ...
+# TYPE nutanix_vdisks_controller_storage_tier_cloud_pinned_usage_bytes gauge
+nutanix_vdisks_controller_storage_tier_cloud_pinned_usage_bytes{attached_vm_uuid="",uuid="8c4d2c44-540d-41ba-affd-c9d8b84f1a41"} 0
+nutanix_vdisks_controller_storage_tier_cloud_pinned_usage_bytes{attached_vm_uuid="0edd071e-6bd7-4ce8-a88c-dd32c4f34558",uuid="2cfde956-cf87-4274-ad5f-c16c32df516d"} 0
+nutanix_vdisks_controller_storage_tier_cloud_pinned_usage_bytes{attached_vm_uuid="0edd071e-6bd7-4ce8-a88c-dd32c4f34558",uuid="ac541475-9ddf-4a72-8b21-05e6d1889f3a"} 0
+nutanix_vdisks_controller_storage_tier_cloud_pinned_usage_bytes{attached_vm_uuid="184e5d0d-1f3d-4de8-a715-8fc4c23fe60a",uuid="751116c4-94be-4f18-ab02-21c4bc344468"} 0
+nutanix_vdisks_controller_storage_tier_cloud_pinned_usage_bytes{attached_vm_uuid="184e5d0d-1f3d-4de8-a715-8fc4c23fe60a",uuid="e37af03c-158b-42ea-a261-e22fbfceb9de"} 0
+nutanix_vdisks_controller_storage_tier_cloud_pinned_usage_bytes{attached_vm_uuid="21238650-52aa-48fd-9049-ee25b966773f",uuid="69c794e8-7892-4396-9365-f1cad000ab44"} 0
+nutanix_vdisks_controller_storage_tier_cloud_pinned_usage_bytes{attached_vm_uuid="227ef30c-2cbd-407b-ac70-586ad3bd79e0",uuid="bca321b2-6e2e-4b9c-ac10-2ea59187fb5f"} 0
+nutanix_vdisks_controller_storage_tier_cloud_pinned_usage_bytes{attached_vm_uuid="244e8907-492d-466b-96aa-5ee3094666a4",uuid="687d90a5-746f-4062-9dd6-8a06c8e12c10"} 0
+nutanix_vdisks_controller_storage_tier_cloud_pinned_usage_bytes{attached_vm_uuid="244e8907-492d-466b-96aa-5ee3094666a4",uuid="f8a2a209-b951-46ac-8762-f11378abe76d"} 0
+nutanix_vdisks_controller_storage_tier_cloud_pinned_usage_bytes{attached_vm_uuid="37243b2c-f16d-4e11-972b-b314e52a759c",uuid="71138b64-531f-4c52-93b0-e6d5b8131eaf"} 0
+nutanix_vdisks_controller_storage_tier_cloud_pinned_usage_bytes{attached_vm_uuid="4171c556-96f8-48a8-bef7-b085bf2d1b9c",uuid="2c2e8bd4-a219-407f-9b7a-0e2043fbfbcc"} 0
+nutanix_vdisks_controller_storage_tier_cloud_pinned_usage_bytes{attached_vm_uuid="4171c556-96f8-48a8-bef7-b085bf2d1b9c",uuid="b3823d00-991a-4618-8ad9-17cc37552d0b"} 0
+nutanix_vdisks_controller_storage_tier_cloud_pinned_usage_bytes{attached_vm_uuid="5b9bafe4-89ad-4440-9a94-e6b73cbaa133",uuid="21002cda-26e0-4069-9be4-bc35d3ff5f86"} 0
+nutanix_vdisks_controller_storage_tier_cloud_pinned_usage_bytes{attached_vm_uuid="5b9bafe4-89ad-4440-9a94-e6b73cbaa133",uuid="ee8ab366-e900-4e8f-be64-be3973c1d030"} 0
+nutanix_vdisks_controller_storage_tier_cloud_pinned_usage_bytes{attached_vm_uuid="60f18b94-d7fd-40f7-9266-2577572af8f2",uuid="4bbf3798-8b1f-4d53-b3f3-0c551a3a29e1"} 0
+nutanix_vdisks_controller_storage_tier_cloud_pinned_usage_bytes{attached_vm_uuid="60f18b94-d7fd-40f7-9266-2577572af8f2",uuid="f1811148-d046-4016-a4af-9c54e87c497e"} 0
+nutanix_vdisks_controller_storage_tier_cloud_pinned_usage_bytes{attached_vm_uuid="71846a85-17e3-4cbd-9c1e-f9f5ef3c50bb",uuid="47469b48-cfd6-4105-90fc-00525b1863b0"} 0
+nutanix_vdisks_controller_storage_tier_cloud_pinned_usage_bytes{attached_vm_uuid="71846a85-17e3-4cbd-9c1e-f9f5ef3c50bb",uuid="984af384-328f-42fe-9e99-bb6e1e70ba6b"} 0
+nutanix_vdisks_controller_storage_tier_cloud_pinned_usage_bytes{attached_vm_uuid="7366fb9a-bd50-45d1-8091-1ad70b15f42e",uuid="e70f9e6a-3e67-4abb-81db-17b8cb5b899f"} 0
+nutanix_vdisks_controller_storage_tier_cloud_pinned_usage_bytes{attached_vm_uuid="79a94fb8-b666-4bcf-b97b-3171684149d4",uuid="f3c2fda3-bc80-47fc-a745-b1984d298c60"} 0
+nutanix_vdisks_controller_storage_tier_cloud_pinned_usage_bytes{attached_vm_uuid="8c2754e9-7996-40d8-a597-6cd28b623e4f",uuid="a633f982-b6cf-44a6-b2bb-47fd8c41d5cc"} 0
+nutanix_vdisks_controller_storage_tier_cloud_pinned_usage_bytes{attached_vm_uuid="93d8b775-1a6f-4312-864f-adb9ad746b42",uuid="205b811e-2e2f-41a1-8f31-67c259fcee8e"} 0
+nutanix_vdisks_controller_storage_tier_cloud_pinned_usage_bytes{attached_vm_uuid="93d8b775-1a6f-4312-864f-adb9ad746b42",uuid="e9d2aa30-bfaa-4229-89b5-3035f9a9ba8d"} 0
+nutanix_vdisks_controller_storage_tier_cloud_pinned_usage_bytes{attached_vm_uuid="9fef76ea-9c77-47eb-bf0a-5bff563fdec8",uuid="601505c8-e467-41e9-87ad-db46a530edc4"} 0
+nutanix_vdisks_controller_storage_tier_cloud_pinned_usage_bytes{attached_vm_uuid="9fef76ea-9c77-47eb-bf0a-5bff563fdec8",uuid="6849025a-fdba-46a1-b995-718429dda2d7"} 0
+nutanix_vdisks_controller_storage_tier_cloud_pinned_usage_bytes{attached_vm_uuid="a295618e-c637-4051-bc59-568531763413",uuid="0a28d7fd-bf39-4445-b74a-4e1474fe88f0"} 0
+nutanix_vdisks_controller_storage_tier_cloud_pinned_usage_bytes{attached_vm_uuid="a295618e-c637-4051-bc59-568531763413",uuid="f447b071-e9e9-4c07-91f9-062cd70488d7"} 0
+nutanix_vdisks_controller_storage_tier_cloud_pinned_usage_bytes{attached_vm_uuid="a49743bc-0351-4bfc-a061-a54d9a6d27b1",uuid="2c53d7e2-cde8-4633-bffc-311acbf3d18b"} 0
+nutanix_vdisks_controller_storage_tier_cloud_pinned_usage_bytes{attached_vm_uuid="a49743bc-0351-4bfc-a061-a54d9a6d27b1",uuid="8c17eea2-014f-4908-acf9-daa6071adaf5"} 0
+nutanix_vdisks_controller_storage_tier_cloud_pinned_usage_bytes{attached_vm_uuid="ae12779b-b375-4206-a159-c71b257f8dc2",uuid="76b88f11-5cde-4255-b521-8aca903c444b"} 0
+nutanix_vdisks_controller_storage_tier_cloud_pinned_usage_bytes{attached_vm_uuid="ae12779b-b375-4206-a159-c71b257f8dc2",uuid="89c28c03-5a60-4271-a3e7-c9b9a84a5073"} 0
+nutanix_vdisks_controller_storage_tier_cloud_pinned_usage_bytes{attached_vm_uuid="aea3ec23-ee5a-438f-ae88-2e09aedd16c7",uuid="307d27ce-617a-41de-82bb-14f7bbe9ffcb"} 0
+nutanix_vdisks_controller_storage_tier_cloud_pinned_usage_bytes{attached_vm_uuid="aea3ec23-ee5a-438f-ae88-2e09aedd16c7",uuid="5d52c163-a9c4-4807-9be6-50e3f47c0e6e"} 0
+nutanix_vdisks_controller_storage_tier_cloud_pinned_usage_bytes{attached_vm_uuid="aea3ec23-ee5a-438f-ae88-2e09aedd16c7",uuid="a0db6323-4e78-4ebe-a3ed-919028c1ae5a"} 0
+nutanix_vdisks_controller_storage_tier_cloud_pinned_usage_bytes{attached_vm_uuid="aea3ec23-ee5a-438f-ae88-2e09aedd16c7",uuid="ec7f9356-3b52-4b62-b3c1-dae2d77b2ea3"} 0
+nutanix_vdisks_controller_storage_tier_cloud_pinned_usage_bytes{attached_vm_uuid="b606cb9b-5423-4985-8efe-7015146416a6",uuid="44600d06-61b3-4c51-81bc-5ebff3d62536"} 0
+nutanix_vdisks_controller_storage_tier_cloud_pinned_usage_bytes{attached_vm_uuid="b606cb9b-5423-4985-8efe-7015146416a6",uuid="b7bdf637-59c0-4f58-bb17-52620134bc87"} 0
+nutanix_vdisks_controller_storage_tier_cloud_pinned_usage_bytes{attached_vm_uuid="b89eedc3-7b73-4c0b-b86f-b696b3b9bf3e",uuid="1fcc70be-7541-4572-ac7c-b65b4a8c2be7"} 0
+nutanix_vdisks_controller_storage_tier_cloud_pinned_usage_bytes{attached_vm_uuid="b89eedc3-7b73-4c0b-b86f-b696b3b9bf3e",uuid="8e261ccb-2093-4f9d-8597-1bfe32f95731"} 0
+nutanix_vdisks_controller_storage_tier_cloud_pinned_usage_bytes{attached_vm_uuid="bbcc2366-dabf-496a-b19c-d08f773eff8a",uuid="a572cad6-b9bb-44b4-80e8-5c4b0d82929e"} 0
+nutanix_vdisks_controller_storage_tier_cloud_pinned_usage_bytes{attached_vm_uuid="bbcc2366-dabf-496a-b19c-d08f773eff8a",uuid="b9ccfc9a-7458-4325-8248-db1025254b35"} 0
+nutanix_vdisks_controller_storage_tier_cloud_pinned_usage_bytes{attached_vm_uuid="d3c9dd8a-32a7-41d2-8587-d7ea5fcb5170",uuid="295025b8-ef6b-4be1-b4ab-94f866fe544e"} 0
+nutanix_vdisks_controller_storage_tier_cloud_pinned_usage_bytes{attached_vm_uuid="d3c9dd8a-32a7-41d2-8587-d7ea5fcb5170",uuid="5a20746b-bd7a-4058-a7ac-126093db1495"} 0
+nutanix_vdisks_controller_storage_tier_cloud_pinned_usage_bytes{attached_vm_uuid="d967258c-75ae-49db-bbcc-c01a690f15c7",uuid="27a1f3e3-b222-41fe-9189-95824d4e84bf"} 0
+nutanix_vdisks_controller_storage_tier_cloud_pinned_usage_bytes{attached_vm_uuid="d967258c-75ae-49db-bbcc-c01a690f15c7",uuid="f90217fb-85eb-4f94-9c18-d95fe0d6e6a3"} 0
+nutanix_vdisks_controller_storage_tier_cloud_pinned_usage_bytes{attached_vm_uuid="da69bf52-dd1e-432a-96a5-5c746130cb45",uuid="6bce0580-6978-42c2-ab3b-0634e513c5c1"} 0
+nutanix_vdisks_controller_storage_tier_cloud_pinned_usage_bytes{attached_vm_uuid="da69bf52-dd1e-432a-96a5-5c746130cb45",uuid="ba8fd6de-8673-4c26-826e-e1f75d660627"} 0
+nutanix_vdisks_controller_storage_tier_cloud_pinned_usage_bytes{attached_vm_uuid="db738597-c261-4f47-95c1-2267a284deda",uuid="0e392c6a-61ed-4164-ab96-b508223dac18"} 0
+nutanix_vdisks_controller_storage_tier_cloud_pinned_usage_bytes{attached_vm_uuid="db738597-c261-4f47-95c1-2267a284deda",uuid="40cbe18a-c896-431f-8d35-ba2ee34ff21f"} 0
+nutanix_vdisks_controller_storage_tier_cloud_pinned_usage_bytes{attached_vm_uuid="db738597-c261-4f47-95c1-2267a284deda",uuid="4cc53beb-f0ec-440e-a600-6c02ad8127f0"} 0
+nutanix_vdisks_controller_storage_tier_cloud_pinned_usage_bytes{attached_vm_uuid="db738597-c261-4f47-95c1-2267a284deda",uuid="5b4ce010-8522-4c0f-b833-8412e0877f18"} 0
+nutanix_vdisks_controller_storage_tier_cloud_pinned_usage_bytes{attached_vm_uuid="db738597-c261-4f47-95c1-2267a284deda",uuid="68dc7916-3389-4ed4-8567-7cb359bcddfe"} 0
+nutanix_vdisks_controller_storage_tier_cloud_pinned_usage_bytes{attached_vm_uuid="db738597-c261-4f47-95c1-2267a284deda",uuid="7c951065-0bda-4589-ab02-68f554b7c6ce"} 0
+nutanix_vdisks_controller_storage_tier_cloud_pinned_usage_bytes{attached_vm_uuid="db738597-c261-4f47-95c1-2267a284deda",uuid="8beccc17-9252-4aae-bf37-c13e2cb30b34"} 0
+nutanix_vdisks_controller_storage_tier_cloud_pinned_usage_bytes{attached_vm_uuid="db738597-c261-4f47-95c1-2267a284deda",uuid="c02a3ca2-e0c0-402f-b509-390ca3c4e3aa"} 0
+nutanix_vdisks_controller_storage_tier_cloud_pinned_usage_bytes{attached_vm_uuid="db738597-c261-4f47-95c1-2267a284deda",uuid="c7c6161c-08d0-43f2-b930-dc7d3e48ce4e"} 0
+nutanix_vdisks_controller_storage_tier_cloud_pinned_usage_bytes{attached_vm_uuid="eb454045-d152-4167-b4eb-3fdb1db8f277",uuid="05871870-32a3-4eb5-9a5f-c8950cbd8622"} 0
+nutanix_vdisks_controller_storage_tier_cloud_pinned_usage_bytes{attached_vm_uuid="eb454045-d152-4167-b4eb-3fdb1db8f277",uuid="db87faf2-29f7-4cf1-b2e6-f430f2b75be0"} 0
+# HELP nutanix_vdisks_controller_storage_tier_cloud_usage_bytes ...
+# TYPE nutanix_vdisks_controller_storage_tier_cloud_usage_bytes gauge
+nutanix_vdisks_controller_storage_tier_cloud_usage_bytes{attached_vm_uuid="0edd071e-6bd7-4ce8-a88c-dd32c4f34558",uuid="2cfde956-cf87-4274-ad5f-c16c32df516d"} 0
+nutanix_vdisks_controller_storage_tier_cloud_usage_bytes{attached_vm_uuid="0edd071e-6bd7-4ce8-a88c-dd32c4f34558",uuid="ac541475-9ddf-4a72-8b21-05e6d1889f3a"} 0
+nutanix_vdisks_controller_storage_tier_cloud_usage_bytes{attached_vm_uuid="184e5d0d-1f3d-4de8-a715-8fc4c23fe60a",uuid="751116c4-94be-4f18-ab02-21c4bc344468"} 0
+nutanix_vdisks_controller_storage_tier_cloud_usage_bytes{attached_vm_uuid="184e5d0d-1f3d-4de8-a715-8fc4c23fe60a",uuid="e37af03c-158b-42ea-a261-e22fbfceb9de"} 0
+nutanix_vdisks_controller_storage_tier_cloud_usage_bytes{attached_vm_uuid="21238650-52aa-48fd-9049-ee25b966773f",uuid="69c794e8-7892-4396-9365-f1cad000ab44"} 0
+nutanix_vdisks_controller_storage_tier_cloud_usage_bytes{attached_vm_uuid="227ef30c-2cbd-407b-ac70-586ad3bd79e0",uuid="bca321b2-6e2e-4b9c-ac10-2ea59187fb5f"} 0
+nutanix_vdisks_controller_storage_tier_cloud_usage_bytes{attached_vm_uuid="244e8907-492d-466b-96aa-5ee3094666a4",uuid="687d90a5-746f-4062-9dd6-8a06c8e12c10"} 0
+nutanix_vdisks_controller_storage_tier_cloud_usage_bytes{attached_vm_uuid="244e8907-492d-466b-96aa-5ee3094666a4",uuid="f8a2a209-b951-46ac-8762-f11378abe76d"} 0
+nutanix_vdisks_controller_storage_tier_cloud_usage_bytes{attached_vm_uuid="37243b2c-f16d-4e11-972b-b314e52a759c",uuid="71138b64-531f-4c52-93b0-e6d5b8131eaf"} 0
+nutanix_vdisks_controller_storage_tier_cloud_usage_bytes{attached_vm_uuid="4171c556-96f8-48a8-bef7-b085bf2d1b9c",uuid="2c2e8bd4-a219-407f-9b7a-0e2043fbfbcc"} 0
+nutanix_vdisks_controller_storage_tier_cloud_usage_bytes{attached_vm_uuid="4171c556-96f8-48a8-bef7-b085bf2d1b9c",uuid="b3823d00-991a-4618-8ad9-17cc37552d0b"} 0
+nutanix_vdisks_controller_storage_tier_cloud_usage_bytes{attached_vm_uuid="5b9bafe4-89ad-4440-9a94-e6b73cbaa133",uuid="21002cda-26e0-4069-9be4-bc35d3ff5f86"} 0
+nutanix_vdisks_controller_storage_tier_cloud_usage_bytes{attached_vm_uuid="5b9bafe4-89ad-4440-9a94-e6b73cbaa133",uuid="ee8ab366-e900-4e8f-be64-be3973c1d030"} 0
+nutanix_vdisks_controller_storage_tier_cloud_usage_bytes{attached_vm_uuid="60f18b94-d7fd-40f7-9266-2577572af8f2",uuid="4bbf3798-8b1f-4d53-b3f3-0c551a3a29e1"} 0
+nutanix_vdisks_controller_storage_tier_cloud_usage_bytes{attached_vm_uuid="60f18b94-d7fd-40f7-9266-2577572af8f2",uuid="f1811148-d046-4016-a4af-9c54e87c497e"} 0
+nutanix_vdisks_controller_storage_tier_cloud_usage_bytes{attached_vm_uuid="71846a85-17e3-4cbd-9c1e-f9f5ef3c50bb",uuid="47469b48-cfd6-4105-90fc-00525b1863b0"} 0
+nutanix_vdisks_controller_storage_tier_cloud_usage_bytes{attached_vm_uuid="71846a85-17e3-4cbd-9c1e-f9f5ef3c50bb",uuid="984af384-328f-42fe-9e99-bb6e1e70ba6b"} 0
+nutanix_vdisks_controller_storage_tier_cloud_usage_bytes{attached_vm_uuid="7366fb9a-bd50-45d1-8091-1ad70b15f42e",uuid="e70f9e6a-3e67-4abb-81db-17b8cb5b899f"} 0
+nutanix_vdisks_controller_storage_tier_cloud_usage_bytes{attached_vm_uuid="79a94fb8-b666-4bcf-b97b-3171684149d4",uuid="f3c2fda3-bc80-47fc-a745-b1984d298c60"} 0
+nutanix_vdisks_controller_storage_tier_cloud_usage_bytes{attached_vm_uuid="8c2754e9-7996-40d8-a597-6cd28b623e4f",uuid="a633f982-b6cf-44a6-b2bb-47fd8c41d5cc"} 0
+nutanix_vdisks_controller_storage_tier_cloud_usage_bytes{attached_vm_uuid="93d8b775-1a6f-4312-864f-adb9ad746b42",uuid="205b811e-2e2f-41a1-8f31-67c259fcee8e"} 0
+nutanix_vdisks_controller_storage_tier_cloud_usage_bytes{attached_vm_uuid="93d8b775-1a6f-4312-864f-adb9ad746b42",uuid="e9d2aa30-bfaa-4229-89b5-3035f9a9ba8d"} 0
+nutanix_vdisks_controller_storage_tier_cloud_usage_bytes{attached_vm_uuid="9fef76ea-9c77-47eb-bf0a-5bff563fdec8",uuid="601505c8-e467-41e9-87ad-db46a530edc4"} 0
+nutanix_vdisks_controller_storage_tier_cloud_usage_bytes{attached_vm_uuid="9fef76ea-9c77-47eb-bf0a-5bff563fdec8",uuid="6849025a-fdba-46a1-b995-718429dda2d7"} 0
+nutanix_vdisks_controller_storage_tier_cloud_usage_bytes{attached_vm_uuid="a295618e-c637-4051-bc59-568531763413",uuid="0a28d7fd-bf39-4445-b74a-4e1474fe88f0"} 0
+nutanix_vdisks_controller_storage_tier_cloud_usage_bytes{attached_vm_uuid="a295618e-c637-4051-bc59-568531763413",uuid="f447b071-e9e9-4c07-91f9-062cd70488d7"} 0
+nutanix_vdisks_controller_storage_tier_cloud_usage_bytes{attached_vm_uuid="a49743bc-0351-4bfc-a061-a54d9a6d27b1",uuid="2c53d7e2-cde8-4633-bffc-311acbf3d18b"} 0
+nutanix_vdisks_controller_storage_tier_cloud_usage_bytes{attached_vm_uuid="a49743bc-0351-4bfc-a061-a54d9a6d27b1",uuid="8c17eea2-014f-4908-acf9-daa6071adaf5"} 0
+nutanix_vdisks_controller_storage_tier_cloud_usage_bytes{attached_vm_uuid="ae12779b-b375-4206-a159-c71b257f8dc2",uuid="76b88f11-5cde-4255-b521-8aca903c444b"} 0
+nutanix_vdisks_controller_storage_tier_cloud_usage_bytes{attached_vm_uuid="ae12779b-b375-4206-a159-c71b257f8dc2",uuid="89c28c03-5a60-4271-a3e7-c9b9a84a5073"} 0
+nutanix_vdisks_controller_storage_tier_cloud_usage_bytes{attached_vm_uuid="aea3ec23-ee5a-438f-ae88-2e09aedd16c7",uuid="307d27ce-617a-41de-82bb-14f7bbe9ffcb"} 0
+nutanix_vdisks_controller_storage_tier_cloud_usage_bytes{attached_vm_uuid="aea3ec23-ee5a-438f-ae88-2e09aedd16c7",uuid="5d52c163-a9c4-4807-9be6-50e3f47c0e6e"} 0
+nutanix_vdisks_controller_storage_tier_cloud_usage_bytes{attached_vm_uuid="aea3ec23-ee5a-438f-ae88-2e09aedd16c7",uuid="a0db6323-4e78-4ebe-a3ed-919028c1ae5a"} 0
+nutanix_vdisks_controller_storage_tier_cloud_usage_bytes{attached_vm_uuid="aea3ec23-ee5a-438f-ae88-2e09aedd16c7",uuid="ec7f9356-3b52-4b62-b3c1-dae2d77b2ea3"} 0
+nutanix_vdisks_controller_storage_tier_cloud_usage_bytes{attached_vm_uuid="b606cb9b-5423-4985-8efe-7015146416a6",uuid="44600d06-61b3-4c51-81bc-5ebff3d62536"} 0
+nutanix_vdisks_controller_storage_tier_cloud_usage_bytes{attached_vm_uuid="b606cb9b-5423-4985-8efe-7015146416a6",uuid="b7bdf637-59c0-4f58-bb17-52620134bc87"} 0
+nutanix_vdisks_controller_storage_tier_cloud_usage_bytes{attached_vm_uuid="b89eedc3-7b73-4c0b-b86f-b696b3b9bf3e",uuid="1fcc70be-7541-4572-ac7c-b65b4a8c2be7"} 0
+nutanix_vdisks_controller_storage_tier_cloud_usage_bytes{attached_vm_uuid="b89eedc3-7b73-4c0b-b86f-b696b3b9bf3e",uuid="8e261ccb-2093-4f9d-8597-1bfe32f95731"} 0
+nutanix_vdisks_controller_storage_tier_cloud_usage_bytes{attached_vm_uuid="bbcc2366-dabf-496a-b19c-d08f773eff8a",uuid="a572cad6-b9bb-44b4-80e8-5c4b0d82929e"} 0
+nutanix_vdisks_controller_storage_tier_cloud_usage_bytes{attached_vm_uuid="bbcc2366-dabf-496a-b19c-d08f773eff8a",uuid="b9ccfc9a-7458-4325-8248-db1025254b35"} 0
+nutanix_vdisks_controller_storage_tier_cloud_usage_bytes{attached_vm_uuid="d3c9dd8a-32a7-41d2-8587-d7ea5fcb5170",uuid="295025b8-ef6b-4be1-b4ab-94f866fe544e"} 0
+nutanix_vdisks_controller_storage_tier_cloud_usage_bytes{attached_vm_uuid="d3c9dd8a-32a7-41d2-8587-d7ea5fcb5170",uuid="5a20746b-bd7a-4058-a7ac-126093db1495"} 0
+nutanix_vdisks_controller_storage_tier_cloud_usage_bytes{attached_vm_uuid="d967258c-75ae-49db-bbcc-c01a690f15c7",uuid="27a1f3e3-b222-41fe-9189-95824d4e84bf"} 0
+nutanix_vdisks_controller_storage_tier_cloud_usage_bytes{attached_vm_uuid="d967258c-75ae-49db-bbcc-c01a690f15c7",uuid="f90217fb-85eb-4f94-9c18-d95fe0d6e6a3"} 0
+nutanix_vdisks_controller_storage_tier_cloud_usage_bytes{attached_vm_uuid="da69bf52-dd1e-432a-96a5-5c746130cb45",uuid="6bce0580-6978-42c2-ab3b-0634e513c5c1"} 0
+nutanix_vdisks_controller_storage_tier_cloud_usage_bytes{attached_vm_uuid="da69bf52-dd1e-432a-96a5-5c746130cb45",uuid="ba8fd6de-8673-4c26-826e-e1f75d660627"} 0
+nutanix_vdisks_controller_storage_tier_cloud_usage_bytes{attached_vm_uuid="db738597-c261-4f47-95c1-2267a284deda",uuid="0e392c6a-61ed-4164-ab96-b508223dac18"} 0
+nutanix_vdisks_controller_storage_tier_cloud_usage_bytes{attached_vm_uuid="db738597-c261-4f47-95c1-2267a284deda",uuid="40cbe18a-c896-431f-8d35-ba2ee34ff21f"} 0
+nutanix_vdisks_controller_storage_tier_cloud_usage_bytes{attached_vm_uuid="db738597-c261-4f47-95c1-2267a284deda",uuid="4cc53beb-f0ec-440e-a600-6c02ad8127f0"} 0
+nutanix_vdisks_controller_storage_tier_cloud_usage_bytes{attached_vm_uuid="db738597-c261-4f47-95c1-2267a284deda",uuid="68dc7916-3389-4ed4-8567-7cb359bcddfe"} 0
+nutanix_vdisks_controller_storage_tier_cloud_usage_bytes{attached_vm_uuid="db738597-c261-4f47-95c1-2267a284deda",uuid="7c951065-0bda-4589-ab02-68f554b7c6ce"} 0
+nutanix_vdisks_controller_storage_tier_cloud_usage_bytes{attached_vm_uuid="db738597-c261-4f47-95c1-2267a284deda",uuid="8beccc17-9252-4aae-bf37-c13e2cb30b34"} 0
+nutanix_vdisks_controller_storage_tier_cloud_usage_bytes{attached_vm_uuid="db738597-c261-4f47-95c1-2267a284deda",uuid="c02a3ca2-e0c0-402f-b509-390ca3c4e3aa"} 0
+nutanix_vdisks_controller_storage_tier_cloud_usage_bytes{attached_vm_uuid="db738597-c261-4f47-95c1-2267a284deda",uuid="c7c6161c-08d0-43f2-b930-dc7d3e48ce4e"} 0
+nutanix_vdisks_controller_storage_tier_cloud_usage_bytes{attached_vm_uuid="eb454045-d152-4167-b4eb-3fdb1db8f277",uuid="05871870-32a3-4eb5-9a5f-c8950cbd8622"} 0
+nutanix_vdisks_controller_storage_tier_cloud_usage_bytes{attached_vm_uuid="eb454045-d152-4167-b4eb-3fdb1db8f277",uuid="db87faf2-29f7-4cf1-b2e6-f430f2b75be0"} 0
+# HELP nutanix_vdisks_controller_storage_tier_das_sata_pinned_usage_bytes ...
+# TYPE nutanix_vdisks_controller_storage_tier_das_sata_pinned_usage_bytes gauge
+nutanix_vdisks_controller_storage_tier_das_sata_pinned_usage_bytes{attached_vm_uuid="",uuid="8c4d2c44-540d-41ba-affd-c9d8b84f1a41"} 0
+nutanix_vdisks_controller_storage_tier_das_sata_pinned_usage_bytes{attached_vm_uuid="0edd071e-6bd7-4ce8-a88c-dd32c4f34558",uuid="2cfde956-cf87-4274-ad5f-c16c32df516d"} 0
+nutanix_vdisks_controller_storage_tier_das_sata_pinned_usage_bytes{attached_vm_uuid="0edd071e-6bd7-4ce8-a88c-dd32c4f34558",uuid="ac541475-9ddf-4a72-8b21-05e6d1889f3a"} 0
+nutanix_vdisks_controller_storage_tier_das_sata_pinned_usage_bytes{attached_vm_uuid="184e5d0d-1f3d-4de8-a715-8fc4c23fe60a",uuid="751116c4-94be-4f18-ab02-21c4bc344468"} 0
+nutanix_vdisks_controller_storage_tier_das_sata_pinned_usage_bytes{attached_vm_uuid="184e5d0d-1f3d-4de8-a715-8fc4c23fe60a",uuid="e37af03c-158b-42ea-a261-e22fbfceb9de"} 0
+nutanix_vdisks_controller_storage_tier_das_sata_pinned_usage_bytes{attached_vm_uuid="21238650-52aa-48fd-9049-ee25b966773f",uuid="69c794e8-7892-4396-9365-f1cad000ab44"} 0
+nutanix_vdisks_controller_storage_tier_das_sata_pinned_usage_bytes{attached_vm_uuid="227ef30c-2cbd-407b-ac70-586ad3bd79e0",uuid="bca321b2-6e2e-4b9c-ac10-2ea59187fb5f"} 0
+nutanix_vdisks_controller_storage_tier_das_sata_pinned_usage_bytes{attached_vm_uuid="244e8907-492d-466b-96aa-5ee3094666a4",uuid="687d90a5-746f-4062-9dd6-8a06c8e12c10"} 0
+nutanix_vdisks_controller_storage_tier_das_sata_pinned_usage_bytes{attached_vm_uuid="244e8907-492d-466b-96aa-5ee3094666a4",uuid="f8a2a209-b951-46ac-8762-f11378abe76d"} 0
+nutanix_vdisks_controller_storage_tier_das_sata_pinned_usage_bytes{attached_vm_uuid="37243b2c-f16d-4e11-972b-b314e52a759c",uuid="71138b64-531f-4c52-93b0-e6d5b8131eaf"} 0
+nutanix_vdisks_controller_storage_tier_das_sata_pinned_usage_bytes{attached_vm_uuid="4171c556-96f8-48a8-bef7-b085bf2d1b9c",uuid="2c2e8bd4-a219-407f-9b7a-0e2043fbfbcc"} 0
+nutanix_vdisks_controller_storage_tier_das_sata_pinned_usage_bytes{attached_vm_uuid="4171c556-96f8-48a8-bef7-b085bf2d1b9c",uuid="b3823d00-991a-4618-8ad9-17cc37552d0b"} 0
+nutanix_vdisks_controller_storage_tier_das_sata_pinned_usage_bytes{attached_vm_uuid="5b9bafe4-89ad-4440-9a94-e6b73cbaa133",uuid="21002cda-26e0-4069-9be4-bc35d3ff5f86"} 0
+nutanix_vdisks_controller_storage_tier_das_sata_pinned_usage_bytes{attached_vm_uuid="5b9bafe4-89ad-4440-9a94-e6b73cbaa133",uuid="ee8ab366-e900-4e8f-be64-be3973c1d030"} 0
+nutanix_vdisks_controller_storage_tier_das_sata_pinned_usage_bytes{attached_vm_uuid="60f18b94-d7fd-40f7-9266-2577572af8f2",uuid="4bbf3798-8b1f-4d53-b3f3-0c551a3a29e1"} 0
+nutanix_vdisks_controller_storage_tier_das_sata_pinned_usage_bytes{attached_vm_uuid="60f18b94-d7fd-40f7-9266-2577572af8f2",uuid="f1811148-d046-4016-a4af-9c54e87c497e"} 0
+nutanix_vdisks_controller_storage_tier_das_sata_pinned_usage_bytes{attached_vm_uuid="71846a85-17e3-4cbd-9c1e-f9f5ef3c50bb",uuid="47469b48-cfd6-4105-90fc-00525b1863b0"} 0
+nutanix_vdisks_controller_storage_tier_das_sata_pinned_usage_bytes{attached_vm_uuid="71846a85-17e3-4cbd-9c1e-f9f5ef3c50bb",uuid="984af384-328f-42fe-9e99-bb6e1e70ba6b"} 0
+nutanix_vdisks_controller_storage_tier_das_sata_pinned_usage_bytes{attached_vm_uuid="7366fb9a-bd50-45d1-8091-1ad70b15f42e",uuid="e70f9e6a-3e67-4abb-81db-17b8cb5b899f"} 0
+nutanix_vdisks_controller_storage_tier_das_sata_pinned_usage_bytes{attached_vm_uuid="79a94fb8-b666-4bcf-b97b-3171684149d4",uuid="f3c2fda3-bc80-47fc-a745-b1984d298c60"} 0
+nutanix_vdisks_controller_storage_tier_das_sata_pinned_usage_bytes{attached_vm_uuid="8c2754e9-7996-40d8-a597-6cd28b623e4f",uuid="a633f982-b6cf-44a6-b2bb-47fd8c41d5cc"} 0
+nutanix_vdisks_controller_storage_tier_das_sata_pinned_usage_bytes{attached_vm_uuid="93d8b775-1a6f-4312-864f-adb9ad746b42",uuid="205b811e-2e2f-41a1-8f31-67c259fcee8e"} 0
+nutanix_vdisks_controller_storage_tier_das_sata_pinned_usage_bytes{attached_vm_uuid="93d8b775-1a6f-4312-864f-adb9ad746b42",uuid="e9d2aa30-bfaa-4229-89b5-3035f9a9ba8d"} 0
+nutanix_vdisks_controller_storage_tier_das_sata_pinned_usage_bytes{attached_vm_uuid="9fef76ea-9c77-47eb-bf0a-5bff563fdec8",uuid="601505c8-e467-41e9-87ad-db46a530edc4"} 0
+nutanix_vdisks_controller_storage_tier_das_sata_pinned_usage_bytes{attached_vm_uuid="9fef76ea-9c77-47eb-bf0a-5bff563fdec8",uuid="6849025a-fdba-46a1-b995-718429dda2d7"} 0
+nutanix_vdisks_controller_storage_tier_das_sata_pinned_usage_bytes{attached_vm_uuid="a295618e-c637-4051-bc59-568531763413",uuid="0a28d7fd-bf39-4445-b74a-4e1474fe88f0"} 0
+nutanix_vdisks_controller_storage_tier_das_sata_pinned_usage_bytes{attached_vm_uuid="a295618e-c637-4051-bc59-568531763413",uuid="f447b071-e9e9-4c07-91f9-062cd70488d7"} 0
+nutanix_vdisks_controller_storage_tier_das_sata_pinned_usage_bytes{attached_vm_uuid="a49743bc-0351-4bfc-a061-a54d9a6d27b1",uuid="2c53d7e2-cde8-4633-bffc-311acbf3d18b"} 0
+nutanix_vdisks_controller_storage_tier_das_sata_pinned_usage_bytes{attached_vm_uuid="a49743bc-0351-4bfc-a061-a54d9a6d27b1",uuid="8c17eea2-014f-4908-acf9-daa6071adaf5"} 0
+nutanix_vdisks_controller_storage_tier_das_sata_pinned_usage_bytes{attached_vm_uuid="ae12779b-b375-4206-a159-c71b257f8dc2",uuid="76b88f11-5cde-4255-b521-8aca903c444b"} 0
+nutanix_vdisks_controller_storage_tier_das_sata_pinned_usage_bytes{attached_vm_uuid="ae12779b-b375-4206-a159-c71b257f8dc2",uuid="89c28c03-5a60-4271-a3e7-c9b9a84a5073"} 0
+nutanix_vdisks_controller_storage_tier_das_sata_pinned_usage_bytes{attached_vm_uuid="aea3ec23-ee5a-438f-ae88-2e09aedd16c7",uuid="307d27ce-617a-41de-82bb-14f7bbe9ffcb"} 0
+nutanix_vdisks_controller_storage_tier_das_sata_pinned_usage_bytes{attached_vm_uuid="aea3ec23-ee5a-438f-ae88-2e09aedd16c7",uuid="5d52c163-a9c4-4807-9be6-50e3f47c0e6e"} 0
+nutanix_vdisks_controller_storage_tier_das_sata_pinned_usage_bytes{attached_vm_uuid="aea3ec23-ee5a-438f-ae88-2e09aedd16c7",uuid="a0db6323-4e78-4ebe-a3ed-919028c1ae5a"} 0
+nutanix_vdisks_controller_storage_tier_das_sata_pinned_usage_bytes{attached_vm_uuid="aea3ec23-ee5a-438f-ae88-2e09aedd16c7",uuid="ec7f9356-3b52-4b62-b3c1-dae2d77b2ea3"} 0
+nutanix_vdisks_controller_storage_tier_das_sata_pinned_usage_bytes{attached_vm_uuid="b606cb9b-5423-4985-8efe-7015146416a6",uuid="44600d06-61b3-4c51-81bc-5ebff3d62536"} 0
+nutanix_vdisks_controller_storage_tier_das_sata_pinned_usage_bytes{attached_vm_uuid="b606cb9b-5423-4985-8efe-7015146416a6",uuid="b7bdf637-59c0-4f58-bb17-52620134bc87"} 0
+nutanix_vdisks_controller_storage_tier_das_sata_pinned_usage_bytes{attached_vm_uuid="b89eedc3-7b73-4c0b-b86f-b696b3b9bf3e",uuid="1fcc70be-7541-4572-ac7c-b65b4a8c2be7"} 0
+nutanix_vdisks_controller_storage_tier_das_sata_pinned_usage_bytes{attached_vm_uuid="b89eedc3-7b73-4c0b-b86f-b696b3b9bf3e",uuid="8e261ccb-2093-4f9d-8597-1bfe32f95731"} 0
+nutanix_vdisks_controller_storage_tier_das_sata_pinned_usage_bytes{attached_vm_uuid="bbcc2366-dabf-496a-b19c-d08f773eff8a",uuid="a572cad6-b9bb-44b4-80e8-5c4b0d82929e"} 0
+nutanix_vdisks_controller_storage_tier_das_sata_pinned_usage_bytes{attached_vm_uuid="bbcc2366-dabf-496a-b19c-d08f773eff8a",uuid="b9ccfc9a-7458-4325-8248-db1025254b35"} 0
+nutanix_vdisks_controller_storage_tier_das_sata_pinned_usage_bytes{attached_vm_uuid="d3c9dd8a-32a7-41d2-8587-d7ea5fcb5170",uuid="295025b8-ef6b-4be1-b4ab-94f866fe544e"} 0
+nutanix_vdisks_controller_storage_tier_das_sata_pinned_usage_bytes{attached_vm_uuid="d3c9dd8a-32a7-41d2-8587-d7ea5fcb5170",uuid="5a20746b-bd7a-4058-a7ac-126093db1495"} 0
+nutanix_vdisks_controller_storage_tier_das_sata_pinned_usage_bytes{attached_vm_uuid="d967258c-75ae-49db-bbcc-c01a690f15c7",uuid="27a1f3e3-b222-41fe-9189-95824d4e84bf"} 0
+nutanix_vdisks_controller_storage_tier_das_sata_pinned_usage_bytes{attached_vm_uuid="d967258c-75ae-49db-bbcc-c01a690f15c7",uuid="f90217fb-85eb-4f94-9c18-d95fe0d6e6a3"} 0
+nutanix_vdisks_controller_storage_tier_das_sata_pinned_usage_bytes{attached_vm_uuid="da69bf52-dd1e-432a-96a5-5c746130cb45",uuid="6bce0580-6978-42c2-ab3b-0634e513c5c1"} 0
+nutanix_vdisks_controller_storage_tier_das_sata_pinned_usage_bytes{attached_vm_uuid="da69bf52-dd1e-432a-96a5-5c746130cb45",uuid="ba8fd6de-8673-4c26-826e-e1f75d660627"} 0
+nutanix_vdisks_controller_storage_tier_das_sata_pinned_usage_bytes{attached_vm_uuid="db738597-c261-4f47-95c1-2267a284deda",uuid="0e392c6a-61ed-4164-ab96-b508223dac18"} 0
+nutanix_vdisks_controller_storage_tier_das_sata_pinned_usage_bytes{attached_vm_uuid="db738597-c261-4f47-95c1-2267a284deda",uuid="40cbe18a-c896-431f-8d35-ba2ee34ff21f"} 0
+nutanix_vdisks_controller_storage_tier_das_sata_pinned_usage_bytes{attached_vm_uuid="db738597-c261-4f47-95c1-2267a284deda",uuid="4cc53beb-f0ec-440e-a600-6c02ad8127f0"} 0
+nutanix_vdisks_controller_storage_tier_das_sata_pinned_usage_bytes{attached_vm_uuid="db738597-c261-4f47-95c1-2267a284deda",uuid="5b4ce010-8522-4c0f-b833-8412e0877f18"} 0
+nutanix_vdisks_controller_storage_tier_das_sata_pinned_usage_bytes{attached_vm_uuid="db738597-c261-4f47-95c1-2267a284deda",uuid="68dc7916-3389-4ed4-8567-7cb359bcddfe"} 0
+nutanix_vdisks_controller_storage_tier_das_sata_pinned_usage_bytes{attached_vm_uuid="db738597-c261-4f47-95c1-2267a284deda",uuid="7c951065-0bda-4589-ab02-68f554b7c6ce"} 0
+nutanix_vdisks_controller_storage_tier_das_sata_pinned_usage_bytes{attached_vm_uuid="db738597-c261-4f47-95c1-2267a284deda",uuid="8beccc17-9252-4aae-bf37-c13e2cb30b34"} 0
+nutanix_vdisks_controller_storage_tier_das_sata_pinned_usage_bytes{attached_vm_uuid="db738597-c261-4f47-95c1-2267a284deda",uuid="c02a3ca2-e0c0-402f-b509-390ca3c4e3aa"} 0
+nutanix_vdisks_controller_storage_tier_das_sata_pinned_usage_bytes{attached_vm_uuid="db738597-c261-4f47-95c1-2267a284deda",uuid="c7c6161c-08d0-43f2-b930-dc7d3e48ce4e"} 0
+nutanix_vdisks_controller_storage_tier_das_sata_pinned_usage_bytes{attached_vm_uuid="eb454045-d152-4167-b4eb-3fdb1db8f277",uuid="05871870-32a3-4eb5-9a5f-c8950cbd8622"} 0
+nutanix_vdisks_controller_storage_tier_das_sata_pinned_usage_bytes{attached_vm_uuid="eb454045-d152-4167-b4eb-3fdb1db8f277",uuid="db87faf2-29f7-4cf1-b2e6-f430f2b75be0"} 0
+# HELP nutanix_vdisks_controller_storage_tier_das_sata_usage_bytes ...
+# TYPE nutanix_vdisks_controller_storage_tier_das_sata_usage_bytes gauge
+nutanix_vdisks_controller_storage_tier_das_sata_usage_bytes{attached_vm_uuid="0edd071e-6bd7-4ce8-a88c-dd32c4f34558",uuid="2cfde956-cf87-4274-ad5f-c16c32df516d"} 4.194304e+06
+nutanix_vdisks_controller_storage_tier_das_sata_usage_bytes{attached_vm_uuid="0edd071e-6bd7-4ce8-a88c-dd32c4f34558",uuid="ac541475-9ddf-4a72-8b21-05e6d1889f3a"} 6.7764224e+07
+nutanix_vdisks_controller_storage_tier_das_sata_usage_bytes{attached_vm_uuid="184e5d0d-1f3d-4de8-a715-8fc4c23fe60a",uuid="751116c4-94be-4f18-ab02-21c4bc344468"} 2.523136e+06
+nutanix_vdisks_controller_storage_tier_das_sata_usage_bytes{attached_vm_uuid="184e5d0d-1f3d-4de8-a715-8fc4c23fe60a",uuid="e37af03c-158b-42ea-a261-e22fbfceb9de"} 3.052961792e+09
+nutanix_vdisks_controller_storage_tier_das_sata_usage_bytes{attached_vm_uuid="21238650-52aa-48fd-9049-ee25b966773f",uuid="69c794e8-7892-4396-9365-f1cad000ab44"} 0
+nutanix_vdisks_controller_storage_tier_das_sata_usage_bytes{attached_vm_uuid="227ef30c-2cbd-407b-ac70-586ad3bd79e0",uuid="bca321b2-6e2e-4b9c-ac10-2ea59187fb5f"} 2.310340608e+09
+nutanix_vdisks_controller_storage_tier_das_sata_usage_bytes{attached_vm_uuid="244e8907-492d-466b-96aa-5ee3094666a4",uuid="687d90a5-746f-4062-9dd6-8a06c8e12c10"} 2.8737536e+07
+nutanix_vdisks_controller_storage_tier_das_sata_usage_bytes{attached_vm_uuid="244e8907-492d-466b-96aa-5ee3094666a4",uuid="f8a2a209-b951-46ac-8762-f11378abe76d"} 327680
+nutanix_vdisks_controller_storage_tier_das_sata_usage_bytes{attached_vm_uuid="37243b2c-f16d-4e11-972b-b314e52a759c",uuid="71138b64-531f-4c52-93b0-e6d5b8131eaf"} 2.1823488e+07
+nutanix_vdisks_controller_storage_tier_das_sata_usage_bytes{attached_vm_uuid="4171c556-96f8-48a8-bef7-b085bf2d1b9c",uuid="2c2e8bd4-a219-407f-9b7a-0e2043fbfbcc"} 2.818048e+06
+nutanix_vdisks_controller_storage_tier_das_sata_usage_bytes{attached_vm_uuid="4171c556-96f8-48a8-bef7-b085bf2d1b9c",uuid="b3823d00-991a-4618-8ad9-17cc37552d0b"} 1.8808832e+07
+nutanix_vdisks_controller_storage_tier_das_sata_usage_bytes{attached_vm_uuid="5b9bafe4-89ad-4440-9a94-e6b73cbaa133",uuid="21002cda-26e0-4069-9be4-bc35d3ff5f86"} 2.5133056e+07
+nutanix_vdisks_controller_storage_tier_das_sata_usage_bytes{attached_vm_uuid="5b9bafe4-89ad-4440-9a94-e6b73cbaa133",uuid="ee8ab366-e900-4e8f-be64-be3973c1d030"} 2.29376e+06
+nutanix_vdisks_controller_storage_tier_das_sata_usage_bytes{attached_vm_uuid="60f18b94-d7fd-40f7-9266-2577572af8f2",uuid="4bbf3798-8b1f-4d53-b3f3-0c551a3a29e1"} 0
+nutanix_vdisks_controller_storage_tier_das_sata_usage_bytes{attached_vm_uuid="60f18b94-d7fd-40f7-9266-2577572af8f2",uuid="f1811148-d046-4016-a4af-9c54e87c497e"} 3.504439296e+09
+nutanix_vdisks_controller_storage_tier_das_sata_usage_bytes{attached_vm_uuid="71846a85-17e3-4cbd-9c1e-f9f5ef3c50bb",uuid="47469b48-cfd6-4105-90fc-00525b1863b0"} 3.920920576e+09
+nutanix_vdisks_controller_storage_tier_das_sata_usage_bytes{attached_vm_uuid="71846a85-17e3-4cbd-9c1e-f9f5ef3c50bb",uuid="984af384-328f-42fe-9e99-bb6e1e70ba6b"} 2.326528e+06
+nutanix_vdisks_controller_storage_tier_das_sata_usage_bytes{attached_vm_uuid="7366fb9a-bd50-45d1-8091-1ad70b15f42e",uuid="e70f9e6a-3e67-4abb-81db-17b8cb5b899f"} 4.8037888e+07
+nutanix_vdisks_controller_storage_tier_das_sata_usage_bytes{attached_vm_uuid="79a94fb8-b666-4bcf-b97b-3171684149d4",uuid="f3c2fda3-bc80-47fc-a745-b1984d298c60"} 1.048576e+06
+nutanix_vdisks_controller_storage_tier_das_sata_usage_bytes{attached_vm_uuid="8c2754e9-7996-40d8-a597-6cd28b623e4f",uuid="a633f982-b6cf-44a6-b2bb-47fd8c41d5cc"} 2.93044224e+08
+nutanix_vdisks_controller_storage_tier_das_sata_usage_bytes{attached_vm_uuid="93d8b775-1a6f-4312-864f-adb9ad746b42",uuid="205b811e-2e2f-41a1-8f31-67c259fcee8e"} 7.438336e+06
+nutanix_vdisks_controller_storage_tier_das_sata_usage_bytes{attached_vm_uuid="93d8b775-1a6f-4312-864f-adb9ad746b42",uuid="e9d2aa30-bfaa-4229-89b5-3035f9a9ba8d"} 6.9730304e+07
+nutanix_vdisks_controller_storage_tier_das_sata_usage_bytes{attached_vm_uuid="9fef76ea-9c77-47eb-bf0a-5bff563fdec8",uuid="601505c8-e467-41e9-87ad-db46a530edc4"} 2.883584e+06
+nutanix_vdisks_controller_storage_tier_das_sata_usage_bytes{attached_vm_uuid="9fef76ea-9c77-47eb-bf0a-5bff563fdec8",uuid="6849025a-fdba-46a1-b995-718429dda2d7"} 3.9223296e+07
+nutanix_vdisks_controller_storage_tier_das_sata_usage_bytes{attached_vm_uuid="a295618e-c637-4051-bc59-568531763413",uuid="0a28d7fd-bf39-4445-b74a-4e1474fe88f0"} 5.341184e+06
+nutanix_vdisks_controller_storage_tier_das_sata_usage_bytes{attached_vm_uuid="a295618e-c637-4051-bc59-568531763413",uuid="f447b071-e9e9-4c07-91f9-062cd70488d7"} 1.10624768e+08
+nutanix_vdisks_controller_storage_tier_das_sata_usage_bytes{attached_vm_uuid="a49743bc-0351-4bfc-a061-a54d9a6d27b1",uuid="2c53d7e2-cde8-4633-bffc-311acbf3d18b"} 2.2020096e+07
+nutanix_vdisks_controller_storage_tier_das_sata_usage_bytes{attached_vm_uuid="a49743bc-0351-4bfc-a061-a54d9a6d27b1",uuid="8c17eea2-014f-4908-acf9-daa6071adaf5"} 4.128768e+06
+nutanix_vdisks_controller_storage_tier_das_sata_usage_bytes{attached_vm_uuid="ae12779b-b375-4206-a159-c71b257f8dc2",uuid="76b88f11-5cde-4255-b521-8aca903c444b"} 4.849664e+06
+nutanix_vdisks_controller_storage_tier_das_sata_usage_bytes{attached_vm_uuid="ae12779b-b375-4206-a159-c71b257f8dc2",uuid="89c28c03-5a60-4271-a3e7-c9b9a84a5073"} 8.0478208e+07
+nutanix_vdisks_controller_storage_tier_das_sata_usage_bytes{attached_vm_uuid="aea3ec23-ee5a-438f-ae88-2e09aedd16c7",uuid="307d27ce-617a-41de-82bb-14f7bbe9ffcb"} 0
+nutanix_vdisks_controller_storage_tier_das_sata_usage_bytes{attached_vm_uuid="aea3ec23-ee5a-438f-ae88-2e09aedd16c7",uuid="5d52c163-a9c4-4807-9be6-50e3f47c0e6e"} 0
+nutanix_vdisks_controller_storage_tier_das_sata_usage_bytes{attached_vm_uuid="aea3ec23-ee5a-438f-ae88-2e09aedd16c7",uuid="a0db6323-4e78-4ebe-a3ed-919028c1ae5a"} 0
+nutanix_vdisks_controller_storage_tier_das_sata_usage_bytes{attached_vm_uuid="aea3ec23-ee5a-438f-ae88-2e09aedd16c7",uuid="ec7f9356-3b52-4b62-b3c1-dae2d77b2ea3"} 0
+nutanix_vdisks_controller_storage_tier_das_sata_usage_bytes{attached_vm_uuid="b606cb9b-5423-4985-8efe-7015146416a6",uuid="44600d06-61b3-4c51-81bc-5ebff3d62536"} 4.718592e+06
+nutanix_vdisks_controller_storage_tier_das_sata_usage_bytes{attached_vm_uuid="b606cb9b-5423-4985-8efe-7015146416a6",uuid="b7bdf637-59c0-4f58-bb17-52620134bc87"} 7.4350592e+07
+nutanix_vdisks_controller_storage_tier_das_sata_usage_bytes{attached_vm_uuid="b89eedc3-7b73-4c0b-b86f-b696b3b9bf3e",uuid="1fcc70be-7541-4572-ac7c-b65b4a8c2be7"} 1.376256e+06
+nutanix_vdisks_controller_storage_tier_das_sata_usage_bytes{attached_vm_uuid="b89eedc3-7b73-4c0b-b86f-b696b3b9bf3e",uuid="8e261ccb-2093-4f9d-8597-1bfe32f95731"} 4.931584e+07
+nutanix_vdisks_controller_storage_tier_das_sata_usage_bytes{attached_vm_uuid="bbcc2366-dabf-496a-b19c-d08f773eff8a",uuid="a572cad6-b9bb-44b4-80e8-5c4b0d82929e"} 1.8284544e+07
+nutanix_vdisks_controller_storage_tier_das_sata_usage_bytes{attached_vm_uuid="bbcc2366-dabf-496a-b19c-d08f773eff8a",uuid="b9ccfc9a-7458-4325-8248-db1025254b35"} 5.963776e+06
+nutanix_vdisks_controller_storage_tier_das_sata_usage_bytes{attached_vm_uuid="d3c9dd8a-32a7-41d2-8587-d7ea5fcb5170",uuid="295025b8-ef6b-4be1-b4ab-94f866fe544e"} 4.0271872e+07
+nutanix_vdisks_controller_storage_tier_das_sata_usage_bytes{attached_vm_uuid="d3c9dd8a-32a7-41d2-8587-d7ea5fcb5170",uuid="5a20746b-bd7a-4058-a7ac-126093db1495"} 0
+nutanix_vdisks_controller_storage_tier_das_sata_usage_bytes{attached_vm_uuid="d967258c-75ae-49db-bbcc-c01a690f15c7",uuid="27a1f3e3-b222-41fe-9189-95824d4e84bf"} 3.047424e+06
+nutanix_vdisks_controller_storage_tier_das_sata_usage_bytes{attached_vm_uuid="d967258c-75ae-49db-bbcc-c01a690f15c7",uuid="f90217fb-85eb-4f94-9c18-d95fe0d6e6a3"} 3.1031296e+07
+nutanix_vdisks_controller_storage_tier_das_sata_usage_bytes{attached_vm_uuid="da69bf52-dd1e-432a-96a5-5c746130cb45",uuid="6bce0580-6978-42c2-ab3b-0634e513c5c1"} 4.5514752e+07
+nutanix_vdisks_controller_storage_tier_das_sata_usage_bytes{attached_vm_uuid="da69bf52-dd1e-432a-96a5-5c746130cb45",uuid="ba8fd6de-8673-4c26-826e-e1f75d660627"} 0
+nutanix_vdisks_controller_storage_tier_das_sata_usage_bytes{attached_vm_uuid="db738597-c261-4f47-95c1-2267a284deda",uuid="0e392c6a-61ed-4164-ab96-b508223dac18"} 0
+nutanix_vdisks_controller_storage_tier_das_sata_usage_bytes{attached_vm_uuid="db738597-c261-4f47-95c1-2267a284deda",uuid="40cbe18a-c896-431f-8d35-ba2ee34ff21f"} 2.818048e+07
+nutanix_vdisks_controller_storage_tier_das_sata_usage_bytes{attached_vm_uuid="db738597-c261-4f47-95c1-2267a284deda",uuid="4cc53beb-f0ec-440e-a600-6c02ad8127f0"} 1.4024704e+07
+nutanix_vdisks_controller_storage_tier_das_sata_usage_bytes{attached_vm_uuid="db738597-c261-4f47-95c1-2267a284deda",uuid="68dc7916-3389-4ed4-8567-7cb359bcddfe"} 2.015232e+07
+nutanix_vdisks_controller_storage_tier_das_sata_usage_bytes{attached_vm_uuid="db738597-c261-4f47-95c1-2267a284deda",uuid="7c951065-0bda-4589-ab02-68f554b7c6ce"} 0
+nutanix_vdisks_controller_storage_tier_das_sata_usage_bytes{attached_vm_uuid="db738597-c261-4f47-95c1-2267a284deda",uuid="8beccc17-9252-4aae-bf37-c13e2cb30b34"} 7.20896e+06
+nutanix_vdisks_controller_storage_tier_das_sata_usage_bytes{attached_vm_uuid="db738597-c261-4f47-95c1-2267a284deda",uuid="c02a3ca2-e0c0-402f-b509-390ca3c4e3aa"} 3.450732544e+09
+nutanix_vdisks_controller_storage_tier_das_sata_usage_bytes{attached_vm_uuid="db738597-c261-4f47-95c1-2267a284deda",uuid="c7c6161c-08d0-43f2-b930-dc7d3e48ce4e"} 1.3336576e+07
+nutanix_vdisks_controller_storage_tier_das_sata_usage_bytes{attached_vm_uuid="eb454045-d152-4167-b4eb-3fdb1db8f277",uuid="05871870-32a3-4eb5-9a5f-c8950cbd8622"} 32768
+nutanix_vdisks_controller_storage_tier_das_sata_usage_bytes{attached_vm_uuid="eb454045-d152-4167-b4eb-3fdb1db8f277",uuid="db87faf2-29f7-4cf1-b2e6-f430f2b75be0"} 2.2970368e+07
+# HELP nutanix_vdisks_controller_storage_tier_ssd_pinned_usage_bytes ...
+# TYPE nutanix_vdisks_controller_storage_tier_ssd_pinned_usage_bytes gauge
+nutanix_vdisks_controller_storage_tier_ssd_pinned_usage_bytes{attached_vm_uuid="",uuid="8c4d2c44-540d-41ba-affd-c9d8b84f1a41"} 0
+nutanix_vdisks_controller_storage_tier_ssd_pinned_usage_bytes{attached_vm_uuid="0edd071e-6bd7-4ce8-a88c-dd32c4f34558",uuid="2cfde956-cf87-4274-ad5f-c16c32df516d"} 0
+nutanix_vdisks_controller_storage_tier_ssd_pinned_usage_bytes{attached_vm_uuid="0edd071e-6bd7-4ce8-a88c-dd32c4f34558",uuid="ac541475-9ddf-4a72-8b21-05e6d1889f3a"} 0
+nutanix_vdisks_controller_storage_tier_ssd_pinned_usage_bytes{attached_vm_uuid="184e5d0d-1f3d-4de8-a715-8fc4c23fe60a",uuid="751116c4-94be-4f18-ab02-21c4bc344468"} 0
+nutanix_vdisks_controller_storage_tier_ssd_pinned_usage_bytes{attached_vm_uuid="184e5d0d-1f3d-4de8-a715-8fc4c23fe60a",uuid="e37af03c-158b-42ea-a261-e22fbfceb9de"} 0
+nutanix_vdisks_controller_storage_tier_ssd_pinned_usage_bytes{attached_vm_uuid="21238650-52aa-48fd-9049-ee25b966773f",uuid="69c794e8-7892-4396-9365-f1cad000ab44"} 0
+nutanix_vdisks_controller_storage_tier_ssd_pinned_usage_bytes{attached_vm_uuid="227ef30c-2cbd-407b-ac70-586ad3bd79e0",uuid="bca321b2-6e2e-4b9c-ac10-2ea59187fb5f"} 0
+nutanix_vdisks_controller_storage_tier_ssd_pinned_usage_bytes{attached_vm_uuid="244e8907-492d-466b-96aa-5ee3094666a4",uuid="687d90a5-746f-4062-9dd6-8a06c8e12c10"} 0
+nutanix_vdisks_controller_storage_tier_ssd_pinned_usage_bytes{attached_vm_uuid="244e8907-492d-466b-96aa-5ee3094666a4",uuid="f8a2a209-b951-46ac-8762-f11378abe76d"} 0
+nutanix_vdisks_controller_storage_tier_ssd_pinned_usage_bytes{attached_vm_uuid="37243b2c-f16d-4e11-972b-b314e52a759c",uuid="71138b64-531f-4c52-93b0-e6d5b8131eaf"} 0
+nutanix_vdisks_controller_storage_tier_ssd_pinned_usage_bytes{attached_vm_uuid="4171c556-96f8-48a8-bef7-b085bf2d1b9c",uuid="2c2e8bd4-a219-407f-9b7a-0e2043fbfbcc"} 0
+nutanix_vdisks_controller_storage_tier_ssd_pinned_usage_bytes{attached_vm_uuid="4171c556-96f8-48a8-bef7-b085bf2d1b9c",uuid="b3823d00-991a-4618-8ad9-17cc37552d0b"} 0
+nutanix_vdisks_controller_storage_tier_ssd_pinned_usage_bytes{attached_vm_uuid="5b9bafe4-89ad-4440-9a94-e6b73cbaa133",uuid="21002cda-26e0-4069-9be4-bc35d3ff5f86"} 0
+nutanix_vdisks_controller_storage_tier_ssd_pinned_usage_bytes{attached_vm_uuid="5b9bafe4-89ad-4440-9a94-e6b73cbaa133",uuid="ee8ab366-e900-4e8f-be64-be3973c1d030"} 0
+nutanix_vdisks_controller_storage_tier_ssd_pinned_usage_bytes{attached_vm_uuid="60f18b94-d7fd-40f7-9266-2577572af8f2",uuid="4bbf3798-8b1f-4d53-b3f3-0c551a3a29e1"} 0
+nutanix_vdisks_controller_storage_tier_ssd_pinned_usage_bytes{attached_vm_uuid="60f18b94-d7fd-40f7-9266-2577572af8f2",uuid="f1811148-d046-4016-a4af-9c54e87c497e"} 0
+nutanix_vdisks_controller_storage_tier_ssd_pinned_usage_bytes{attached_vm_uuid="71846a85-17e3-4cbd-9c1e-f9f5ef3c50bb",uuid="47469b48-cfd6-4105-90fc-00525b1863b0"} 0
+nutanix_vdisks_controller_storage_tier_ssd_pinned_usage_bytes{attached_vm_uuid="71846a85-17e3-4cbd-9c1e-f9f5ef3c50bb",uuid="984af384-328f-42fe-9e99-bb6e1e70ba6b"} 0
+nutanix_vdisks_controller_storage_tier_ssd_pinned_usage_bytes{attached_vm_uuid="7366fb9a-bd50-45d1-8091-1ad70b15f42e",uuid="e70f9e6a-3e67-4abb-81db-17b8cb5b899f"} 0
+nutanix_vdisks_controller_storage_tier_ssd_pinned_usage_bytes{attached_vm_uuid="79a94fb8-b666-4bcf-b97b-3171684149d4",uuid="f3c2fda3-bc80-47fc-a745-b1984d298c60"} 0
+nutanix_vdisks_controller_storage_tier_ssd_pinned_usage_bytes{attached_vm_uuid="8c2754e9-7996-40d8-a597-6cd28b623e4f",uuid="a633f982-b6cf-44a6-b2bb-47fd8c41d5cc"} 0
+nutanix_vdisks_controller_storage_tier_ssd_pinned_usage_bytes{attached_vm_uuid="93d8b775-1a6f-4312-864f-adb9ad746b42",uuid="205b811e-2e2f-41a1-8f31-67c259fcee8e"} 0
+nutanix_vdisks_controller_storage_tier_ssd_pinned_usage_bytes{attached_vm_uuid="93d8b775-1a6f-4312-864f-adb9ad746b42",uuid="e9d2aa30-bfaa-4229-89b5-3035f9a9ba8d"} 0
+nutanix_vdisks_controller_storage_tier_ssd_pinned_usage_bytes{attached_vm_uuid="9fef76ea-9c77-47eb-bf0a-5bff563fdec8",uuid="601505c8-e467-41e9-87ad-db46a530edc4"} 0
+nutanix_vdisks_controller_storage_tier_ssd_pinned_usage_bytes{attached_vm_uuid="9fef76ea-9c77-47eb-bf0a-5bff563fdec8",uuid="6849025a-fdba-46a1-b995-718429dda2d7"} 0
+nutanix_vdisks_controller_storage_tier_ssd_pinned_usage_bytes{attached_vm_uuid="a295618e-c637-4051-bc59-568531763413",uuid="0a28d7fd-bf39-4445-b74a-4e1474fe88f0"} 0
+nutanix_vdisks_controller_storage_tier_ssd_pinned_usage_bytes{attached_vm_uuid="a295618e-c637-4051-bc59-568531763413",uuid="f447b071-e9e9-4c07-91f9-062cd70488d7"} 0
+nutanix_vdisks_controller_storage_tier_ssd_pinned_usage_bytes{attached_vm_uuid="a49743bc-0351-4bfc-a061-a54d9a6d27b1",uuid="2c53d7e2-cde8-4633-bffc-311acbf3d18b"} 0
+nutanix_vdisks_controller_storage_tier_ssd_pinned_usage_bytes{attached_vm_uuid="a49743bc-0351-4bfc-a061-a54d9a6d27b1",uuid="8c17eea2-014f-4908-acf9-daa6071adaf5"} 0
+nutanix_vdisks_controller_storage_tier_ssd_pinned_usage_bytes{attached_vm_uuid="ae12779b-b375-4206-a159-c71b257f8dc2",uuid="76b88f11-5cde-4255-b521-8aca903c444b"} 0
+nutanix_vdisks_controller_storage_tier_ssd_pinned_usage_bytes{attached_vm_uuid="ae12779b-b375-4206-a159-c71b257f8dc2",uuid="89c28c03-5a60-4271-a3e7-c9b9a84a5073"} 0
+nutanix_vdisks_controller_storage_tier_ssd_pinned_usage_bytes{attached_vm_uuid="aea3ec23-ee5a-438f-ae88-2e09aedd16c7",uuid="307d27ce-617a-41de-82bb-14f7bbe9ffcb"} 0
+nutanix_vdisks_controller_storage_tier_ssd_pinned_usage_bytes{attached_vm_uuid="aea3ec23-ee5a-438f-ae88-2e09aedd16c7",uuid="5d52c163-a9c4-4807-9be6-50e3f47c0e6e"} 0
+nutanix_vdisks_controller_storage_tier_ssd_pinned_usage_bytes{attached_vm_uuid="aea3ec23-ee5a-438f-ae88-2e09aedd16c7",uuid="a0db6323-4e78-4ebe-a3ed-919028c1ae5a"} 0
+nutanix_vdisks_controller_storage_tier_ssd_pinned_usage_bytes{attached_vm_uuid="aea3ec23-ee5a-438f-ae88-2e09aedd16c7",uuid="ec7f9356-3b52-4b62-b3c1-dae2d77b2ea3"} 0
+nutanix_vdisks_controller_storage_tier_ssd_pinned_usage_bytes{attached_vm_uuid="b606cb9b-5423-4985-8efe-7015146416a6",uuid="44600d06-61b3-4c51-81bc-5ebff3d62536"} 0
+nutanix_vdisks_controller_storage_tier_ssd_pinned_usage_bytes{attached_vm_uuid="b606cb9b-5423-4985-8efe-7015146416a6",uuid="b7bdf637-59c0-4f58-bb17-52620134bc87"} 0
+nutanix_vdisks_controller_storage_tier_ssd_pinned_usage_bytes{attached_vm_uuid="b89eedc3-7b73-4c0b-b86f-b696b3b9bf3e",uuid="1fcc70be-7541-4572-ac7c-b65b4a8c2be7"} 0
+nutanix_vdisks_controller_storage_tier_ssd_pinned_usage_bytes{attached_vm_uuid="b89eedc3-7b73-4c0b-b86f-b696b3b9bf3e",uuid="8e261ccb-2093-4f9d-8597-1bfe32f95731"} 0
+nutanix_vdisks_controller_storage_tier_ssd_pinned_usage_bytes{attached_vm_uuid="bbcc2366-dabf-496a-b19c-d08f773eff8a",uuid="a572cad6-b9bb-44b4-80e8-5c4b0d82929e"} 0
+nutanix_vdisks_controller_storage_tier_ssd_pinned_usage_bytes{attached_vm_uuid="bbcc2366-dabf-496a-b19c-d08f773eff8a",uuid="b9ccfc9a-7458-4325-8248-db1025254b35"} 0
+nutanix_vdisks_controller_storage_tier_ssd_pinned_usage_bytes{attached_vm_uuid="d3c9dd8a-32a7-41d2-8587-d7ea5fcb5170",uuid="295025b8-ef6b-4be1-b4ab-94f866fe544e"} 0
+nutanix_vdisks_controller_storage_tier_ssd_pinned_usage_bytes{attached_vm_uuid="d3c9dd8a-32a7-41d2-8587-d7ea5fcb5170",uuid="5a20746b-bd7a-4058-a7ac-126093db1495"} 0
+nutanix_vdisks_controller_storage_tier_ssd_pinned_usage_bytes{attached_vm_uuid="d967258c-75ae-49db-bbcc-c01a690f15c7",uuid="27a1f3e3-b222-41fe-9189-95824d4e84bf"} 0
+nutanix_vdisks_controller_storage_tier_ssd_pinned_usage_bytes{attached_vm_uuid="d967258c-75ae-49db-bbcc-c01a690f15c7",uuid="f90217fb-85eb-4f94-9c18-d95fe0d6e6a3"} 0
+nutanix_vdisks_controller_storage_tier_ssd_pinned_usage_bytes{attached_vm_uuid="da69bf52-dd1e-432a-96a5-5c746130cb45",uuid="6bce0580-6978-42c2-ab3b-0634e513c5c1"} 0
+nutanix_vdisks_controller_storage_tier_ssd_pinned_usage_bytes{attached_vm_uuid="da69bf52-dd1e-432a-96a5-5c746130cb45",uuid="ba8fd6de-8673-4c26-826e-e1f75d660627"} 0
+nutanix_vdisks_controller_storage_tier_ssd_pinned_usage_bytes{attached_vm_uuid="db738597-c261-4f47-95c1-2267a284deda",uuid="0e392c6a-61ed-4164-ab96-b508223dac18"} 0
+nutanix_vdisks_controller_storage_tier_ssd_pinned_usage_bytes{attached_vm_uuid="db738597-c261-4f47-95c1-2267a284deda",uuid="40cbe18a-c896-431f-8d35-ba2ee34ff21f"} 0
+nutanix_vdisks_controller_storage_tier_ssd_pinned_usage_bytes{attached_vm_uuid="db738597-c261-4f47-95c1-2267a284deda",uuid="4cc53beb-f0ec-440e-a600-6c02ad8127f0"} 0
+nutanix_vdisks_controller_storage_tier_ssd_pinned_usage_bytes{attached_vm_uuid="db738597-c261-4f47-95c1-2267a284deda",uuid="5b4ce010-8522-4c0f-b833-8412e0877f18"} 0
+nutanix_vdisks_controller_storage_tier_ssd_pinned_usage_bytes{attached_vm_uuid="db738597-c261-4f47-95c1-2267a284deda",uuid="68dc7916-3389-4ed4-8567-7cb359bcddfe"} 0
+nutanix_vdisks_controller_storage_tier_ssd_pinned_usage_bytes{attached_vm_uuid="db738597-c261-4f47-95c1-2267a284deda",uuid="7c951065-0bda-4589-ab02-68f554b7c6ce"} 0
+nutanix_vdisks_controller_storage_tier_ssd_pinned_usage_bytes{attached_vm_uuid="db738597-c261-4f47-95c1-2267a284deda",uuid="8beccc17-9252-4aae-bf37-c13e2cb30b34"} 0
+nutanix_vdisks_controller_storage_tier_ssd_pinned_usage_bytes{attached_vm_uuid="db738597-c261-4f47-95c1-2267a284deda",uuid="c02a3ca2-e0c0-402f-b509-390ca3c4e3aa"} 0
+nutanix_vdisks_controller_storage_tier_ssd_pinned_usage_bytes{attached_vm_uuid="db738597-c261-4f47-95c1-2267a284deda",uuid="c7c6161c-08d0-43f2-b930-dc7d3e48ce4e"} 0
+nutanix_vdisks_controller_storage_tier_ssd_pinned_usage_bytes{attached_vm_uuid="eb454045-d152-4167-b4eb-3fdb1db8f277",uuid="05871870-32a3-4eb5-9a5f-c8950cbd8622"} 0
+nutanix_vdisks_controller_storage_tier_ssd_pinned_usage_bytes{attached_vm_uuid="eb454045-d152-4167-b4eb-3fdb1db8f277",uuid="db87faf2-29f7-4cf1-b2e6-f430f2b75be0"} 0
+# HELP nutanix_vdisks_controller_storage_tier_ssd_usage_bytes ...
+# TYPE nutanix_vdisks_controller_storage_tier_ssd_usage_bytes gauge
+nutanix_vdisks_controller_storage_tier_ssd_usage_bytes{attached_vm_uuid="0edd071e-6bd7-4ce8-a88c-dd32c4f34558",uuid="2cfde956-cf87-4274-ad5f-c16c32df516d"} 9.961472e+06
+nutanix_vdisks_controller_storage_tier_ssd_usage_bytes{attached_vm_uuid="0edd071e-6bd7-4ce8-a88c-dd32c4f34558",uuid="ac541475-9ddf-4a72-8b21-05e6d1889f3a"} 1.29499136e+08
+nutanix_vdisks_controller_storage_tier_ssd_usage_bytes{attached_vm_uuid="184e5d0d-1f3d-4de8-a715-8fc4c23fe60a",uuid="751116c4-94be-4f18-ab02-21c4bc344468"} 1.6089088e+07
+nutanix_vdisks_controller_storage_tier_ssd_usage_bytes{attached_vm_uuid="184e5d0d-1f3d-4de8-a715-8fc4c23fe60a",uuid="e37af03c-158b-42ea-a261-e22fbfceb9de"} 5.832146944e+09
+nutanix_vdisks_controller_storage_tier_ssd_usage_bytes{attached_vm_uuid="21238650-52aa-48fd-9049-ee25b966773f",uuid="69c794e8-7892-4396-9365-f1cad000ab44"} 8.8685969408e+10
+nutanix_vdisks_controller_storage_tier_ssd_usage_bytes{attached_vm_uuid="227ef30c-2cbd-407b-ac70-586ad3bd79e0",uuid="bca321b2-6e2e-4b9c-ac10-2ea59187fb5f"} 3.5261251584e+10
+nutanix_vdisks_controller_storage_tier_ssd_usage_bytes{attached_vm_uuid="244e8907-492d-466b-96aa-5ee3094666a4",uuid="687d90a5-746f-4062-9dd6-8a06c8e12c10"} 3.64609536e+08
+nutanix_vdisks_controller_storage_tier_ssd_usage_bytes{attached_vm_uuid="244e8907-492d-466b-96aa-5ee3094666a4",uuid="f8a2a209-b951-46ac-8762-f11378abe76d"} 1.3828096e+07
+nutanix_vdisks_controller_storage_tier_ssd_usage_bytes{attached_vm_uuid="37243b2c-f16d-4e11-972b-b314e52a759c",uuid="71138b64-531f-4c52-93b0-e6d5b8131eaf"} 2.25705984e+08
+nutanix_vdisks_controller_storage_tier_ssd_usage_bytes{attached_vm_uuid="4171c556-96f8-48a8-bef7-b085bf2d1b9c",uuid="2c2e8bd4-a219-407f-9b7a-0e2043fbfbcc"} 1.1337728e+07
+nutanix_vdisks_controller_storage_tier_ssd_usage_bytes{attached_vm_uuid="4171c556-96f8-48a8-bef7-b085bf2d1b9c",uuid="b3823d00-991a-4618-8ad9-17cc37552d0b"} 3.14638336e+08
+nutanix_vdisks_controller_storage_tier_ssd_usage_bytes{attached_vm_uuid="5b9bafe4-89ad-4440-9a94-e6b73cbaa133",uuid="21002cda-26e0-4069-9be4-bc35d3ff5f86"} 3.0326784e+08
+nutanix_vdisks_controller_storage_tier_ssd_usage_bytes{attached_vm_uuid="5b9bafe4-89ad-4440-9a94-e6b73cbaa133",uuid="ee8ab366-e900-4e8f-be64-be3973c1d030"} 2.7721728e+07
+nutanix_vdisks_controller_storage_tier_ssd_usage_bytes{attached_vm_uuid="60f18b94-d7fd-40f7-9266-2577572af8f2",uuid="4bbf3798-8b1f-4d53-b3f3-0c551a3a29e1"} 1.5794176e+07
+nutanix_vdisks_controller_storage_tier_ssd_usage_bytes{attached_vm_uuid="60f18b94-d7fd-40f7-9266-2577572af8f2",uuid="f1811148-d046-4016-a4af-9c54e87c497e"} 5.345476608e+09
+nutanix_vdisks_controller_storage_tier_ssd_usage_bytes{attached_vm_uuid="71846a85-17e3-4cbd-9c1e-f9f5ef3c50bb",uuid="47469b48-cfd6-4105-90fc-00525b1863b0"} 5.289705472e+09
+nutanix_vdisks_controller_storage_tier_ssd_usage_bytes{attached_vm_uuid="71846a85-17e3-4cbd-9c1e-f9f5ef3c50bb",uuid="984af384-328f-42fe-9e99-bb6e1e70ba6b"} 2.0676608e+07
+nutanix_vdisks_controller_storage_tier_ssd_usage_bytes{attached_vm_uuid="7366fb9a-bd50-45d1-8091-1ad70b15f42e",uuid="e70f9e6a-3e67-4abb-81db-17b8cb5b899f"} 3.24206592e+08
+nutanix_vdisks_controller_storage_tier_ssd_usage_bytes{attached_vm_uuid="79a94fb8-b666-4bcf-b97b-3171684149d4",uuid="f3c2fda3-bc80-47fc-a745-b1984d298c60"} 1.59011504128e+11
+nutanix_vdisks_controller_storage_tier_ssd_usage_bytes{attached_vm_uuid="8c2754e9-7996-40d8-a597-6cd28b623e4f",uuid="a633f982-b6cf-44a6-b2bb-47fd8c41d5cc"} 7.43604224e+08
+nutanix_vdisks_controller_storage_tier_ssd_usage_bytes{attached_vm_uuid="93d8b775-1a6f-4312-864f-adb9ad746b42",uuid="205b811e-2e2f-41a1-8f31-67c259fcee8e"} 6.71744e+06
+nutanix_vdisks_controller_storage_tier_ssd_usage_bytes{attached_vm_uuid="93d8b775-1a6f-4312-864f-adb9ad746b42",uuid="e9d2aa30-bfaa-4229-89b5-3035f9a9ba8d"} 1.29630208e+08
+nutanix_vdisks_controller_storage_tier_ssd_usage_bytes{attached_vm_uuid="9fef76ea-9c77-47eb-bf0a-5bff563fdec8",uuid="601505c8-e467-41e9-87ad-db46a530edc4"} 3.3030144e+07
+nutanix_vdisks_controller_storage_tier_ssd_usage_bytes{attached_vm_uuid="9fef76ea-9c77-47eb-bf0a-5bff563fdec8",uuid="6849025a-fdba-46a1-b995-718429dda2d7"} 3.00908544e+08
+nutanix_vdisks_controller_storage_tier_ssd_usage_bytes{attached_vm_uuid="a295618e-c637-4051-bc59-568531763413",uuid="0a28d7fd-bf39-4445-b74a-4e1474fe88f0"} 8.814592e+06
+nutanix_vdisks_controller_storage_tier_ssd_usage_bytes{attached_vm_uuid="a295618e-c637-4051-bc59-568531763413",uuid="f447b071-e9e9-4c07-91f9-062cd70488d7"} 9.0046464e+07
+nutanix_vdisks_controller_storage_tier_ssd_usage_bytes{attached_vm_uuid="a49743bc-0351-4bfc-a061-a54d9a6d27b1",uuid="2c53d7e2-cde8-4633-bffc-311acbf3d18b"} 3.0670848e+08
+nutanix_vdisks_controller_storage_tier_ssd_usage_bytes{attached_vm_uuid="a49743bc-0351-4bfc-a061-a54d9a6d27b1",uuid="8c17eea2-014f-4908-acf9-daa6071adaf5"} 1.0027008e+07
+nutanix_vdisks_controller_storage_tier_ssd_usage_bytes{attached_vm_uuid="ae12779b-b375-4206-a159-c71b257f8dc2",uuid="76b88f11-5cde-4255-b521-8aca903c444b"} 1.015808e+07
+nutanix_vdisks_controller_storage_tier_ssd_usage_bytes{attached_vm_uuid="ae12779b-b375-4206-a159-c71b257f8dc2",uuid="89c28c03-5a60-4271-a3e7-c9b9a84a5073"} 4.88046592e+08
+nutanix_vdisks_controller_storage_tier_ssd_usage_bytes{attached_vm_uuid="aea3ec23-ee5a-438f-ae88-2e09aedd16c7",uuid="307d27ce-617a-41de-82bb-14f7bbe9ffcb"} 2.1111242752e+10
+nutanix_vdisks_controller_storage_tier_ssd_usage_bytes{attached_vm_uuid="aea3ec23-ee5a-438f-ae88-2e09aedd16c7",uuid="5d52c163-a9c4-4807-9be6-50e3f47c0e6e"} 131072
+nutanix_vdisks_controller_storage_tier_ssd_usage_bytes{attached_vm_uuid="aea3ec23-ee5a-438f-ae88-2e09aedd16c7",uuid="a0db6323-4e78-4ebe-a3ed-919028c1ae5a"} 1.611661312e+09
+nutanix_vdisks_controller_storage_tier_ssd_usage_bytes{attached_vm_uuid="aea3ec23-ee5a-438f-ae88-2e09aedd16c7",uuid="ec7f9356-3b52-4b62-b3c1-dae2d77b2ea3"} 2.252537856e+09
+nutanix_vdisks_controller_storage_tier_ssd_usage_bytes{attached_vm_uuid="b606cb9b-5423-4985-8efe-7015146416a6",uuid="44600d06-61b3-4c51-81bc-5ebff3d62536"} 1.015808e+07
+nutanix_vdisks_controller_storage_tier_ssd_usage_bytes{attached_vm_uuid="b606cb9b-5423-4985-8efe-7015146416a6",uuid="b7bdf637-59c0-4f58-bb17-52620134bc87"} 3.8846464e+08
+nutanix_vdisks_controller_storage_tier_ssd_usage_bytes{attached_vm_uuid="b89eedc3-7b73-4c0b-b86f-b696b3b9bf3e",uuid="1fcc70be-7541-4572-ac7c-b65b4a8c2be7"} 2.2413312e+07
+nutanix_vdisks_controller_storage_tier_ssd_usage_bytes{attached_vm_uuid="b89eedc3-7b73-4c0b-b86f-b696b3b9bf3e",uuid="8e261ccb-2093-4f9d-8597-1bfe32f95731"} 2.87342592e+08
+nutanix_vdisks_controller_storage_tier_ssd_usage_bytes{attached_vm_uuid="bbcc2366-dabf-496a-b19c-d08f773eff8a",uuid="a572cad6-b9bb-44b4-80e8-5c4b0d82929e"} 3.75259136e+08
+nutanix_vdisks_controller_storage_tier_ssd_usage_bytes{attached_vm_uuid="bbcc2366-dabf-496a-b19c-d08f773eff8a",uuid="b9ccfc9a-7458-4325-8248-db1025254b35"} 8.912896e+06
+nutanix_vdisks_controller_storage_tier_ssd_usage_bytes{attached_vm_uuid="d3c9dd8a-32a7-41d2-8587-d7ea5fcb5170",uuid="295025b8-ef6b-4be1-b4ab-94f866fe544e"} 2.96321024e+08
+nutanix_vdisks_controller_storage_tier_ssd_usage_bytes{attached_vm_uuid="d3c9dd8a-32a7-41d2-8587-d7ea5fcb5170",uuid="5a20746b-bd7a-4058-a7ac-126093db1495"} 3.375104e+07
+nutanix_vdisks_controller_storage_tier_ssd_usage_bytes{attached_vm_uuid="d967258c-75ae-49db-bbcc-c01a690f15c7",uuid="27a1f3e3-b222-41fe-9189-95824d4e84bf"} 1.1108352e+07
+nutanix_vdisks_controller_storage_tier_ssd_usage_bytes{attached_vm_uuid="d967258c-75ae-49db-bbcc-c01a690f15c7",uuid="f90217fb-85eb-4f94-9c18-d95fe0d6e6a3"} 3.50519296e+08
+nutanix_vdisks_controller_storage_tier_ssd_usage_bytes{attached_vm_uuid="da69bf52-dd1e-432a-96a5-5c746130cb45",uuid="6bce0580-6978-42c2-ab3b-0634e513c5c1"} 3.17620224e+08
+nutanix_vdisks_controller_storage_tier_ssd_usage_bytes{attached_vm_uuid="da69bf52-dd1e-432a-96a5-5c746130cb45",uuid="ba8fd6de-8673-4c26-826e-e1f75d660627"} 2.064384e+07
+nutanix_vdisks_controller_storage_tier_ssd_usage_bytes{attached_vm_uuid="db738597-c261-4f47-95c1-2267a284deda",uuid="0e392c6a-61ed-4164-ab96-b508223dac18"} 131072
+nutanix_vdisks_controller_storage_tier_ssd_usage_bytes{attached_vm_uuid="db738597-c261-4f47-95c1-2267a284deda",uuid="40cbe18a-c896-431f-8d35-ba2ee34ff21f"} 4.752801792e+09
+nutanix_vdisks_controller_storage_tier_ssd_usage_bytes{attached_vm_uuid="db738597-c261-4f47-95c1-2267a284deda",uuid="4cc53beb-f0ec-440e-a600-6c02ad8127f0"} 1.56775903232e+11
+nutanix_vdisks_controller_storage_tier_ssd_usage_bytes{attached_vm_uuid="db738597-c261-4f47-95c1-2267a284deda",uuid="68dc7916-3389-4ed4-8567-7cb359bcddfe"} 1.49807921152e+11
+nutanix_vdisks_controller_storage_tier_ssd_usage_bytes{attached_vm_uuid="db738597-c261-4f47-95c1-2267a284deda",uuid="7c951065-0bda-4589-ab02-68f554b7c6ce"} 262144
+nutanix_vdisks_controller_storage_tier_ssd_usage_bytes{attached_vm_uuid="db738597-c261-4f47-95c1-2267a284deda",uuid="8beccc17-9252-4aae-bf37-c13e2cb30b34"} 3.30694656e+08
+nutanix_vdisks_controller_storage_tier_ssd_usage_bytes{attached_vm_uuid="db738597-c261-4f47-95c1-2267a284deda",uuid="c02a3ca2-e0c0-402f-b509-390ca3c4e3aa"} 1.16285177856e+11
+nutanix_vdisks_controller_storage_tier_ssd_usage_bytes{attached_vm_uuid="db738597-c261-4f47-95c1-2267a284deda",uuid="c7c6161c-08d0-43f2-b930-dc7d3e48ce4e"} 1.75634874112e+11
+nutanix_vdisks_controller_storage_tier_ssd_usage_bytes{attached_vm_uuid="eb454045-d152-4167-b4eb-3fdb1db8f277",uuid="05871870-32a3-4eb5-9a5f-c8950cbd8622"} 1.654784e+07
+nutanix_vdisks_controller_storage_tier_ssd_usage_bytes{attached_vm_uuid="eb454045-d152-4167-b4eb-3fdb1db8f277",uuid="db87faf2-29f7-4cf1-b2e6-f430f2b75be0"} 3.17751296e+08
+# HELP nutanix_vdisks_controller_storage_tier_total_usage_bytes ...
+# TYPE nutanix_vdisks_controller_storage_tier_total_usage_bytes gauge
+nutanix_vdisks_controller_storage_tier_total_usage_bytes{attached_vm_uuid="",uuid="8c4d2c44-540d-41ba-affd-c9d8b84f1a41"} 0
+nutanix_vdisks_controller_storage_tier_total_usage_bytes{attached_vm_uuid="0edd071e-6bd7-4ce8-a88c-dd32c4f34558",uuid="2cfde956-cf87-4274-ad5f-c16c32df516d"} 1.4155776e+07
+nutanix_vdisks_controller_storage_tier_total_usage_bytes{attached_vm_uuid="0edd071e-6bd7-4ce8-a88c-dd32c4f34558",uuid="ac541475-9ddf-4a72-8b21-05e6d1889f3a"} 1.9726336e+08
+nutanix_vdisks_controller_storage_tier_total_usage_bytes{attached_vm_uuid="184e5d0d-1f3d-4de8-a715-8fc4c23fe60a",uuid="751116c4-94be-4f18-ab02-21c4bc344468"} 1.8612224e+07
+nutanix_vdisks_controller_storage_tier_total_usage_bytes{attached_vm_uuid="184e5d0d-1f3d-4de8-a715-8fc4c23fe60a",uuid="e37af03c-158b-42ea-a261-e22fbfceb9de"} 8.885108736e+09
+nutanix_vdisks_controller_storage_tier_total_usage_bytes{attached_vm_uuid="21238650-52aa-48fd-9049-ee25b966773f",uuid="69c794e8-7892-4396-9365-f1cad000ab44"} 8.8685969408e+10
+nutanix_vdisks_controller_storage_tier_total_usage_bytes{attached_vm_uuid="227ef30c-2cbd-407b-ac70-586ad3bd79e0",uuid="bca321b2-6e2e-4b9c-ac10-2ea59187fb5f"} 3.7571592192e+10
+nutanix_vdisks_controller_storage_tier_total_usage_bytes{attached_vm_uuid="244e8907-492d-466b-96aa-5ee3094666a4",uuid="687d90a5-746f-4062-9dd6-8a06c8e12c10"} 3.93347072e+08
+nutanix_vdisks_controller_storage_tier_total_usage_bytes{attached_vm_uuid="244e8907-492d-466b-96aa-5ee3094666a4",uuid="f8a2a209-b951-46ac-8762-f11378abe76d"} 1.4155776e+07
+nutanix_vdisks_controller_storage_tier_total_usage_bytes{attached_vm_uuid="37243b2c-f16d-4e11-972b-b314e52a759c",uuid="71138b64-531f-4c52-93b0-e6d5b8131eaf"} 2.47529472e+08
+nutanix_vdisks_controller_storage_tier_total_usage_bytes{attached_vm_uuid="4171c556-96f8-48a8-bef7-b085bf2d1b9c",uuid="2c2e8bd4-a219-407f-9b7a-0e2043fbfbcc"} 1.4155776e+07
+nutanix_vdisks_controller_storage_tier_total_usage_bytes{attached_vm_uuid="4171c556-96f8-48a8-bef7-b085bf2d1b9c",uuid="b3823d00-991a-4618-8ad9-17cc37552d0b"} 3.33447168e+08
+nutanix_vdisks_controller_storage_tier_total_usage_bytes{attached_vm_uuid="5b9bafe4-89ad-4440-9a94-e6b73cbaa133",uuid="21002cda-26e0-4069-9be4-bc35d3ff5f86"} 3.28400896e+08
+nutanix_vdisks_controller_storage_tier_total_usage_bytes{attached_vm_uuid="5b9bafe4-89ad-4440-9a94-e6b73cbaa133",uuid="ee8ab366-e900-4e8f-be64-be3973c1d030"} 3.0015488e+07
+nutanix_vdisks_controller_storage_tier_total_usage_bytes{attached_vm_uuid="60f18b94-d7fd-40f7-9266-2577572af8f2",uuid="4bbf3798-8b1f-4d53-b3f3-0c551a3a29e1"} 1.5794176e+07
+nutanix_vdisks_controller_storage_tier_total_usage_bytes{attached_vm_uuid="60f18b94-d7fd-40f7-9266-2577572af8f2",uuid="f1811148-d046-4016-a4af-9c54e87c497e"} 8.849915904e+09
+nutanix_vdisks_controller_storage_tier_total_usage_bytes{attached_vm_uuid="71846a85-17e3-4cbd-9c1e-f9f5ef3c50bb",uuid="47469b48-cfd6-4105-90fc-00525b1863b0"} 9.210626048e+09
+nutanix_vdisks_controller_storage_tier_total_usage_bytes{attached_vm_uuid="71846a85-17e3-4cbd-9c1e-f9f5ef3c50bb",uuid="984af384-328f-42fe-9e99-bb6e1e70ba6b"} 2.3003136e+07
+nutanix_vdisks_controller_storage_tier_total_usage_bytes{attached_vm_uuid="7366fb9a-bd50-45d1-8091-1ad70b15f42e",uuid="e70f9e6a-3e67-4abb-81db-17b8cb5b899f"} 3.7224448e+08
+nutanix_vdisks_controller_storage_tier_total_usage_bytes{attached_vm_uuid="79a94fb8-b666-4bcf-b97b-3171684149d4",uuid="f3c2fda3-bc80-47fc-a745-b1984d298c60"} 1.59012552704e+11
+nutanix_vdisks_controller_storage_tier_total_usage_bytes{attached_vm_uuid="8c2754e9-7996-40d8-a597-6cd28b623e4f",uuid="a633f982-b6cf-44a6-b2bb-47fd8c41d5cc"} 1.036648448e+09
+nutanix_vdisks_controller_storage_tier_total_usage_bytes{attached_vm_uuid="93d8b775-1a6f-4312-864f-adb9ad746b42",uuid="205b811e-2e2f-41a1-8f31-67c259fcee8e"} 1.4155776e+07
+nutanix_vdisks_controller_storage_tier_total_usage_bytes{attached_vm_uuid="93d8b775-1a6f-4312-864f-adb9ad746b42",uuid="e9d2aa30-bfaa-4229-89b5-3035f9a9ba8d"} 1.99360512e+08
+nutanix_vdisks_controller_storage_tier_total_usage_bytes{attached_vm_uuid="9fef76ea-9c77-47eb-bf0a-5bff563fdec8",uuid="601505c8-e467-41e9-87ad-db46a530edc4"} 3.5913728e+07
+nutanix_vdisks_controller_storage_tier_total_usage_bytes{attached_vm_uuid="9fef76ea-9c77-47eb-bf0a-5bff563fdec8",uuid="6849025a-fdba-46a1-b995-718429dda2d7"} 3.4013184e+08
+nutanix_vdisks_controller_storage_tier_total_usage_bytes{attached_vm_uuid="a295618e-c637-4051-bc59-568531763413",uuid="0a28d7fd-bf39-4445-b74a-4e1474fe88f0"} 1.4155776e+07
+nutanix_vdisks_controller_storage_tier_total_usage_bytes{attached_vm_uuid="a295618e-c637-4051-bc59-568531763413",uuid="f447b071-e9e9-4c07-91f9-062cd70488d7"} 2.00671232e+08
+nutanix_vdisks_controller_storage_tier_total_usage_bytes{attached_vm_uuid="a49743bc-0351-4bfc-a061-a54d9a6d27b1",uuid="2c53d7e2-cde8-4633-bffc-311acbf3d18b"} 3.28728576e+08
+nutanix_vdisks_controller_storage_tier_total_usage_bytes{attached_vm_uuid="a49743bc-0351-4bfc-a061-a54d9a6d27b1",uuid="8c17eea2-014f-4908-acf9-daa6071adaf5"} 1.4155776e+07
+nutanix_vdisks_controller_storage_tier_total_usage_bytes{attached_vm_uuid="ae12779b-b375-4206-a159-c71b257f8dc2",uuid="76b88f11-5cde-4255-b521-8aca903c444b"} 1.5007744e+07
+nutanix_vdisks_controller_storage_tier_total_usage_bytes{attached_vm_uuid="ae12779b-b375-4206-a159-c71b257f8dc2",uuid="89c28c03-5a60-4271-a3e7-c9b9a84a5073"} 5.685248e+08
+nutanix_vdisks_controller_storage_tier_total_usage_bytes{attached_vm_uuid="aea3ec23-ee5a-438f-ae88-2e09aedd16c7",uuid="307d27ce-617a-41de-82bb-14f7bbe9ffcb"} 2.1111242752e+10
+nutanix_vdisks_controller_storage_tier_total_usage_bytes{attached_vm_uuid="aea3ec23-ee5a-438f-ae88-2e09aedd16c7",uuid="5d52c163-a9c4-4807-9be6-50e3f47c0e6e"} 131072
+nutanix_vdisks_controller_storage_tier_total_usage_bytes{attached_vm_uuid="aea3ec23-ee5a-438f-ae88-2e09aedd16c7",uuid="a0db6323-4e78-4ebe-a3ed-919028c1ae5a"} 1.611661312e+09
+nutanix_vdisks_controller_storage_tier_total_usage_bytes{attached_vm_uuid="aea3ec23-ee5a-438f-ae88-2e09aedd16c7",uuid="ec7f9356-3b52-4b62-b3c1-dae2d77b2ea3"} 2.252537856e+09
+nutanix_vdisks_controller_storage_tier_total_usage_bytes{attached_vm_uuid="b606cb9b-5423-4985-8efe-7015146416a6",uuid="44600d06-61b3-4c51-81bc-5ebff3d62536"} 1.4876672e+07
+nutanix_vdisks_controller_storage_tier_total_usage_bytes{attached_vm_uuid="b606cb9b-5423-4985-8efe-7015146416a6",uuid="b7bdf637-59c0-4f58-bb17-52620134bc87"} 4.62815232e+08
+nutanix_vdisks_controller_storage_tier_total_usage_bytes{attached_vm_uuid="b89eedc3-7b73-4c0b-b86f-b696b3b9bf3e",uuid="1fcc70be-7541-4572-ac7c-b65b4a8c2be7"} 2.3789568e+07
+nutanix_vdisks_controller_storage_tier_total_usage_bytes{attached_vm_uuid="b89eedc3-7b73-4c0b-b86f-b696b3b9bf3e",uuid="8e261ccb-2093-4f9d-8597-1bfe32f95731"} 3.36658432e+08
+nutanix_vdisks_controller_storage_tier_total_usage_bytes{attached_vm_uuid="bbcc2366-dabf-496a-b19c-d08f773eff8a",uuid="a572cad6-b9bb-44b4-80e8-5c4b0d82929e"} 3.9354368e+08
+nutanix_vdisks_controller_storage_tier_total_usage_bytes{attached_vm_uuid="bbcc2366-dabf-496a-b19c-d08f773eff8a",uuid="b9ccfc9a-7458-4325-8248-db1025254b35"} 1.4876672e+07
+nutanix_vdisks_controller_storage_tier_total_usage_bytes{attached_vm_uuid="d3c9dd8a-32a7-41d2-8587-d7ea5fcb5170",uuid="295025b8-ef6b-4be1-b4ab-94f866fe544e"} 3.36592896e+08
+nutanix_vdisks_controller_storage_tier_total_usage_bytes{attached_vm_uuid="d3c9dd8a-32a7-41d2-8587-d7ea5fcb5170",uuid="5a20746b-bd7a-4058-a7ac-126093db1495"} 3.375104e+07
+nutanix_vdisks_controller_storage_tier_total_usage_bytes{attached_vm_uuid="d967258c-75ae-49db-bbcc-c01a690f15c7",uuid="27a1f3e3-b222-41fe-9189-95824d4e84bf"} 1.4155776e+07
+nutanix_vdisks_controller_storage_tier_total_usage_bytes{attached_vm_uuid="d967258c-75ae-49db-bbcc-c01a690f15c7",uuid="f90217fb-85eb-4f94-9c18-d95fe0d6e6a3"} 3.81550592e+08
+nutanix_vdisks_controller_storage_tier_total_usage_bytes{attached_vm_uuid="da69bf52-dd1e-432a-96a5-5c746130cb45",uuid="6bce0580-6978-42c2-ab3b-0634e513c5c1"} 3.63134976e+08
+nutanix_vdisks_controller_storage_tier_total_usage_bytes{attached_vm_uuid="da69bf52-dd1e-432a-96a5-5c746130cb45",uuid="ba8fd6de-8673-4c26-826e-e1f75d660627"} 2.064384e+07
+nutanix_vdisks_controller_storage_tier_total_usage_bytes{attached_vm_uuid="db738597-c261-4f47-95c1-2267a284deda",uuid="0e392c6a-61ed-4164-ab96-b508223dac18"} 131072
+nutanix_vdisks_controller_storage_tier_total_usage_bytes{attached_vm_uuid="db738597-c261-4f47-95c1-2267a284deda",uuid="40cbe18a-c896-431f-8d35-ba2ee34ff21f"} 4.780982272e+09
+nutanix_vdisks_controller_storage_tier_total_usage_bytes{attached_vm_uuid="db738597-c261-4f47-95c1-2267a284deda",uuid="4cc53beb-f0ec-440e-a600-6c02ad8127f0"} 1.56789927936e+11
+nutanix_vdisks_controller_storage_tier_total_usage_bytes{attached_vm_uuid="db738597-c261-4f47-95c1-2267a284deda",uuid="5b4ce010-8522-4c0f-b833-8412e0877f18"} 0
+nutanix_vdisks_controller_storage_tier_total_usage_bytes{attached_vm_uuid="db738597-c261-4f47-95c1-2267a284deda",uuid="68dc7916-3389-4ed4-8567-7cb359bcddfe"} 1.49828073472e+11
+nutanix_vdisks_controller_storage_tier_total_usage_bytes{attached_vm_uuid="db738597-c261-4f47-95c1-2267a284deda",uuid="7c951065-0bda-4589-ab02-68f554b7c6ce"} 262144
+nutanix_vdisks_controller_storage_tier_total_usage_bytes{attached_vm_uuid="db738597-c261-4f47-95c1-2267a284deda",uuid="8beccc17-9252-4aae-bf37-c13e2cb30b34"} 3.37903616e+08
+nutanix_vdisks_controller_storage_tier_total_usage_bytes{attached_vm_uuid="db738597-c261-4f47-95c1-2267a284deda",uuid="c02a3ca2-e0c0-402f-b509-390ca3c4e3aa"} 1.197359104e+11
+nutanix_vdisks_controller_storage_tier_total_usage_bytes{attached_vm_uuid="db738597-c261-4f47-95c1-2267a284deda",uuid="c7c6161c-08d0-43f2-b930-dc7d3e48ce4e"} 1.75648210688e+11
+nutanix_vdisks_controller_storage_tier_total_usage_bytes{attached_vm_uuid="eb454045-d152-4167-b4eb-3fdb1db8f277",uuid="05871870-32a3-4eb5-9a5f-c8950cbd8622"} 1.6580608e+07
+nutanix_vdisks_controller_storage_tier_total_usage_bytes{attached_vm_uuid="eb454045-d152-4167-b4eb-3fdb1db8f277",uuid="db87faf2-29f7-4cf1-b2e6-f430f2b75be0"} 3.40721664e+08
+# HELP nutanix_vdisks_controller_total_io_size_kbytes ...
+# TYPE nutanix_vdisks_controller_total_io_size_kbytes gauge
+nutanix_vdisks_controller_total_io_size_kbytes{attached_vm_uuid="",uuid="8c4d2c44-540d-41ba-affd-c9d8b84f1a41"} 0
+nutanix_vdisks_controller_total_io_size_kbytes{attached_vm_uuid="0edd071e-6bd7-4ce8-a88c-dd32c4f34558",uuid="2cfde956-cf87-4274-ad5f-c16c32df516d"} 0
+nutanix_vdisks_controller_total_io_size_kbytes{attached_vm_uuid="0edd071e-6bd7-4ce8-a88c-dd32c4f34558",uuid="ac541475-9ddf-4a72-8b21-05e6d1889f3a"} 0
+nutanix_vdisks_controller_total_io_size_kbytes{attached_vm_uuid="184e5d0d-1f3d-4de8-a715-8fc4c23fe60a",uuid="751116c4-94be-4f18-ab02-21c4bc344468"} 0
+nutanix_vdisks_controller_total_io_size_kbytes{attached_vm_uuid="184e5d0d-1f3d-4de8-a715-8fc4c23fe60a",uuid="e37af03c-158b-42ea-a261-e22fbfceb9de"} 0
+nutanix_vdisks_controller_total_io_size_kbytes{attached_vm_uuid="21238650-52aa-48fd-9049-ee25b966773f",uuid="69c794e8-7892-4396-9365-f1cad000ab44"} 285
+nutanix_vdisks_controller_total_io_size_kbytes{attached_vm_uuid="227ef30c-2cbd-407b-ac70-586ad3bd79e0",uuid="bca321b2-6e2e-4b9c-ac10-2ea59187fb5f"} 0
+nutanix_vdisks_controller_total_io_size_kbytes{attached_vm_uuid="244e8907-492d-466b-96aa-5ee3094666a4",uuid="687d90a5-746f-4062-9dd6-8a06c8e12c10"} 0
+nutanix_vdisks_controller_total_io_size_kbytes{attached_vm_uuid="244e8907-492d-466b-96aa-5ee3094666a4",uuid="f8a2a209-b951-46ac-8762-f11378abe76d"} 0
+nutanix_vdisks_controller_total_io_size_kbytes{attached_vm_uuid="37243b2c-f16d-4e11-972b-b314e52a759c",uuid="71138b64-531f-4c52-93b0-e6d5b8131eaf"} 0
+nutanix_vdisks_controller_total_io_size_kbytes{attached_vm_uuid="4171c556-96f8-48a8-bef7-b085bf2d1b9c",uuid="2c2e8bd4-a219-407f-9b7a-0e2043fbfbcc"} 0
+nutanix_vdisks_controller_total_io_size_kbytes{attached_vm_uuid="4171c556-96f8-48a8-bef7-b085bf2d1b9c",uuid="b3823d00-991a-4618-8ad9-17cc37552d0b"} 0
+nutanix_vdisks_controller_total_io_size_kbytes{attached_vm_uuid="5b9bafe4-89ad-4440-9a94-e6b73cbaa133",uuid="21002cda-26e0-4069-9be4-bc35d3ff5f86"} 0
+nutanix_vdisks_controller_total_io_size_kbytes{attached_vm_uuid="5b9bafe4-89ad-4440-9a94-e6b73cbaa133",uuid="ee8ab366-e900-4e8f-be64-be3973c1d030"} 0
+nutanix_vdisks_controller_total_io_size_kbytes{attached_vm_uuid="60f18b94-d7fd-40f7-9266-2577572af8f2",uuid="4bbf3798-8b1f-4d53-b3f3-0c551a3a29e1"} 0
+nutanix_vdisks_controller_total_io_size_kbytes{attached_vm_uuid="60f18b94-d7fd-40f7-9266-2577572af8f2",uuid="f1811148-d046-4016-a4af-9c54e87c497e"} 0
+nutanix_vdisks_controller_total_io_size_kbytes{attached_vm_uuid="71846a85-17e3-4cbd-9c1e-f9f5ef3c50bb",uuid="47469b48-cfd6-4105-90fc-00525b1863b0"} 0
+nutanix_vdisks_controller_total_io_size_kbytes{attached_vm_uuid="71846a85-17e3-4cbd-9c1e-f9f5ef3c50bb",uuid="984af384-328f-42fe-9e99-bb6e1e70ba6b"} 0
+nutanix_vdisks_controller_total_io_size_kbytes{attached_vm_uuid="7366fb9a-bd50-45d1-8091-1ad70b15f42e",uuid="e70f9e6a-3e67-4abb-81db-17b8cb5b899f"} 0
+nutanix_vdisks_controller_total_io_size_kbytes{attached_vm_uuid="79a94fb8-b666-4bcf-b97b-3171684149d4",uuid="f3c2fda3-bc80-47fc-a745-b1984d298c60"} 1868
+nutanix_vdisks_controller_total_io_size_kbytes{attached_vm_uuid="8c2754e9-7996-40d8-a597-6cd28b623e4f",uuid="a633f982-b6cf-44a6-b2bb-47fd8c41d5cc"} 0
+nutanix_vdisks_controller_total_io_size_kbytes{attached_vm_uuid="93d8b775-1a6f-4312-864f-adb9ad746b42",uuid="205b811e-2e2f-41a1-8f31-67c259fcee8e"} 0
+nutanix_vdisks_controller_total_io_size_kbytes{attached_vm_uuid="93d8b775-1a6f-4312-864f-adb9ad746b42",uuid="e9d2aa30-bfaa-4229-89b5-3035f9a9ba8d"} 0
+nutanix_vdisks_controller_total_io_size_kbytes{attached_vm_uuid="9fef76ea-9c77-47eb-bf0a-5bff563fdec8",uuid="601505c8-e467-41e9-87ad-db46a530edc4"} 0
+nutanix_vdisks_controller_total_io_size_kbytes{attached_vm_uuid="9fef76ea-9c77-47eb-bf0a-5bff563fdec8",uuid="6849025a-fdba-46a1-b995-718429dda2d7"} 0
+nutanix_vdisks_controller_total_io_size_kbytes{attached_vm_uuid="a295618e-c637-4051-bc59-568531763413",uuid="0a28d7fd-bf39-4445-b74a-4e1474fe88f0"} 0
+nutanix_vdisks_controller_total_io_size_kbytes{attached_vm_uuid="a295618e-c637-4051-bc59-568531763413",uuid="f447b071-e9e9-4c07-91f9-062cd70488d7"} 0
+nutanix_vdisks_controller_total_io_size_kbytes{attached_vm_uuid="a49743bc-0351-4bfc-a061-a54d9a6d27b1",uuid="2c53d7e2-cde8-4633-bffc-311acbf3d18b"} 0
+nutanix_vdisks_controller_total_io_size_kbytes{attached_vm_uuid="a49743bc-0351-4bfc-a061-a54d9a6d27b1",uuid="8c17eea2-014f-4908-acf9-daa6071adaf5"} 0
+nutanix_vdisks_controller_total_io_size_kbytes{attached_vm_uuid="ae12779b-b375-4206-a159-c71b257f8dc2",uuid="76b88f11-5cde-4255-b521-8aca903c444b"} 0
+nutanix_vdisks_controller_total_io_size_kbytes{attached_vm_uuid="ae12779b-b375-4206-a159-c71b257f8dc2",uuid="89c28c03-5a60-4271-a3e7-c9b9a84a5073"} 0
+nutanix_vdisks_controller_total_io_size_kbytes{attached_vm_uuid="aea3ec23-ee5a-438f-ae88-2e09aedd16c7",uuid="307d27ce-617a-41de-82bb-14f7bbe9ffcb"} 7328
+nutanix_vdisks_controller_total_io_size_kbytes{attached_vm_uuid="aea3ec23-ee5a-438f-ae88-2e09aedd16c7",uuid="5d52c163-a9c4-4807-9be6-50e3f47c0e6e"} 0
+nutanix_vdisks_controller_total_io_size_kbytes{attached_vm_uuid="aea3ec23-ee5a-438f-ae88-2e09aedd16c7",uuid="a0db6323-4e78-4ebe-a3ed-919028c1ae5a"} 0
+nutanix_vdisks_controller_total_io_size_kbytes{attached_vm_uuid="aea3ec23-ee5a-438f-ae88-2e09aedd16c7",uuid="ec7f9356-3b52-4b62-b3c1-dae2d77b2ea3"} 2160
+nutanix_vdisks_controller_total_io_size_kbytes{attached_vm_uuid="b606cb9b-5423-4985-8efe-7015146416a6",uuid="44600d06-61b3-4c51-81bc-5ebff3d62536"} 0
+nutanix_vdisks_controller_total_io_size_kbytes{attached_vm_uuid="b606cb9b-5423-4985-8efe-7015146416a6",uuid="b7bdf637-59c0-4f58-bb17-52620134bc87"} 0
+nutanix_vdisks_controller_total_io_size_kbytes{attached_vm_uuid="b89eedc3-7b73-4c0b-b86f-b696b3b9bf3e",uuid="1fcc70be-7541-4572-ac7c-b65b4a8c2be7"} 0
+nutanix_vdisks_controller_total_io_size_kbytes{attached_vm_uuid="b89eedc3-7b73-4c0b-b86f-b696b3b9bf3e",uuid="8e261ccb-2093-4f9d-8597-1bfe32f95731"} 0
+nutanix_vdisks_controller_total_io_size_kbytes{attached_vm_uuid="bbcc2366-dabf-496a-b19c-d08f773eff8a",uuid="a572cad6-b9bb-44b4-80e8-5c4b0d82929e"} 0
+nutanix_vdisks_controller_total_io_size_kbytes{attached_vm_uuid="bbcc2366-dabf-496a-b19c-d08f773eff8a",uuid="b9ccfc9a-7458-4325-8248-db1025254b35"} 0
+nutanix_vdisks_controller_total_io_size_kbytes{attached_vm_uuid="d3c9dd8a-32a7-41d2-8587-d7ea5fcb5170",uuid="295025b8-ef6b-4be1-b4ab-94f866fe544e"} 0
+nutanix_vdisks_controller_total_io_size_kbytes{attached_vm_uuid="d3c9dd8a-32a7-41d2-8587-d7ea5fcb5170",uuid="5a20746b-bd7a-4058-a7ac-126093db1495"} 0
+nutanix_vdisks_controller_total_io_size_kbytes{attached_vm_uuid="d967258c-75ae-49db-bbcc-c01a690f15c7",uuid="27a1f3e3-b222-41fe-9189-95824d4e84bf"} 0
+nutanix_vdisks_controller_total_io_size_kbytes{attached_vm_uuid="d967258c-75ae-49db-bbcc-c01a690f15c7",uuid="f90217fb-85eb-4f94-9c18-d95fe0d6e6a3"} 0
+nutanix_vdisks_controller_total_io_size_kbytes{attached_vm_uuid="da69bf52-dd1e-432a-96a5-5c746130cb45",uuid="6bce0580-6978-42c2-ab3b-0634e513c5c1"} 0
+nutanix_vdisks_controller_total_io_size_kbytes{attached_vm_uuid="da69bf52-dd1e-432a-96a5-5c746130cb45",uuid="ba8fd6de-8673-4c26-826e-e1f75d660627"} 0
+nutanix_vdisks_controller_total_io_size_kbytes{attached_vm_uuid="db738597-c261-4f47-95c1-2267a284deda",uuid="0e392c6a-61ed-4164-ab96-b508223dac18"} 0
+nutanix_vdisks_controller_total_io_size_kbytes{attached_vm_uuid="db738597-c261-4f47-95c1-2267a284deda",uuid="40cbe18a-c896-431f-8d35-ba2ee34ff21f"} 108
+nutanix_vdisks_controller_total_io_size_kbytes{attached_vm_uuid="db738597-c261-4f47-95c1-2267a284deda",uuid="4cc53beb-f0ec-440e-a600-6c02ad8127f0"} 56
+nutanix_vdisks_controller_total_io_size_kbytes{attached_vm_uuid="db738597-c261-4f47-95c1-2267a284deda",uuid="5b4ce010-8522-4c0f-b833-8412e0877f18"} 0
+nutanix_vdisks_controller_total_io_size_kbytes{attached_vm_uuid="db738597-c261-4f47-95c1-2267a284deda",uuid="68dc7916-3389-4ed4-8567-7cb359bcddfe"} 36
+nutanix_vdisks_controller_total_io_size_kbytes{attached_vm_uuid="db738597-c261-4f47-95c1-2267a284deda",uuid="7c951065-0bda-4589-ab02-68f554b7c6ce"} 0
+nutanix_vdisks_controller_total_io_size_kbytes{attached_vm_uuid="db738597-c261-4f47-95c1-2267a284deda",uuid="8beccc17-9252-4aae-bf37-c13e2cb30b34"} 0
+nutanix_vdisks_controller_total_io_size_kbytes{attached_vm_uuid="db738597-c261-4f47-95c1-2267a284deda",uuid="c02a3ca2-e0c0-402f-b509-390ca3c4e3aa"} 19952
+nutanix_vdisks_controller_total_io_size_kbytes{attached_vm_uuid="db738597-c261-4f47-95c1-2267a284deda",uuid="c7c6161c-08d0-43f2-b930-dc7d3e48ce4e"} 48
+nutanix_vdisks_controller_total_io_size_kbytes{attached_vm_uuid="eb454045-d152-4167-b4eb-3fdb1db8f277",uuid="05871870-32a3-4eb5-9a5f-c8950cbd8622"} 0
+nutanix_vdisks_controller_total_io_size_kbytes{attached_vm_uuid="eb454045-d152-4167-b4eb-3fdb1db8f277",uuid="db87faf2-29f7-4cf1-b2e6-f430f2b75be0"} 0
+# HELP nutanix_vdisks_controller_total_read_io_size_kbytes ...
+# TYPE nutanix_vdisks_controller_total_read_io_size_kbytes gauge
+nutanix_vdisks_controller_total_read_io_size_kbytes{attached_vm_uuid="",uuid="8c4d2c44-540d-41ba-affd-c9d8b84f1a41"} 0
+nutanix_vdisks_controller_total_read_io_size_kbytes{attached_vm_uuid="0edd071e-6bd7-4ce8-a88c-dd32c4f34558",uuid="2cfde956-cf87-4274-ad5f-c16c32df516d"} 0
+nutanix_vdisks_controller_total_read_io_size_kbytes{attached_vm_uuid="0edd071e-6bd7-4ce8-a88c-dd32c4f34558",uuid="ac541475-9ddf-4a72-8b21-05e6d1889f3a"} 0
+nutanix_vdisks_controller_total_read_io_size_kbytes{attached_vm_uuid="184e5d0d-1f3d-4de8-a715-8fc4c23fe60a",uuid="751116c4-94be-4f18-ab02-21c4bc344468"} 0
+nutanix_vdisks_controller_total_read_io_size_kbytes{attached_vm_uuid="184e5d0d-1f3d-4de8-a715-8fc4c23fe60a",uuid="e37af03c-158b-42ea-a261-e22fbfceb9de"} 0
+nutanix_vdisks_controller_total_read_io_size_kbytes{attached_vm_uuid="21238650-52aa-48fd-9049-ee25b966773f",uuid="69c794e8-7892-4396-9365-f1cad000ab44"} 0
+nutanix_vdisks_controller_total_read_io_size_kbytes{attached_vm_uuid="227ef30c-2cbd-407b-ac70-586ad3bd79e0",uuid="bca321b2-6e2e-4b9c-ac10-2ea59187fb5f"} 0
+nutanix_vdisks_controller_total_read_io_size_kbytes{attached_vm_uuid="244e8907-492d-466b-96aa-5ee3094666a4",uuid="687d90a5-746f-4062-9dd6-8a06c8e12c10"} 0
+nutanix_vdisks_controller_total_read_io_size_kbytes{attached_vm_uuid="244e8907-492d-466b-96aa-5ee3094666a4",uuid="f8a2a209-b951-46ac-8762-f11378abe76d"} 0
+nutanix_vdisks_controller_total_read_io_size_kbytes{attached_vm_uuid="37243b2c-f16d-4e11-972b-b314e52a759c",uuid="71138b64-531f-4c52-93b0-e6d5b8131eaf"} 0
+nutanix_vdisks_controller_total_read_io_size_kbytes{attached_vm_uuid="4171c556-96f8-48a8-bef7-b085bf2d1b9c",uuid="2c2e8bd4-a219-407f-9b7a-0e2043fbfbcc"} 0
+nutanix_vdisks_controller_total_read_io_size_kbytes{attached_vm_uuid="4171c556-96f8-48a8-bef7-b085bf2d1b9c",uuid="b3823d00-991a-4618-8ad9-17cc37552d0b"} 0
+nutanix_vdisks_controller_total_read_io_size_kbytes{attached_vm_uuid="5b9bafe4-89ad-4440-9a94-e6b73cbaa133",uuid="21002cda-26e0-4069-9be4-bc35d3ff5f86"} 0
+nutanix_vdisks_controller_total_read_io_size_kbytes{attached_vm_uuid="5b9bafe4-89ad-4440-9a94-e6b73cbaa133",uuid="ee8ab366-e900-4e8f-be64-be3973c1d030"} 0
+nutanix_vdisks_controller_total_read_io_size_kbytes{attached_vm_uuid="60f18b94-d7fd-40f7-9266-2577572af8f2",uuid="4bbf3798-8b1f-4d53-b3f3-0c551a3a29e1"} 0
+nutanix_vdisks_controller_total_read_io_size_kbytes{attached_vm_uuid="60f18b94-d7fd-40f7-9266-2577572af8f2",uuid="f1811148-d046-4016-a4af-9c54e87c497e"} 0
+nutanix_vdisks_controller_total_read_io_size_kbytes{attached_vm_uuid="71846a85-17e3-4cbd-9c1e-f9f5ef3c50bb",uuid="47469b48-cfd6-4105-90fc-00525b1863b0"} 0
+nutanix_vdisks_controller_total_read_io_size_kbytes{attached_vm_uuid="71846a85-17e3-4cbd-9c1e-f9f5ef3c50bb",uuid="984af384-328f-42fe-9e99-bb6e1e70ba6b"} 0
+nutanix_vdisks_controller_total_read_io_size_kbytes{attached_vm_uuid="7366fb9a-bd50-45d1-8091-1ad70b15f42e",uuid="e70f9e6a-3e67-4abb-81db-17b8cb5b899f"} 0
+nutanix_vdisks_controller_total_read_io_size_kbytes{attached_vm_uuid="79a94fb8-b666-4bcf-b97b-3171684149d4",uuid="f3c2fda3-bc80-47fc-a745-b1984d298c60"} 0
+nutanix_vdisks_controller_total_read_io_size_kbytes{attached_vm_uuid="8c2754e9-7996-40d8-a597-6cd28b623e4f",uuid="a633f982-b6cf-44a6-b2bb-47fd8c41d5cc"} 0
+nutanix_vdisks_controller_total_read_io_size_kbytes{attached_vm_uuid="93d8b775-1a6f-4312-864f-adb9ad746b42",uuid="205b811e-2e2f-41a1-8f31-67c259fcee8e"} 0
+nutanix_vdisks_controller_total_read_io_size_kbytes{attached_vm_uuid="93d8b775-1a6f-4312-864f-adb9ad746b42",uuid="e9d2aa30-bfaa-4229-89b5-3035f9a9ba8d"} 0
+nutanix_vdisks_controller_total_read_io_size_kbytes{attached_vm_uuid="9fef76ea-9c77-47eb-bf0a-5bff563fdec8",uuid="601505c8-e467-41e9-87ad-db46a530edc4"} 0
+nutanix_vdisks_controller_total_read_io_size_kbytes{attached_vm_uuid="9fef76ea-9c77-47eb-bf0a-5bff563fdec8",uuid="6849025a-fdba-46a1-b995-718429dda2d7"} 0
+nutanix_vdisks_controller_total_read_io_size_kbytes{attached_vm_uuid="a295618e-c637-4051-bc59-568531763413",uuid="0a28d7fd-bf39-4445-b74a-4e1474fe88f0"} 0
+nutanix_vdisks_controller_total_read_io_size_kbytes{attached_vm_uuid="a295618e-c637-4051-bc59-568531763413",uuid="f447b071-e9e9-4c07-91f9-062cd70488d7"} 0
+nutanix_vdisks_controller_total_read_io_size_kbytes{attached_vm_uuid="a49743bc-0351-4bfc-a061-a54d9a6d27b1",uuid="2c53d7e2-cde8-4633-bffc-311acbf3d18b"} 0
+nutanix_vdisks_controller_total_read_io_size_kbytes{attached_vm_uuid="a49743bc-0351-4bfc-a061-a54d9a6d27b1",uuid="8c17eea2-014f-4908-acf9-daa6071adaf5"} 0
+nutanix_vdisks_controller_total_read_io_size_kbytes{attached_vm_uuid="ae12779b-b375-4206-a159-c71b257f8dc2",uuid="76b88f11-5cde-4255-b521-8aca903c444b"} 0
+nutanix_vdisks_controller_total_read_io_size_kbytes{attached_vm_uuid="ae12779b-b375-4206-a159-c71b257f8dc2",uuid="89c28c03-5a60-4271-a3e7-c9b9a84a5073"} 0
+nutanix_vdisks_controller_total_read_io_size_kbytes{attached_vm_uuid="aea3ec23-ee5a-438f-ae88-2e09aedd16c7",uuid="307d27ce-617a-41de-82bb-14f7bbe9ffcb"} 3104
+nutanix_vdisks_controller_total_read_io_size_kbytes{attached_vm_uuid="aea3ec23-ee5a-438f-ae88-2e09aedd16c7",uuid="5d52c163-a9c4-4807-9be6-50e3f47c0e6e"} 0
+nutanix_vdisks_controller_total_read_io_size_kbytes{attached_vm_uuid="aea3ec23-ee5a-438f-ae88-2e09aedd16c7",uuid="a0db6323-4e78-4ebe-a3ed-919028c1ae5a"} 0
+nutanix_vdisks_controller_total_read_io_size_kbytes{attached_vm_uuid="aea3ec23-ee5a-438f-ae88-2e09aedd16c7",uuid="ec7f9356-3b52-4b62-b3c1-dae2d77b2ea3"} 0
+nutanix_vdisks_controller_total_read_io_size_kbytes{attached_vm_uuid="b606cb9b-5423-4985-8efe-7015146416a6",uuid="44600d06-61b3-4c51-81bc-5ebff3d62536"} 0
+nutanix_vdisks_controller_total_read_io_size_kbytes{attached_vm_uuid="b606cb9b-5423-4985-8efe-7015146416a6",uuid="b7bdf637-59c0-4f58-bb17-52620134bc87"} 0
+nutanix_vdisks_controller_total_read_io_size_kbytes{attached_vm_uuid="b89eedc3-7b73-4c0b-b86f-b696b3b9bf3e",uuid="1fcc70be-7541-4572-ac7c-b65b4a8c2be7"} 0
+nutanix_vdisks_controller_total_read_io_size_kbytes{attached_vm_uuid="b89eedc3-7b73-4c0b-b86f-b696b3b9bf3e",uuid="8e261ccb-2093-4f9d-8597-1bfe32f95731"} 0
+nutanix_vdisks_controller_total_read_io_size_kbytes{attached_vm_uuid="bbcc2366-dabf-496a-b19c-d08f773eff8a",uuid="a572cad6-b9bb-44b4-80e8-5c4b0d82929e"} 0
+nutanix_vdisks_controller_total_read_io_size_kbytes{attached_vm_uuid="bbcc2366-dabf-496a-b19c-d08f773eff8a",uuid="b9ccfc9a-7458-4325-8248-db1025254b35"} 0
+nutanix_vdisks_controller_total_read_io_size_kbytes{attached_vm_uuid="d3c9dd8a-32a7-41d2-8587-d7ea5fcb5170",uuid="295025b8-ef6b-4be1-b4ab-94f866fe544e"} 0
+nutanix_vdisks_controller_total_read_io_size_kbytes{attached_vm_uuid="d3c9dd8a-32a7-41d2-8587-d7ea5fcb5170",uuid="5a20746b-bd7a-4058-a7ac-126093db1495"} 0
+nutanix_vdisks_controller_total_read_io_size_kbytes{attached_vm_uuid="d967258c-75ae-49db-bbcc-c01a690f15c7",uuid="27a1f3e3-b222-41fe-9189-95824d4e84bf"} 0
+nutanix_vdisks_controller_total_read_io_size_kbytes{attached_vm_uuid="d967258c-75ae-49db-bbcc-c01a690f15c7",uuid="f90217fb-85eb-4f94-9c18-d95fe0d6e6a3"} 0
+nutanix_vdisks_controller_total_read_io_size_kbytes{attached_vm_uuid="da69bf52-dd1e-432a-96a5-5c746130cb45",uuid="6bce0580-6978-42c2-ab3b-0634e513c5c1"} 0
+nutanix_vdisks_controller_total_read_io_size_kbytes{attached_vm_uuid="da69bf52-dd1e-432a-96a5-5c746130cb45",uuid="ba8fd6de-8673-4c26-826e-e1f75d660627"} 0
+nutanix_vdisks_controller_total_read_io_size_kbytes{attached_vm_uuid="db738597-c261-4f47-95c1-2267a284deda",uuid="0e392c6a-61ed-4164-ab96-b508223dac18"} 0
+nutanix_vdisks_controller_total_read_io_size_kbytes{attached_vm_uuid="db738597-c261-4f47-95c1-2267a284deda",uuid="40cbe18a-c896-431f-8d35-ba2ee34ff21f"} 4
+nutanix_vdisks_controller_total_read_io_size_kbytes{attached_vm_uuid="db738597-c261-4f47-95c1-2267a284deda",uuid="4cc53beb-f0ec-440e-a600-6c02ad8127f0"} 4
+nutanix_vdisks_controller_total_read_io_size_kbytes{attached_vm_uuid="db738597-c261-4f47-95c1-2267a284deda",uuid="5b4ce010-8522-4c0f-b833-8412e0877f18"} 0
+nutanix_vdisks_controller_total_read_io_size_kbytes{attached_vm_uuid="db738597-c261-4f47-95c1-2267a284deda",uuid="68dc7916-3389-4ed4-8567-7cb359bcddfe"} 4
+nutanix_vdisks_controller_total_read_io_size_kbytes{attached_vm_uuid="db738597-c261-4f47-95c1-2267a284deda",uuid="7c951065-0bda-4589-ab02-68f554b7c6ce"} 0
+nutanix_vdisks_controller_total_read_io_size_kbytes{attached_vm_uuid="db738597-c261-4f47-95c1-2267a284deda",uuid="8beccc17-9252-4aae-bf37-c13e2cb30b34"} 0
+nutanix_vdisks_controller_total_read_io_size_kbytes{attached_vm_uuid="db738597-c261-4f47-95c1-2267a284deda",uuid="c02a3ca2-e0c0-402f-b509-390ca3c4e3aa"} 0
+nutanix_vdisks_controller_total_read_io_size_kbytes{attached_vm_uuid="db738597-c261-4f47-95c1-2267a284deda",uuid="c7c6161c-08d0-43f2-b930-dc7d3e48ce4e"} 4
+nutanix_vdisks_controller_total_read_io_size_kbytes{attached_vm_uuid="eb454045-d152-4167-b4eb-3fdb1db8f277",uuid="05871870-32a3-4eb5-9a5f-c8950cbd8622"} 0
+nutanix_vdisks_controller_total_read_io_size_kbytes{attached_vm_uuid="eb454045-d152-4167-b4eb-3fdb1db8f277",uuid="db87faf2-29f7-4cf1-b2e6-f430f2b75be0"} 0
+# HELP nutanix_vdisks_controller_total_write_io_size_kbytes ...
+# TYPE nutanix_vdisks_controller_total_write_io_size_kbytes gauge
+nutanix_vdisks_controller_total_write_io_size_kbytes{attached_vm_uuid="",uuid="8c4d2c44-540d-41ba-affd-c9d8b84f1a41"} 0
+nutanix_vdisks_controller_total_write_io_size_kbytes{attached_vm_uuid="0edd071e-6bd7-4ce8-a88c-dd32c4f34558",uuid="2cfde956-cf87-4274-ad5f-c16c32df516d"} 0
+nutanix_vdisks_controller_total_write_io_size_kbytes{attached_vm_uuid="0edd071e-6bd7-4ce8-a88c-dd32c4f34558",uuid="ac541475-9ddf-4a72-8b21-05e6d1889f3a"} 0
+nutanix_vdisks_controller_total_write_io_size_kbytes{attached_vm_uuid="184e5d0d-1f3d-4de8-a715-8fc4c23fe60a",uuid="751116c4-94be-4f18-ab02-21c4bc344468"} 0
+nutanix_vdisks_controller_total_write_io_size_kbytes{attached_vm_uuid="184e5d0d-1f3d-4de8-a715-8fc4c23fe60a",uuid="e37af03c-158b-42ea-a261-e22fbfceb9de"} 0
+nutanix_vdisks_controller_total_write_io_size_kbytes{attached_vm_uuid="21238650-52aa-48fd-9049-ee25b966773f",uuid="69c794e8-7892-4396-9365-f1cad000ab44"} 285
+nutanix_vdisks_controller_total_write_io_size_kbytes{attached_vm_uuid="227ef30c-2cbd-407b-ac70-586ad3bd79e0",uuid="bca321b2-6e2e-4b9c-ac10-2ea59187fb5f"} 0
+nutanix_vdisks_controller_total_write_io_size_kbytes{attached_vm_uuid="244e8907-492d-466b-96aa-5ee3094666a4",uuid="687d90a5-746f-4062-9dd6-8a06c8e12c10"} 0
+nutanix_vdisks_controller_total_write_io_size_kbytes{attached_vm_uuid="244e8907-492d-466b-96aa-5ee3094666a4",uuid="f8a2a209-b951-46ac-8762-f11378abe76d"} 0
+nutanix_vdisks_controller_total_write_io_size_kbytes{attached_vm_uuid="37243b2c-f16d-4e11-972b-b314e52a759c",uuid="71138b64-531f-4c52-93b0-e6d5b8131eaf"} 0
+nutanix_vdisks_controller_total_write_io_size_kbytes{attached_vm_uuid="4171c556-96f8-48a8-bef7-b085bf2d1b9c",uuid="2c2e8bd4-a219-407f-9b7a-0e2043fbfbcc"} 0
+nutanix_vdisks_controller_total_write_io_size_kbytes{attached_vm_uuid="4171c556-96f8-48a8-bef7-b085bf2d1b9c",uuid="b3823d00-991a-4618-8ad9-17cc37552d0b"} 0
+nutanix_vdisks_controller_total_write_io_size_kbytes{attached_vm_uuid="5b9bafe4-89ad-4440-9a94-e6b73cbaa133",uuid="21002cda-26e0-4069-9be4-bc35d3ff5f86"} 0
+nutanix_vdisks_controller_total_write_io_size_kbytes{attached_vm_uuid="5b9bafe4-89ad-4440-9a94-e6b73cbaa133",uuid="ee8ab366-e900-4e8f-be64-be3973c1d030"} 0
+nutanix_vdisks_controller_total_write_io_size_kbytes{attached_vm_uuid="60f18b94-d7fd-40f7-9266-2577572af8f2",uuid="4bbf3798-8b1f-4d53-b3f3-0c551a3a29e1"} 0
+nutanix_vdisks_controller_total_write_io_size_kbytes{attached_vm_uuid="60f18b94-d7fd-40f7-9266-2577572af8f2",uuid="f1811148-d046-4016-a4af-9c54e87c497e"} 0
+nutanix_vdisks_controller_total_write_io_size_kbytes{attached_vm_uuid="71846a85-17e3-4cbd-9c1e-f9f5ef3c50bb",uuid="47469b48-cfd6-4105-90fc-00525b1863b0"} 0
+nutanix_vdisks_controller_total_write_io_size_kbytes{attached_vm_uuid="71846a85-17e3-4cbd-9c1e-f9f5ef3c50bb",uuid="984af384-328f-42fe-9e99-bb6e1e70ba6b"} 0
+nutanix_vdisks_controller_total_write_io_size_kbytes{attached_vm_uuid="7366fb9a-bd50-45d1-8091-1ad70b15f42e",uuid="e70f9e6a-3e67-4abb-81db-17b8cb5b899f"} 0
+nutanix_vdisks_controller_total_write_io_size_kbytes{attached_vm_uuid="79a94fb8-b666-4bcf-b97b-3171684149d4",uuid="f3c2fda3-bc80-47fc-a745-b1984d298c60"} 1868
+nutanix_vdisks_controller_total_write_io_size_kbytes{attached_vm_uuid="8c2754e9-7996-40d8-a597-6cd28b623e4f",uuid="a633f982-b6cf-44a6-b2bb-47fd8c41d5cc"} 0
+nutanix_vdisks_controller_total_write_io_size_kbytes{attached_vm_uuid="93d8b775-1a6f-4312-864f-adb9ad746b42",uuid="205b811e-2e2f-41a1-8f31-67c259fcee8e"} 0
+nutanix_vdisks_controller_total_write_io_size_kbytes{attached_vm_uuid="93d8b775-1a6f-4312-864f-adb9ad746b42",uuid="e9d2aa30-bfaa-4229-89b5-3035f9a9ba8d"} 0
+nutanix_vdisks_controller_total_write_io_size_kbytes{attached_vm_uuid="9fef76ea-9c77-47eb-bf0a-5bff563fdec8",uuid="601505c8-e467-41e9-87ad-db46a530edc4"} 0
+nutanix_vdisks_controller_total_write_io_size_kbytes{attached_vm_uuid="9fef76ea-9c77-47eb-bf0a-5bff563fdec8",uuid="6849025a-fdba-46a1-b995-718429dda2d7"} 0
+nutanix_vdisks_controller_total_write_io_size_kbytes{attached_vm_uuid="a295618e-c637-4051-bc59-568531763413",uuid="0a28d7fd-bf39-4445-b74a-4e1474fe88f0"} 0
+nutanix_vdisks_controller_total_write_io_size_kbytes{attached_vm_uuid="a295618e-c637-4051-bc59-568531763413",uuid="f447b071-e9e9-4c07-91f9-062cd70488d7"} 0
+nutanix_vdisks_controller_total_write_io_size_kbytes{attached_vm_uuid="a49743bc-0351-4bfc-a061-a54d9a6d27b1",uuid="2c53d7e2-cde8-4633-bffc-311acbf3d18b"} 0
+nutanix_vdisks_controller_total_write_io_size_kbytes{attached_vm_uuid="a49743bc-0351-4bfc-a061-a54d9a6d27b1",uuid="8c17eea2-014f-4908-acf9-daa6071adaf5"} 0
+nutanix_vdisks_controller_total_write_io_size_kbytes{attached_vm_uuid="ae12779b-b375-4206-a159-c71b257f8dc2",uuid="76b88f11-5cde-4255-b521-8aca903c444b"} 0
+nutanix_vdisks_controller_total_write_io_size_kbytes{attached_vm_uuid="ae12779b-b375-4206-a159-c71b257f8dc2",uuid="89c28c03-5a60-4271-a3e7-c9b9a84a5073"} 0
+nutanix_vdisks_controller_total_write_io_size_kbytes{attached_vm_uuid="aea3ec23-ee5a-438f-ae88-2e09aedd16c7",uuid="307d27ce-617a-41de-82bb-14f7bbe9ffcb"} 4224
+nutanix_vdisks_controller_total_write_io_size_kbytes{attached_vm_uuid="aea3ec23-ee5a-438f-ae88-2e09aedd16c7",uuid="5d52c163-a9c4-4807-9be6-50e3f47c0e6e"} 0
+nutanix_vdisks_controller_total_write_io_size_kbytes{attached_vm_uuid="aea3ec23-ee5a-438f-ae88-2e09aedd16c7",uuid="a0db6323-4e78-4ebe-a3ed-919028c1ae5a"} 0
+nutanix_vdisks_controller_total_write_io_size_kbytes{attached_vm_uuid="aea3ec23-ee5a-438f-ae88-2e09aedd16c7",uuid="ec7f9356-3b52-4b62-b3c1-dae2d77b2ea3"} 2160
+nutanix_vdisks_controller_total_write_io_size_kbytes{attached_vm_uuid="b606cb9b-5423-4985-8efe-7015146416a6",uuid="44600d06-61b3-4c51-81bc-5ebff3d62536"} 0
+nutanix_vdisks_controller_total_write_io_size_kbytes{attached_vm_uuid="b606cb9b-5423-4985-8efe-7015146416a6",uuid="b7bdf637-59c0-4f58-bb17-52620134bc87"} 0
+nutanix_vdisks_controller_total_write_io_size_kbytes{attached_vm_uuid="b89eedc3-7b73-4c0b-b86f-b696b3b9bf3e",uuid="1fcc70be-7541-4572-ac7c-b65b4a8c2be7"} 0
+nutanix_vdisks_controller_total_write_io_size_kbytes{attached_vm_uuid="b89eedc3-7b73-4c0b-b86f-b696b3b9bf3e",uuid="8e261ccb-2093-4f9d-8597-1bfe32f95731"} 0
+nutanix_vdisks_controller_total_write_io_size_kbytes{attached_vm_uuid="bbcc2366-dabf-496a-b19c-d08f773eff8a",uuid="a572cad6-b9bb-44b4-80e8-5c4b0d82929e"} 0
+nutanix_vdisks_controller_total_write_io_size_kbytes{attached_vm_uuid="bbcc2366-dabf-496a-b19c-d08f773eff8a",uuid="b9ccfc9a-7458-4325-8248-db1025254b35"} 0
+nutanix_vdisks_controller_total_write_io_size_kbytes{attached_vm_uuid="d3c9dd8a-32a7-41d2-8587-d7ea5fcb5170",uuid="295025b8-ef6b-4be1-b4ab-94f866fe544e"} 0
+nutanix_vdisks_controller_total_write_io_size_kbytes{attached_vm_uuid="d3c9dd8a-32a7-41d2-8587-d7ea5fcb5170",uuid="5a20746b-bd7a-4058-a7ac-126093db1495"} 0
+nutanix_vdisks_controller_total_write_io_size_kbytes{attached_vm_uuid="d967258c-75ae-49db-bbcc-c01a690f15c7",uuid="27a1f3e3-b222-41fe-9189-95824d4e84bf"} 0
+nutanix_vdisks_controller_total_write_io_size_kbytes{attached_vm_uuid="d967258c-75ae-49db-bbcc-c01a690f15c7",uuid="f90217fb-85eb-4f94-9c18-d95fe0d6e6a3"} 0
+nutanix_vdisks_controller_total_write_io_size_kbytes{attached_vm_uuid="da69bf52-dd1e-432a-96a5-5c746130cb45",uuid="6bce0580-6978-42c2-ab3b-0634e513c5c1"} 0
+nutanix_vdisks_controller_total_write_io_size_kbytes{attached_vm_uuid="da69bf52-dd1e-432a-96a5-5c746130cb45",uuid="ba8fd6de-8673-4c26-826e-e1f75d660627"} 0
+nutanix_vdisks_controller_total_write_io_size_kbytes{attached_vm_uuid="db738597-c261-4f47-95c1-2267a284deda",uuid="0e392c6a-61ed-4164-ab96-b508223dac18"} 0
+nutanix_vdisks_controller_total_write_io_size_kbytes{attached_vm_uuid="db738597-c261-4f47-95c1-2267a284deda",uuid="40cbe18a-c896-431f-8d35-ba2ee34ff21f"} 104
+nutanix_vdisks_controller_total_write_io_size_kbytes{attached_vm_uuid="db738597-c261-4f47-95c1-2267a284deda",uuid="4cc53beb-f0ec-440e-a600-6c02ad8127f0"} 52
+nutanix_vdisks_controller_total_write_io_size_kbytes{attached_vm_uuid="db738597-c261-4f47-95c1-2267a284deda",uuid="5b4ce010-8522-4c0f-b833-8412e0877f18"} 0
+nutanix_vdisks_controller_total_write_io_size_kbytes{attached_vm_uuid="db738597-c261-4f47-95c1-2267a284deda",uuid="68dc7916-3389-4ed4-8567-7cb359bcddfe"} 32
+nutanix_vdisks_controller_total_write_io_size_kbytes{attached_vm_uuid="db738597-c261-4f47-95c1-2267a284deda",uuid="7c951065-0bda-4589-ab02-68f554b7c6ce"} 0
+nutanix_vdisks_controller_total_write_io_size_kbytes{attached_vm_uuid="db738597-c261-4f47-95c1-2267a284deda",uuid="8beccc17-9252-4aae-bf37-c13e2cb30b34"} 0
+nutanix_vdisks_controller_total_write_io_size_kbytes{attached_vm_uuid="db738597-c261-4f47-95c1-2267a284deda",uuid="c02a3ca2-e0c0-402f-b509-390ca3c4e3aa"} 19952
+nutanix_vdisks_controller_total_write_io_size_kbytes{attached_vm_uuid="db738597-c261-4f47-95c1-2267a284deda",uuid="c7c6161c-08d0-43f2-b930-dc7d3e48ce4e"} 44
+nutanix_vdisks_controller_total_write_io_size_kbytes{attached_vm_uuid="eb454045-d152-4167-b4eb-3fdb1db8f277",uuid="05871870-32a3-4eb5-9a5f-c8950cbd8622"} 0
+nutanix_vdisks_controller_total_write_io_size_kbytes{attached_vm_uuid="eb454045-d152-4167-b4eb-3fdb1db8f277",uuid="db87faf2-29f7-4cf1-b2e6-f430f2b75be0"} 0
+# HELP nutanix_vdisks_disk_capacity_in_bytes ...
+# TYPE nutanix_vdisks_disk_capacity_in_bytes gauge
+nutanix_vdisks_disk_capacity_in_bytes{attached_vm_uuid="",uuid="8c4d2c44-540d-41ba-affd-c9d8b84f1a41"} 1.073741824e+10
+nutanix_vdisks_disk_capacity_in_bytes{attached_vm_uuid="0edd071e-6bd7-4ce8-a88c-dd32c4f34558",uuid="2cfde956-cf87-4274-ad5f-c16c32df516d"} 1.073741824e+11
+nutanix_vdisks_disk_capacity_in_bytes{attached_vm_uuid="0edd071e-6bd7-4ce8-a88c-dd32c4f34558",uuid="ac541475-9ddf-4a72-8b21-05e6d1889f3a"} 8.589934592e+09
+nutanix_vdisks_disk_capacity_in_bytes{attached_vm_uuid="184e5d0d-1f3d-4de8-a715-8fc4c23fe60a",uuid="751116c4-94be-4f18-ab02-21c4bc344468"} 1.073741824e+11
+nutanix_vdisks_disk_capacity_in_bytes{attached_vm_uuid="184e5d0d-1f3d-4de8-a715-8fc4c23fe60a",uuid="e37af03c-158b-42ea-a261-e22fbfceb9de"} 8.589934592e+09
+nutanix_vdisks_disk_capacity_in_bytes{attached_vm_uuid="21238650-52aa-48fd-9049-ee25b966773f",uuid="69c794e8-7892-4396-9365-f1cad000ab44"} 5.36870912e+11
+nutanix_vdisks_disk_capacity_in_bytes{attached_vm_uuid="227ef30c-2cbd-407b-ac70-586ad3bd79e0",uuid="bca321b2-6e2e-4b9c-ac10-2ea59187fb5f"} 1.099511627776e+12
+nutanix_vdisks_disk_capacity_in_bytes{attached_vm_uuid="244e8907-492d-466b-96aa-5ee3094666a4",uuid="687d90a5-746f-4062-9dd6-8a06c8e12c10"} 8.589934592e+09
+nutanix_vdisks_disk_capacity_in_bytes{attached_vm_uuid="244e8907-492d-466b-96aa-5ee3094666a4",uuid="f8a2a209-b951-46ac-8762-f11378abe76d"} 1.073741824e+11
+nutanix_vdisks_disk_capacity_in_bytes{attached_vm_uuid="37243b2c-f16d-4e11-972b-b314e52a759c",uuid="71138b64-531f-4c52-93b0-e6d5b8131eaf"} 8.589934592e+09
+nutanix_vdisks_disk_capacity_in_bytes{attached_vm_uuid="4171c556-96f8-48a8-bef7-b085bf2d1b9c",uuid="2c2e8bd4-a219-407f-9b7a-0e2043fbfbcc"} 1.073741824e+11
+nutanix_vdisks_disk_capacity_in_bytes{attached_vm_uuid="4171c556-96f8-48a8-bef7-b085bf2d1b9c",uuid="b3823d00-991a-4618-8ad9-17cc37552d0b"} 8.589934592e+09
+nutanix_vdisks_disk_capacity_in_bytes{attached_vm_uuid="5b9bafe4-89ad-4440-9a94-e6b73cbaa133",uuid="21002cda-26e0-4069-9be4-bc35d3ff5f86"} 8.589934592e+09
+nutanix_vdisks_disk_capacity_in_bytes{attached_vm_uuid="5b9bafe4-89ad-4440-9a94-e6b73cbaa133",uuid="ee8ab366-e900-4e8f-be64-be3973c1d030"} 1.073741824e+11
+nutanix_vdisks_disk_capacity_in_bytes{attached_vm_uuid="60f18b94-d7fd-40f7-9266-2577572af8f2",uuid="4bbf3798-8b1f-4d53-b3f3-0c551a3a29e1"} 1.073741824e+11
+nutanix_vdisks_disk_capacity_in_bytes{attached_vm_uuid="60f18b94-d7fd-40f7-9266-2577572af8f2",uuid="f1811148-d046-4016-a4af-9c54e87c497e"} 8.589934592e+09
+nutanix_vdisks_disk_capacity_in_bytes{attached_vm_uuid="71846a85-17e3-4cbd-9c1e-f9f5ef3c50bb",uuid="47469b48-cfd6-4105-90fc-00525b1863b0"} 8.589934592e+09
+nutanix_vdisks_disk_capacity_in_bytes{attached_vm_uuid="71846a85-17e3-4cbd-9c1e-f9f5ef3c50bb",uuid="984af384-328f-42fe-9e99-bb6e1e70ba6b"} 1.073741824e+11
+nutanix_vdisks_disk_capacity_in_bytes{attached_vm_uuid="7366fb9a-bd50-45d1-8091-1ad70b15f42e",uuid="e70f9e6a-3e67-4abb-81db-17b8cb5b899f"} 8.589934592e+09
+nutanix_vdisks_disk_capacity_in_bytes{attached_vm_uuid="79a94fb8-b666-4bcf-b97b-3171684149d4",uuid="f3c2fda3-bc80-47fc-a745-b1984d298c60"} 5.36870912e+11
+nutanix_vdisks_disk_capacity_in_bytes{attached_vm_uuid="8c2754e9-7996-40d8-a597-6cd28b623e4f",uuid="a633f982-b6cf-44a6-b2bb-47fd8c41d5cc"} 8.589934592e+09
+nutanix_vdisks_disk_capacity_in_bytes{attached_vm_uuid="93d8b775-1a6f-4312-864f-adb9ad746b42",uuid="205b811e-2e2f-41a1-8f31-67c259fcee8e"} 1.073741824e+11
+nutanix_vdisks_disk_capacity_in_bytes{attached_vm_uuid="93d8b775-1a6f-4312-864f-adb9ad746b42",uuid="e9d2aa30-bfaa-4229-89b5-3035f9a9ba8d"} 8.589934592e+09
+nutanix_vdisks_disk_capacity_in_bytes{attached_vm_uuid="9fef76ea-9c77-47eb-bf0a-5bff563fdec8",uuid="601505c8-e467-41e9-87ad-db46a530edc4"} 1.073741824e+11
+nutanix_vdisks_disk_capacity_in_bytes{attached_vm_uuid="9fef76ea-9c77-47eb-bf0a-5bff563fdec8",uuid="6849025a-fdba-46a1-b995-718429dda2d7"} 8.589934592e+09
+nutanix_vdisks_disk_capacity_in_bytes{attached_vm_uuid="a295618e-c637-4051-bc59-568531763413",uuid="0a28d7fd-bf39-4445-b74a-4e1474fe88f0"} 1.073741824e+11
+nutanix_vdisks_disk_capacity_in_bytes{attached_vm_uuid="a295618e-c637-4051-bc59-568531763413",uuid="f447b071-e9e9-4c07-91f9-062cd70488d7"} 8.589934592e+09
+nutanix_vdisks_disk_capacity_in_bytes{attached_vm_uuid="a49743bc-0351-4bfc-a061-a54d9a6d27b1",uuid="2c53d7e2-cde8-4633-bffc-311acbf3d18b"} 8.589934592e+09
+nutanix_vdisks_disk_capacity_in_bytes{attached_vm_uuid="a49743bc-0351-4bfc-a061-a54d9a6d27b1",uuid="8c17eea2-014f-4908-acf9-daa6071adaf5"} 1.073741824e+11
+nutanix_vdisks_disk_capacity_in_bytes{attached_vm_uuid="ae12779b-b375-4206-a159-c71b257f8dc2",uuid="76b88f11-5cde-4255-b521-8aca903c444b"} 1.2884901888e+11
+nutanix_vdisks_disk_capacity_in_bytes{attached_vm_uuid="ae12779b-b375-4206-a159-c71b257f8dc2",uuid="89c28c03-5a60-4271-a3e7-c9b9a84a5073"} 8.589934592e+09
+nutanix_vdisks_disk_capacity_in_bytes{attached_vm_uuid="aea3ec23-ee5a-438f-ae88-2e09aedd16c7",uuid="307d27ce-617a-41de-82bb-14f7bbe9ffcb"} 2.47706157056e+11
+nutanix_vdisks_disk_capacity_in_bytes{attached_vm_uuid="aea3ec23-ee5a-438f-ae88-2e09aedd16c7",uuid="5d52c163-a9c4-4807-9be6-50e3f47c0e6e"} 8.00063488e+09
+nutanix_vdisks_disk_capacity_in_bytes{attached_vm_uuid="aea3ec23-ee5a-438f-ae88-2e09aedd16c7",uuid="a0db6323-4e78-4ebe-a3ed-919028c1ae5a"} 4.184866816e+09
+nutanix_vdisks_disk_capacity_in_bytes{attached_vm_uuid="aea3ec23-ee5a-438f-ae88-2e09aedd16c7",uuid="ec7f9356-3b52-4b62-b3c1-dae2d77b2ea3"} 1.616904192e+09
+nutanix_vdisks_disk_capacity_in_bytes{attached_vm_uuid="b606cb9b-5423-4985-8efe-7015146416a6",uuid="44600d06-61b3-4c51-81bc-5ebff3d62536"} 1.2884901888e+11
+nutanix_vdisks_disk_capacity_in_bytes{attached_vm_uuid="b606cb9b-5423-4985-8efe-7015146416a6",uuid="b7bdf637-59c0-4f58-bb17-52620134bc87"} 8.589934592e+09
+nutanix_vdisks_disk_capacity_in_bytes{attached_vm_uuid="b89eedc3-7b73-4c0b-b86f-b696b3b9bf3e",uuid="1fcc70be-7541-4572-ac7c-b65b4a8c2be7"} 1.073741824e+11
+nutanix_vdisks_disk_capacity_in_bytes{attached_vm_uuid="b89eedc3-7b73-4c0b-b86f-b696b3b9bf3e",uuid="8e261ccb-2093-4f9d-8597-1bfe32f95731"} 8.589934592e+09
+nutanix_vdisks_disk_capacity_in_bytes{attached_vm_uuid="bbcc2366-dabf-496a-b19c-d08f773eff8a",uuid="a572cad6-b9bb-44b4-80e8-5c4b0d82929e"} 8.589934592e+09
+nutanix_vdisks_disk_capacity_in_bytes{attached_vm_uuid="bbcc2366-dabf-496a-b19c-d08f773eff8a",uuid="b9ccfc9a-7458-4325-8248-db1025254b35"} 1.2884901888e+11
+nutanix_vdisks_disk_capacity_in_bytes{attached_vm_uuid="d3c9dd8a-32a7-41d2-8587-d7ea5fcb5170",uuid="295025b8-ef6b-4be1-b4ab-94f866fe544e"} 8.589934592e+09
+nutanix_vdisks_disk_capacity_in_bytes{attached_vm_uuid="d3c9dd8a-32a7-41d2-8587-d7ea5fcb5170",uuid="5a20746b-bd7a-4058-a7ac-126093db1495"} 1.073741824e+11
+nutanix_vdisks_disk_capacity_in_bytes{attached_vm_uuid="d967258c-75ae-49db-bbcc-c01a690f15c7",uuid="27a1f3e3-b222-41fe-9189-95824d4e84bf"} 1.073741824e+11
+nutanix_vdisks_disk_capacity_in_bytes{attached_vm_uuid="d967258c-75ae-49db-bbcc-c01a690f15c7",uuid="f90217fb-85eb-4f94-9c18-d95fe0d6e6a3"} 8.589934592e+09
+nutanix_vdisks_disk_capacity_in_bytes{attached_vm_uuid="da69bf52-dd1e-432a-96a5-5c746130cb45",uuid="6bce0580-6978-42c2-ab3b-0634e513c5c1"} 8.589934592e+09
+nutanix_vdisks_disk_capacity_in_bytes{attached_vm_uuid="da69bf52-dd1e-432a-96a5-5c746130cb45",uuid="ba8fd6de-8673-4c26-826e-e1f75d660627"} 1.073741824e+11
+nutanix_vdisks_disk_capacity_in_bytes{attached_vm_uuid="db738597-c261-4f47-95c1-2267a284deda",uuid="0e392c6a-61ed-4164-ab96-b508223dac18"} 1.572864e+07
+nutanix_vdisks_disk_capacity_in_bytes{attached_vm_uuid="db738597-c261-4f47-95c1-2267a284deda",uuid="40cbe18a-c896-431f-8d35-ba2ee34ff21f"} 5.36870912e+11
+nutanix_vdisks_disk_capacity_in_bytes{attached_vm_uuid="db738597-c261-4f47-95c1-2267a284deda",uuid="4cc53beb-f0ec-440e-a600-6c02ad8127f0"} 2.68435456e+12
+nutanix_vdisks_disk_capacity_in_bytes{attached_vm_uuid="db738597-c261-4f47-95c1-2267a284deda",uuid="5b4ce010-8522-4c0f-b833-8412e0877f18"} 7.6694945792e+10
+nutanix_vdisks_disk_capacity_in_bytes{attached_vm_uuid="db738597-c261-4f47-95c1-2267a284deda",uuid="68dc7916-3389-4ed4-8567-7cb359bcddfe"} 2.68435456e+12
+nutanix_vdisks_disk_capacity_in_bytes{attached_vm_uuid="db738597-c261-4f47-95c1-2267a284deda",uuid="7c951065-0bda-4589-ab02-68f554b7c6ce"} 374784
+nutanix_vdisks_disk_capacity_in_bytes{attached_vm_uuid="db738597-c261-4f47-95c1-2267a284deda",uuid="8beccc17-9252-4aae-bf37-c13e2cb30b34"} 3.221225472e+10
+nutanix_vdisks_disk_capacity_in_bytes{attached_vm_uuid="db738597-c261-4f47-95c1-2267a284deda",uuid="c02a3ca2-e0c0-402f-b509-390ca3c4e3aa"} 7.516192768e+10
+nutanix_vdisks_disk_capacity_in_bytes{attached_vm_uuid="db738597-c261-4f47-95c1-2267a284deda",uuid="c7c6161c-08d0-43f2-b930-dc7d3e48ce4e"} 2.68435456e+12
+nutanix_vdisks_disk_capacity_in_bytes{attached_vm_uuid="eb454045-d152-4167-b4eb-3fdb1db8f277",uuid="05871870-32a3-4eb5-9a5f-c8950cbd8622"} 1.073741824e+11
+nutanix_vdisks_disk_capacity_in_bytes{attached_vm_uuid="eb454045-d152-4167-b4eb-3fdb1db8f277",uuid="db87faf2-29f7-4cf1-b2e6-f430f2b75be0"} 8.589934592e+09
+# HELP nutanix_vdisks_properties ...
+# TYPE nutanix_vdisks_properties gauge
+nutanix_vdisks_properties{attached_vm_uuid="",attached_vmname="",cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",disk_address="0",disk_capacity_in_mb="10240",storage_container_uuid="a15035d4-f5a9-41d6-bfac-b71ad22eacb7",uuid="8c4d2c44-540d-41ba-affd-c9d8b84f1a41"} 1
+nutanix_vdisks_properties{attached_vm_uuid="0edd071e-6bd7-4ce8-a88c-dd32c4f34558",attached_vmname="StackPlay Engine 6.6.1 Demo15",cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",disk_address="scsi.0",disk_capacity_in_mb="8192",storage_container_uuid="262d8c0f-b5bd-4540-bfc9-8ecee430275e",uuid="ac541475-9ddf-4a72-8b21-05e6d1889f3a"} 1
+nutanix_vdisks_properties{attached_vm_uuid="0edd071e-6bd7-4ce8-a88c-dd32c4f34558",attached_vmname="StackPlay Engine 6.6.1 Demo15",cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",disk_address="scsi.1",disk_capacity_in_mb="102400",storage_container_uuid="262d8c0f-b5bd-4540-bfc9-8ecee430275e",uuid="2cfde956-cf87-4274-ad5f-c16c32df516d"} 1
+nutanix_vdisks_properties{attached_vm_uuid="184e5d0d-1f3d-4de8-a715-8fc4c23fe60a",attached_vmname="StackPlay Engine 6.6.1 Demo03",cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",disk_address="scsi.0",disk_capacity_in_mb="8192",storage_container_uuid="262d8c0f-b5bd-4540-bfc9-8ecee430275e",uuid="e37af03c-158b-42ea-a261-e22fbfceb9de"} 1
+nutanix_vdisks_properties{attached_vm_uuid="184e5d0d-1f3d-4de8-a715-8fc4c23fe60a",attached_vmname="StackPlay Engine 6.6.1 Demo03",cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",disk_address="scsi.1",disk_capacity_in_mb="102400",storage_container_uuid="262d8c0f-b5bd-4540-bfc9-8ecee430275e",uuid="751116c4-94be-4f18-ab02-21c4bc344468"} 1
+nutanix_vdisks_properties{attached_vm_uuid="21238650-52aa-48fd-9049-ee25b966773f",attached_vmname="MB Windows Server 16",cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",disk_address="sata.0",disk_capacity_in_mb="512000",storage_container_uuid="a15035d4-f5a9-41d6-bfac-b71ad22eacb7",uuid="69c794e8-7892-4396-9365-f1cad000ab44"} 1
+nutanix_vdisks_properties{attached_vm_uuid="227ef30c-2cbd-407b-ac70-586ad3bd79e0",attached_vmname="ZTS-NutanixVW",cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",disk_address="scsi.0",disk_capacity_in_mb="1048576",storage_container_uuid="262d8c0f-b5bd-4540-bfc9-8ecee430275e",uuid="bca321b2-6e2e-4b9c-ac10-2ea59187fb5f"} 1
+nutanix_vdisks_properties{attached_vm_uuid="244e8907-492d-466b-96aa-5ee3094666a4",attached_vmname="StackPlay Engine 6.6.1 Demo11",cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",disk_address="scsi.0",disk_capacity_in_mb="8192",storage_container_uuid="262d8c0f-b5bd-4540-bfc9-8ecee430275e",uuid="687d90a5-746f-4062-9dd6-8a06c8e12c10"} 1
+nutanix_vdisks_properties{attached_vm_uuid="244e8907-492d-466b-96aa-5ee3094666a4",attached_vmname="StackPlay Engine 6.6.1 Demo11",cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",disk_address="scsi.1",disk_capacity_in_mb="102400",storage_container_uuid="262d8c0f-b5bd-4540-bfc9-8ecee430275e",uuid="f8a2a209-b951-46ac-8762-f11378abe76d"} 1
+nutanix_vdisks_properties{attached_vm_uuid="37243b2c-f16d-4e11-972b-b314e52a759c",attached_vmname="SWWLG QA 02",cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",disk_address="scsi.0",disk_capacity_in_mb="8192",storage_container_uuid="262d8c0f-b5bd-4540-bfc9-8ecee430275e",uuid="71138b64-531f-4c52-93b0-e6d5b8131eaf"} 1
+nutanix_vdisks_properties{attached_vm_uuid="4171c556-96f8-48a8-bef7-b085bf2d1b9c",attached_vmname="StackPlay Engine 6.6.1 Demo10",cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",disk_address="scsi.0",disk_capacity_in_mb="8192",storage_container_uuid="262d8c0f-b5bd-4540-bfc9-8ecee430275e",uuid="b3823d00-991a-4618-8ad9-17cc37552d0b"} 1
+nutanix_vdisks_properties{attached_vm_uuid="4171c556-96f8-48a8-bef7-b085bf2d1b9c",attached_vmname="StackPlay Engine 6.6.1 Demo10",cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",disk_address="scsi.1",disk_capacity_in_mb="102400",storage_container_uuid="262d8c0f-b5bd-4540-bfc9-8ecee430275e",uuid="2c2e8bd4-a219-407f-9b7a-0e2043fbfbcc"} 1
+nutanix_vdisks_properties{attached_vm_uuid="5b9bafe4-89ad-4440-9a94-e6b73cbaa133",attached_vmname="StackPlay Engine 6.6.1 Demo07",cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",disk_address="scsi.0",disk_capacity_in_mb="8192",storage_container_uuid="262d8c0f-b5bd-4540-bfc9-8ecee430275e",uuid="21002cda-26e0-4069-9be4-bc35d3ff5f86"} 1
+nutanix_vdisks_properties{attached_vm_uuid="5b9bafe4-89ad-4440-9a94-e6b73cbaa133",attached_vmname="StackPlay Engine 6.6.1 Demo07",cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",disk_address="scsi.1",disk_capacity_in_mb="102400",storage_container_uuid="262d8c0f-b5bd-4540-bfc9-8ecee430275e",uuid="ee8ab366-e900-4e8f-be64-be3973c1d030"} 1
+nutanix_vdisks_properties{attached_vm_uuid="60f18b94-d7fd-40f7-9266-2577572af8f2",attached_vmname="StackPlay Engine 6.6.1 Demo02",cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",disk_address="scsi.0",disk_capacity_in_mb="8192",storage_container_uuid="262d8c0f-b5bd-4540-bfc9-8ecee430275e",uuid="f1811148-d046-4016-a4af-9c54e87c497e"} 1
+nutanix_vdisks_properties{attached_vm_uuid="60f18b94-d7fd-40f7-9266-2577572af8f2",attached_vmname="StackPlay Engine 6.6.1 Demo02",cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",disk_address="scsi.1",disk_capacity_in_mb="102400",storage_container_uuid="262d8c0f-b5bd-4540-bfc9-8ecee430275e",uuid="4bbf3798-8b1f-4d53-b3f3-0c551a3a29e1"} 1
+nutanix_vdisks_properties{attached_vm_uuid="71846a85-17e3-4cbd-9c1e-f9f5ef3c50bb",attached_vmname="StackPlay Engine 6.6.1 Demo01",cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",disk_address="scsi.0",disk_capacity_in_mb="8192",storage_container_uuid="262d8c0f-b5bd-4540-bfc9-8ecee430275e",uuid="47469b48-cfd6-4105-90fc-00525b1863b0"} 1
+nutanix_vdisks_properties{attached_vm_uuid="71846a85-17e3-4cbd-9c1e-f9f5ef3c50bb",attached_vmname="StackPlay Engine 6.6.1 Demo01",cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",disk_address="scsi.1",disk_capacity_in_mb="102400",storage_container_uuid="262d8c0f-b5bd-4540-bfc9-8ecee430275e",uuid="984af384-328f-42fe-9e99-bb6e1e70ba6b"} 1
+nutanix_vdisks_properties{attached_vm_uuid="7366fb9a-bd50-45d1-8091-1ad70b15f42e",attached_vmname="SW WLG VM 0.3",cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",disk_address="scsi.0",disk_capacity_in_mb="8192",storage_container_uuid="262d8c0f-b5bd-4540-bfc9-8ecee430275e",uuid="e70f9e6a-3e67-4abb-81db-17b8cb5b899f"} 1
+nutanix_vdisks_properties{attached_vm_uuid="79a94fb8-b666-4bcf-b97b-3171684149d4",attached_vmname="MB-OpenSuse 15.5 Client",cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",disk_address="scsi.0",disk_capacity_in_mb="512000",storage_container_uuid="262d8c0f-b5bd-4540-bfc9-8ecee430275e",uuid="f3c2fda3-bc80-47fc-a745-b1984d298c60"} 1
+nutanix_vdisks_properties{attached_vm_uuid="8c2754e9-7996-40d8-a597-6cd28b623e4f",attached_vmname="SWWLG QA 01",cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",disk_address="scsi.0",disk_capacity_in_mb="8192",storage_container_uuid="262d8c0f-b5bd-4540-bfc9-8ecee430275e",uuid="a633f982-b6cf-44a6-b2bb-47fd8c41d5cc"} 1
+nutanix_vdisks_properties{attached_vm_uuid="93d8b775-1a6f-4312-864f-adb9ad746b42",attached_vmname="StackPlay Engine 6.6.1 Demo13",cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",disk_address="scsi.0",disk_capacity_in_mb="8192",storage_container_uuid="262d8c0f-b5bd-4540-bfc9-8ecee430275e",uuid="e9d2aa30-bfaa-4229-89b5-3035f9a9ba8d"} 1
+nutanix_vdisks_properties{attached_vm_uuid="93d8b775-1a6f-4312-864f-adb9ad746b42",attached_vmname="StackPlay Engine 6.6.1 Demo13",cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",disk_address="scsi.1",disk_capacity_in_mb="102400",storage_container_uuid="262d8c0f-b5bd-4540-bfc9-8ecee430275e",uuid="205b811e-2e2f-41a1-8f31-67c259fcee8e"} 1
+nutanix_vdisks_properties{attached_vm_uuid="9fef76ea-9c77-47eb-bf0a-5bff563fdec8",attached_vmname="StackPlay Engine 6.6.1 Demo08",cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",disk_address="scsi.0",disk_capacity_in_mb="8192",storage_container_uuid="262d8c0f-b5bd-4540-bfc9-8ecee430275e",uuid="6849025a-fdba-46a1-b995-718429dda2d7"} 1
+nutanix_vdisks_properties{attached_vm_uuid="9fef76ea-9c77-47eb-bf0a-5bff563fdec8",attached_vmname="StackPlay Engine 6.6.1 Demo08",cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",disk_address="scsi.1",disk_capacity_in_mb="102400",storage_container_uuid="262d8c0f-b5bd-4540-bfc9-8ecee430275e",uuid="601505c8-e467-41e9-87ad-db46a530edc4"} 1
+nutanix_vdisks_properties{attached_vm_uuid="a295618e-c637-4051-bc59-568531763413",attached_vmname="StackPlay Engine 6.6.1 Demo14",cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",disk_address="scsi.0",disk_capacity_in_mb="8192",storage_container_uuid="262d8c0f-b5bd-4540-bfc9-8ecee430275e",uuid="f447b071-e9e9-4c07-91f9-062cd70488d7"} 1
+nutanix_vdisks_properties{attached_vm_uuid="a295618e-c637-4051-bc59-568531763413",attached_vmname="StackPlay Engine 6.6.1 Demo14",cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",disk_address="scsi.1",disk_capacity_in_mb="102400",storage_container_uuid="262d8c0f-b5bd-4540-bfc9-8ecee430275e",uuid="0a28d7fd-bf39-4445-b74a-4e1474fe88f0"} 1
+nutanix_vdisks_properties{attached_vm_uuid="a49743bc-0351-4bfc-a061-a54d9a6d27b1",attached_vmname="StackPlay Engine 6.6.1 Demo06",cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",disk_address="scsi.0",disk_capacity_in_mb="8192",storage_container_uuid="262d8c0f-b5bd-4540-bfc9-8ecee430275e",uuid="2c53d7e2-cde8-4633-bffc-311acbf3d18b"} 1
+nutanix_vdisks_properties{attached_vm_uuid="a49743bc-0351-4bfc-a061-a54d9a6d27b1",attached_vmname="StackPlay Engine 6.6.1 Demo06",cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",disk_address="scsi.1",disk_capacity_in_mb="102400",storage_container_uuid="262d8c0f-b5bd-4540-bfc9-8ecee430275e",uuid="8c17eea2-014f-4908-acf9-daa6071adaf5"} 1
+nutanix_vdisks_properties{attached_vm_uuid="ae12779b-b375-4206-a159-c71b257f8dc2",attached_vmname="StackPlay Dev Preconditioning",cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",disk_address="scsi.0",disk_capacity_in_mb="8192",storage_container_uuid="262d8c0f-b5bd-4540-bfc9-8ecee430275e",uuid="89c28c03-5a60-4271-a3e7-c9b9a84a5073"} 1
+nutanix_vdisks_properties{attached_vm_uuid="ae12779b-b375-4206-a159-c71b257f8dc2",attached_vmname="StackPlay Dev Preconditioning",cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",disk_address="scsi.1",disk_capacity_in_mb="122880",storage_container_uuid="262d8c0f-b5bd-4540-bfc9-8ecee430275e",uuid="76b88f11-5cde-4255-b521-8aca903c444b"} 1
+nutanix_vdisks_properties{attached_vm_uuid="aea3ec23-ee5a-438f-ae88-2e09aedd16c7",attached_vmname="Syslab_NTAP_914",cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",disk_address="ide.0",disk_capacity_in_mb="3991",storage_container_uuid="262d8c0f-b5bd-4540-bfc9-8ecee430275e",uuid="a0db6323-4e78-4ebe-a3ed-919028c1ae5a"} 1
+nutanix_vdisks_properties{attached_vm_uuid="aea3ec23-ee5a-438f-ae88-2e09aedd16c7",attached_vmname="Syslab_NTAP_914",cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",disk_address="ide.1",disk_capacity_in_mb="1542",storage_container_uuid="262d8c0f-b5bd-4540-bfc9-8ecee430275e",uuid="ec7f9356-3b52-4b62-b3c1-dae2d77b2ea3"} 1
+nutanix_vdisks_properties{attached_vm_uuid="aea3ec23-ee5a-438f-ae88-2e09aedd16c7",attached_vmname="Syslab_NTAP_914",cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",disk_address="ide.2",disk_capacity_in_mb="7630",storage_container_uuid="262d8c0f-b5bd-4540-bfc9-8ecee430275e",uuid="5d52c163-a9c4-4807-9be6-50e3f47c0e6e"} 1
+nutanix_vdisks_properties{attached_vm_uuid="aea3ec23-ee5a-438f-ae88-2e09aedd16c7",attached_vmname="Syslab_NTAP_914",cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",disk_address="ide.3",disk_capacity_in_mb="236231",storage_container_uuid="262d8c0f-b5bd-4540-bfc9-8ecee430275e",uuid="307d27ce-617a-41de-82bb-14f7bbe9ffcb"} 1
+nutanix_vdisks_properties{attached_vm_uuid="b606cb9b-5423-4985-8efe-7015146416a6",attached_vmname="StackPlay 6.8 QE 04.06.2020",cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",disk_address="scsi.0",disk_capacity_in_mb="8192",storage_container_uuid="262d8c0f-b5bd-4540-bfc9-8ecee430275e",uuid="b7bdf637-59c0-4f58-bb17-52620134bc87"} 1
+nutanix_vdisks_properties{attached_vm_uuid="b606cb9b-5423-4985-8efe-7015146416a6",attached_vmname="StackPlay 6.8 QE 04.06.2020",cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",disk_address="scsi.1",disk_capacity_in_mb="122880",storage_container_uuid="262d8c0f-b5bd-4540-bfc9-8ecee430275e",uuid="44600d06-61b3-4c51-81bc-5ebff3d62536"} 1
+nutanix_vdisks_properties{attached_vm_uuid="b89eedc3-7b73-4c0b-b86f-b696b3b9bf3e",attached_vmname="StackPlay Engine 6.6.1 Demo04",cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",disk_address="scsi.0",disk_capacity_in_mb="8192",storage_container_uuid="262d8c0f-b5bd-4540-bfc9-8ecee430275e",uuid="8e261ccb-2093-4f9d-8597-1bfe32f95731"} 1
+nutanix_vdisks_properties{attached_vm_uuid="b89eedc3-7b73-4c0b-b86f-b696b3b9bf3e",attached_vmname="StackPlay Engine 6.6.1 Demo04",cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",disk_address="scsi.1",disk_capacity_in_mb="102400",storage_container_uuid="262d8c0f-b5bd-4540-bfc9-8ecee430275e",uuid="1fcc70be-7541-4572-ac7c-b65b4a8c2be7"} 1
+nutanix_vdisks_properties{attached_vm_uuid="bbcc2366-dabf-496a-b19c-d08f773eff8a",attached_vmname="StackPlay 6.8 QE-custom 04.06.2020",cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",disk_address="scsi.0",disk_capacity_in_mb="8192",storage_container_uuid="262d8c0f-b5bd-4540-bfc9-8ecee430275e",uuid="a572cad6-b9bb-44b4-80e8-5c4b0d82929e"} 1
+nutanix_vdisks_properties{attached_vm_uuid="bbcc2366-dabf-496a-b19c-d08f773eff8a",attached_vmname="StackPlay 6.8 QE-custom 04.06.2020",cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",disk_address="scsi.1",disk_capacity_in_mb="122880",storage_container_uuid="262d8c0f-b5bd-4540-bfc9-8ecee430275e",uuid="b9ccfc9a-7458-4325-8248-db1025254b35"} 1
+nutanix_vdisks_properties{attached_vm_uuid="d3c9dd8a-32a7-41d2-8587-d7ea5fcb5170",attached_vmname="StackPlay Engine 6.6.1 Demo09",cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",disk_address="scsi.0",disk_capacity_in_mb="8192",storage_container_uuid="262d8c0f-b5bd-4540-bfc9-8ecee430275e",uuid="295025b8-ef6b-4be1-b4ab-94f866fe544e"} 1
+nutanix_vdisks_properties{attached_vm_uuid="d3c9dd8a-32a7-41d2-8587-d7ea5fcb5170",attached_vmname="StackPlay Engine 6.6.1 Demo09",cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",disk_address="scsi.1",disk_capacity_in_mb="102400",storage_container_uuid="262d8c0f-b5bd-4540-bfc9-8ecee430275e",uuid="5a20746b-bd7a-4058-a7ac-126093db1495"} 1
+nutanix_vdisks_properties{attached_vm_uuid="d967258c-75ae-49db-bbcc-c01a690f15c7",attached_vmname="StackPlay Engine 6.6.1 Demo12",cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",disk_address="scsi.0",disk_capacity_in_mb="8192",storage_container_uuid="262d8c0f-b5bd-4540-bfc9-8ecee430275e",uuid="f90217fb-85eb-4f94-9c18-d95fe0d6e6a3"} 1
+nutanix_vdisks_properties{attached_vm_uuid="d967258c-75ae-49db-bbcc-c01a690f15c7",attached_vmname="StackPlay Engine 6.6.1 Demo12",cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",disk_address="scsi.1",disk_capacity_in_mb="102400",storage_container_uuid="262d8c0f-b5bd-4540-bfc9-8ecee430275e",uuid="27a1f3e3-b222-41fe-9189-95824d4e84bf"} 1
+nutanix_vdisks_properties{attached_vm_uuid="da69bf52-dd1e-432a-96a5-5c746130cb45",attached_vmname="StackPlay Engine 6.6.1 Demo05",cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",disk_address="scsi.0",disk_capacity_in_mb="8192",storage_container_uuid="262d8c0f-b5bd-4540-bfc9-8ecee430275e",uuid="6bce0580-6978-42c2-ab3b-0634e513c5c1"} 1
+nutanix_vdisks_properties{attached_vm_uuid="da69bf52-dd1e-432a-96a5-5c746130cb45",attached_vmname="StackPlay Engine 6.6.1 Demo05",cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",disk_address="scsi.1",disk_capacity_in_mb="102400",storage_container_uuid="262d8c0f-b5bd-4540-bfc9-8ecee430275e",uuid="ba8fd6de-8673-4c26-826e-e1f75d660627"} 1
+nutanix_vdisks_properties{attached_vm_uuid="db738597-c261-4f47-95c1-2267a284deda",attached_vmname="PrismCentral-SysLab",cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",disk_address="ide.0",disk_capacity_in_mb="0",storage_container_uuid="262d8c0f-b5bd-4540-bfc9-8ecee430275e",uuid="7c951065-0bda-4589-ab02-68f554b7c6ce"} 1
+nutanix_vdisks_properties{attached_vm_uuid="db738597-c261-4f47-95c1-2267a284deda",attached_vmname="PrismCentral-SysLab",cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",disk_address="scsi.0",disk_capacity_in_mb="15",storage_container_uuid="262d8c0f-b5bd-4540-bfc9-8ecee430275e",uuid="0e392c6a-61ed-4164-ab96-b508223dac18"} 1
+nutanix_vdisks_properties{attached_vm_uuid="db738597-c261-4f47-95c1-2267a284deda",attached_vmname="PrismCentral-SysLab",cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",disk_address="scsi.1",disk_capacity_in_mb="71680",storage_container_uuid="262d8c0f-b5bd-4540-bfc9-8ecee430275e",uuid="c02a3ca2-e0c0-402f-b509-390ca3c4e3aa"} 1
+nutanix_vdisks_properties{attached_vm_uuid="db738597-c261-4f47-95c1-2267a284deda",attached_vmname="PrismCentral-SysLab",cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",disk_address="scsi.3",disk_capacity_in_mb="512000",storage_container_uuid="262d8c0f-b5bd-4540-bfc9-8ecee430275e",uuid="40cbe18a-c896-431f-8d35-ba2ee34ff21f"} 1
+nutanix_vdisks_properties{attached_vm_uuid="db738597-c261-4f47-95c1-2267a284deda",attached_vmname="PrismCentral-SysLab",cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",disk_address="scsi.4",disk_capacity_in_mb="73142",storage_container_uuid="262d8c0f-b5bd-4540-bfc9-8ecee430275e",uuid="5b4ce010-8522-4c0f-b833-8412e0877f18"} 1
+nutanix_vdisks_properties{attached_vm_uuid="db738597-c261-4f47-95c1-2267a284deda",attached_vmname="PrismCentral-SysLab",cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",disk_address="scsi.5",disk_capacity_in_mb="30720",storage_container_uuid="262d8c0f-b5bd-4540-bfc9-8ecee430275e",uuid="8beccc17-9252-4aae-bf37-c13e2cb30b34"} 1
+nutanix_vdisks_properties{attached_vm_uuid="db738597-c261-4f47-95c1-2267a284deda",attached_vmname="PrismCentral-SysLab",cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",disk_address="scsi.6",disk_capacity_in_mb="2560000",storage_container_uuid="262d8c0f-b5bd-4540-bfc9-8ecee430275e",uuid="c7c6161c-08d0-43f2-b930-dc7d3e48ce4e"} 1
+nutanix_vdisks_properties{attached_vm_uuid="db738597-c261-4f47-95c1-2267a284deda",attached_vmname="PrismCentral-SysLab",cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",disk_address="scsi.7",disk_capacity_in_mb="2560000",storage_container_uuid="262d8c0f-b5bd-4540-bfc9-8ecee430275e",uuid="4cc53beb-f0ec-440e-a600-6c02ad8127f0"} 1
+nutanix_vdisks_properties{attached_vm_uuid="db738597-c261-4f47-95c1-2267a284deda",attached_vmname="PrismCentral-SysLab",cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",disk_address="scsi.8",disk_capacity_in_mb="2560000",storage_container_uuid="262d8c0f-b5bd-4540-bfc9-8ecee430275e",uuid="68dc7916-3389-4ed4-8567-7cb359bcddfe"} 1
+nutanix_vdisks_properties{attached_vm_uuid="eb454045-d152-4167-b4eb-3fdb1db8f277",attached_vmname="StackPlay Engine 6.6.1 Demo",cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",disk_address="scsi.0",disk_capacity_in_mb="8192",storage_container_uuid="262d8c0f-b5bd-4540-bfc9-8ecee430275e",uuid="db87faf2-29f7-4cf1-b2e6-f430f2b75be0"} 1
+nutanix_vdisks_properties{attached_vm_uuid="eb454045-d152-4167-b4eb-3fdb1db8f277",attached_vmname="StackPlay Engine 6.6.1 Demo",cluster_uuid="000574c3-fbfb-0bfe-2c3c-ac1f6b64b007",disk_address="scsi.1",disk_capacity_in_mb="102400",storage_container_uuid="262d8c0f-b5bd-4540-bfc9-8ecee430275e",uuid="05871870-32a3-4eb5-9a5f-c8950cbd8622"} 1
+# HELP nutanix_vms_cpureservedinhz ...
+# TYPE nutanix_vms_cpureservedinhz gauge
+nutanix_vms_cpureservedinhz{host_uuid="",uuid="0edd071e-6bd7-4ce8-a88c-dd32c4f34558"} 0
+nutanix_vms_cpureservedinhz{host_uuid="",uuid="184e5d0d-1f3d-4de8-a715-8fc4c23fe60a"} 0
+nutanix_vms_cpureservedinhz{host_uuid="",uuid="227ef30c-2cbd-407b-ac70-586ad3bd79e0"} 0
+nutanix_vms_cpureservedinhz{host_uuid="",uuid="244e8907-492d-466b-96aa-5ee3094666a4"} 0
+nutanix_vms_cpureservedinhz{host_uuid="",uuid="37243b2c-f16d-4e11-972b-b314e52a759c"} 0
+nutanix_vms_cpureservedinhz{host_uuid="",uuid="4171c556-96f8-48a8-bef7-b085bf2d1b9c"} 0
+nutanix_vms_cpureservedinhz{host_uuid="",uuid="5b9bafe4-89ad-4440-9a94-e6b73cbaa133"} 0
+nutanix_vms_cpureservedinhz{host_uuid="",uuid="60f18b94-d7fd-40f7-9266-2577572af8f2"} 0
+nutanix_vms_cpureservedinhz{host_uuid="",uuid="71846a85-17e3-4cbd-9c1e-f9f5ef3c50bb"} 0
+nutanix_vms_cpureservedinhz{host_uuid="",uuid="7366fb9a-bd50-45d1-8091-1ad70b15f42e"} 0
+nutanix_vms_cpureservedinhz{host_uuid="",uuid="8c2754e9-7996-40d8-a597-6cd28b623e4f"} 0
+nutanix_vms_cpureservedinhz{host_uuid="",uuid="93d8b775-1a6f-4312-864f-adb9ad746b42"} 0
+nutanix_vms_cpureservedinhz{host_uuid="",uuid="9fef76ea-9c77-47eb-bf0a-5bff563fdec8"} 0
+nutanix_vms_cpureservedinhz{host_uuid="",uuid="a295618e-c637-4051-bc59-568531763413"} 0
+nutanix_vms_cpureservedinhz{host_uuid="",uuid="a49743bc-0351-4bfc-a061-a54d9a6d27b1"} 0
+nutanix_vms_cpureservedinhz{host_uuid="",uuid="ae12779b-b375-4206-a159-c71b257f8dc2"} 0
+nutanix_vms_cpureservedinhz{host_uuid="",uuid="b606cb9b-5423-4985-8efe-7015146416a6"} 0
+nutanix_vms_cpureservedinhz{host_uuid="",uuid="b89eedc3-7b73-4c0b-b86f-b696b3b9bf3e"} 0
+nutanix_vms_cpureservedinhz{host_uuid="",uuid="bbcc2366-dabf-496a-b19c-d08f773eff8a"} 0
+nutanix_vms_cpureservedinhz{host_uuid="",uuid="d3c9dd8a-32a7-41d2-8587-d7ea5fcb5170"} 0
+nutanix_vms_cpureservedinhz{host_uuid="",uuid="d967258c-75ae-49db-bbcc-c01a690f15c7"} 0
+nutanix_vms_cpureservedinhz{host_uuid="",uuid="da69bf52-dd1e-432a-96a5-5c746130cb45"} 0
+nutanix_vms_cpureservedinhz{host_uuid="",uuid="eb454045-d152-4167-b4eb-3fdb1db8f277"} 0
+nutanix_vms_cpureservedinhz{host_uuid="49009008-9783-460f-b04c-59265cde8ec9",uuid="21238650-52aa-48fd-9049-ee25b966773f"} 0
+nutanix_vms_cpureservedinhz{host_uuid="49009008-9783-460f-b04c-59265cde8ec9",uuid="ffa1ff75-cef6-4172-9f44-45cc37c7786c"} 0
+nutanix_vms_cpureservedinhz{host_uuid="5033d23b-3712-4b1f-994f-acc112f9749f",uuid="99e1c927-5349-4a4e-86a8-a23d42124b39"} 0
+nutanix_vms_cpureservedinhz{host_uuid="5033d23b-3712-4b1f-994f-acc112f9749f",uuid="aea3ec23-ee5a-438f-ae88-2e09aedd16c7"} 0
+nutanix_vms_cpureservedinhz{host_uuid="d77af9f2-f776-4479-b231-3e1cc9f24470",uuid="20e4e908-882f-40ee-b287-601c88841482"} 0
+nutanix_vms_cpureservedinhz{host_uuid="d77af9f2-f776-4479-b231-3e1cc9f24470",uuid="79a94fb8-b666-4bcf-b97b-3171684149d4"} 0
+nutanix_vms_cpureservedinhz{host_uuid="d77af9f2-f776-4479-b231-3e1cc9f24470",uuid="db738597-c261-4f47-95c1-2267a284deda"} 0
+# HELP nutanix_vms_guest_memory_usage_bytes ...
+# TYPE nutanix_vms_guest_memory_usage_bytes gauge
+nutanix_vms_guest_memory_usage_bytes{host_uuid="",uuid="0edd071e-6bd7-4ce8-a88c-dd32c4f34558"} 0
+nutanix_vms_guest_memory_usage_bytes{host_uuid="",uuid="184e5d0d-1f3d-4de8-a715-8fc4c23fe60a"} 0
+nutanix_vms_guest_memory_usage_bytes{host_uuid="",uuid="227ef30c-2cbd-407b-ac70-586ad3bd79e0"} 0
+nutanix_vms_guest_memory_usage_bytes{host_uuid="",uuid="244e8907-492d-466b-96aa-5ee3094666a4"} 0
+nutanix_vms_guest_memory_usage_bytes{host_uuid="",uuid="37243b2c-f16d-4e11-972b-b314e52a759c"} 0
+nutanix_vms_guest_memory_usage_bytes{host_uuid="",uuid="4171c556-96f8-48a8-bef7-b085bf2d1b9c"} 0
+nutanix_vms_guest_memory_usage_bytes{host_uuid="",uuid="5b9bafe4-89ad-4440-9a94-e6b73cbaa133"} 0
+nutanix_vms_guest_memory_usage_bytes{host_uuid="",uuid="60f18b94-d7fd-40f7-9266-2577572af8f2"} 0
+nutanix_vms_guest_memory_usage_bytes{host_uuid="",uuid="71846a85-17e3-4cbd-9c1e-f9f5ef3c50bb"} 0
+nutanix_vms_guest_memory_usage_bytes{host_uuid="",uuid="7366fb9a-bd50-45d1-8091-1ad70b15f42e"} 0
+nutanix_vms_guest_memory_usage_bytes{host_uuid="",uuid="8c2754e9-7996-40d8-a597-6cd28b623e4f"} 0
+nutanix_vms_guest_memory_usage_bytes{host_uuid="",uuid="93d8b775-1a6f-4312-864f-adb9ad746b42"} 0
+nutanix_vms_guest_memory_usage_bytes{host_uuid="",uuid="9fef76ea-9c77-47eb-bf0a-5bff563fdec8"} 0
+nutanix_vms_guest_memory_usage_bytes{host_uuid="",uuid="a295618e-c637-4051-bc59-568531763413"} 0
+nutanix_vms_guest_memory_usage_bytes{host_uuid="",uuid="a49743bc-0351-4bfc-a061-a54d9a6d27b1"} 0
+nutanix_vms_guest_memory_usage_bytes{host_uuid="",uuid="ae12779b-b375-4206-a159-c71b257f8dc2"} 0
+nutanix_vms_guest_memory_usage_bytes{host_uuid="",uuid="b606cb9b-5423-4985-8efe-7015146416a6"} 0
+nutanix_vms_guest_memory_usage_bytes{host_uuid="",uuid="b89eedc3-7b73-4c0b-b86f-b696b3b9bf3e"} 0
+nutanix_vms_guest_memory_usage_bytes{host_uuid="",uuid="bbcc2366-dabf-496a-b19c-d08f773eff8a"} 0
+nutanix_vms_guest_memory_usage_bytes{host_uuid="",uuid="d3c9dd8a-32a7-41d2-8587-d7ea5fcb5170"} 0
+nutanix_vms_guest_memory_usage_bytes{host_uuid="",uuid="d967258c-75ae-49db-bbcc-c01a690f15c7"} 0
+nutanix_vms_guest_memory_usage_bytes{host_uuid="",uuid="da69bf52-dd1e-432a-96a5-5c746130cb45"} 0
+nutanix_vms_guest_memory_usage_bytes{host_uuid="",uuid="eb454045-d152-4167-b4eb-3fdb1db8f277"} 0
+nutanix_vms_guest_memory_usage_bytes{host_uuid="49009008-9783-460f-b04c-59265cde8ec9",uuid="21238650-52aa-48fd-9049-ee25b966773f"} 3.437375488e+09
+nutanix_vms_guest_memory_usage_bytes{host_uuid="49009008-9783-460f-b04c-59265cde8ec9",uuid="ffa1ff75-cef6-4172-9f44-45cc37c7786c"} 1.287548e+07
+nutanix_vms_guest_memory_usage_bytes{host_uuid="5033d23b-3712-4b1f-994f-acc112f9749f",uuid="99e1c927-5349-4a4e-86a8-a23d42124b39"} 1.8727924e+07
+nutanix_vms_guest_memory_usage_bytes{host_uuid="5033d23b-3712-4b1f-994f-acc112f9749f",uuid="aea3ec23-ee5a-438f-ae88-2e09aedd16c7"} 0
+nutanix_vms_guest_memory_usage_bytes{host_uuid="d77af9f2-f776-4479-b231-3e1cc9f24470",uuid="20e4e908-882f-40ee-b287-601c88841482"} 2.131174e+07
+nutanix_vms_guest_memory_usage_bytes{host_uuid="d77af9f2-f776-4479-b231-3e1cc9f24470",uuid="79a94fb8-b666-4bcf-b97b-3171684149d4"} 2.437029888e+09
+nutanix_vms_guest_memory_usage_bytes{host_uuid="d77af9f2-f776-4479-b231-3e1cc9f24470",uuid="db738597-c261-4f47-95c1-2267a284deda"} 3.150516224e+10
+# HELP nutanix_vms_hypervisor_cpu_usage_ppm ...
+# TYPE nutanix_vms_hypervisor_cpu_usage_ppm gauge
+nutanix_vms_hypervisor_cpu_usage_ppm{host_uuid="",uuid="0edd071e-6bd7-4ce8-a88c-dd32c4f34558"} 0
+nutanix_vms_hypervisor_cpu_usage_ppm{host_uuid="",uuid="184e5d0d-1f3d-4de8-a715-8fc4c23fe60a"} 0
+nutanix_vms_hypervisor_cpu_usage_ppm{host_uuid="",uuid="227ef30c-2cbd-407b-ac70-586ad3bd79e0"} 0
+nutanix_vms_hypervisor_cpu_usage_ppm{host_uuid="",uuid="244e8907-492d-466b-96aa-5ee3094666a4"} 0
+nutanix_vms_hypervisor_cpu_usage_ppm{host_uuid="",uuid="37243b2c-f16d-4e11-972b-b314e52a759c"} 0
+nutanix_vms_hypervisor_cpu_usage_ppm{host_uuid="",uuid="4171c556-96f8-48a8-bef7-b085bf2d1b9c"} 0
+nutanix_vms_hypervisor_cpu_usage_ppm{host_uuid="",uuid="5b9bafe4-89ad-4440-9a94-e6b73cbaa133"} 0
+nutanix_vms_hypervisor_cpu_usage_ppm{host_uuid="",uuid="60f18b94-d7fd-40f7-9266-2577572af8f2"} 0
+nutanix_vms_hypervisor_cpu_usage_ppm{host_uuid="",uuid="71846a85-17e3-4cbd-9c1e-f9f5ef3c50bb"} 0
+nutanix_vms_hypervisor_cpu_usage_ppm{host_uuid="",uuid="7366fb9a-bd50-45d1-8091-1ad70b15f42e"} 0
+nutanix_vms_hypervisor_cpu_usage_ppm{host_uuid="",uuid="8c2754e9-7996-40d8-a597-6cd28b623e4f"} 0
+nutanix_vms_hypervisor_cpu_usage_ppm{host_uuid="",uuid="93d8b775-1a6f-4312-864f-adb9ad746b42"} 0
+nutanix_vms_hypervisor_cpu_usage_ppm{host_uuid="",uuid="9fef76ea-9c77-47eb-bf0a-5bff563fdec8"} 0
+nutanix_vms_hypervisor_cpu_usage_ppm{host_uuid="",uuid="a295618e-c637-4051-bc59-568531763413"} 0
+nutanix_vms_hypervisor_cpu_usage_ppm{host_uuid="",uuid="a49743bc-0351-4bfc-a061-a54d9a6d27b1"} 0
+nutanix_vms_hypervisor_cpu_usage_ppm{host_uuid="",uuid="ae12779b-b375-4206-a159-c71b257f8dc2"} 0
+nutanix_vms_hypervisor_cpu_usage_ppm{host_uuid="",uuid="b606cb9b-5423-4985-8efe-7015146416a6"} 0
+nutanix_vms_hypervisor_cpu_usage_ppm{host_uuid="",uuid="b89eedc3-7b73-4c0b-b86f-b696b3b9bf3e"} 0
+nutanix_vms_hypervisor_cpu_usage_ppm{host_uuid="",uuid="bbcc2366-dabf-496a-b19c-d08f773eff8a"} 0
+nutanix_vms_hypervisor_cpu_usage_ppm{host_uuid="",uuid="d3c9dd8a-32a7-41d2-8587-d7ea5fcb5170"} 0
+nutanix_vms_hypervisor_cpu_usage_ppm{host_uuid="",uuid="d967258c-75ae-49db-bbcc-c01a690f15c7"} 0
+nutanix_vms_hypervisor_cpu_usage_ppm{host_uuid="",uuid="da69bf52-dd1e-432a-96a5-5c746130cb45"} 0
+nutanix_vms_hypervisor_cpu_usage_ppm{host_uuid="",uuid="eb454045-d152-4167-b4eb-3fdb1db8f277"} 0
+nutanix_vms_hypervisor_cpu_usage_ppm{host_uuid="49009008-9783-460f-b04c-59265cde8ec9",uuid="21238650-52aa-48fd-9049-ee25b966773f"} 17277
+nutanix_vms_hypervisor_cpu_usage_ppm{host_uuid="49009008-9783-460f-b04c-59265cde8ec9",uuid="ffa1ff75-cef6-4172-9f44-45cc37c7786c"} 184670
+nutanix_vms_hypervisor_cpu_usage_ppm{host_uuid="5033d23b-3712-4b1f-994f-acc112f9749f",uuid="99e1c927-5349-4a4e-86a8-a23d42124b39"} 149917
+nutanix_vms_hypervisor_cpu_usage_ppm{host_uuid="5033d23b-3712-4b1f-994f-acc112f9749f",uuid="aea3ec23-ee5a-438f-ae88-2e09aedd16c7"} 555237
+nutanix_vms_hypervisor_cpu_usage_ppm{host_uuid="d77af9f2-f776-4479-b231-3e1cc9f24470",uuid="20e4e908-882f-40ee-b287-601c88841482"} 270287
+nutanix_vms_hypervisor_cpu_usage_ppm{host_uuid="d77af9f2-f776-4479-b231-3e1cc9f24470",uuid="79a94fb8-b666-4bcf-b97b-3171684149d4"} 149667
+nutanix_vms_hypervisor_cpu_usage_ppm{host_uuid="d77af9f2-f776-4479-b231-3e1cc9f24470",uuid="db738597-c261-4f47-95c1-2267a284deda"} 104646
+# HELP nutanix_vms_hypervisor_num_received_bytes ...
+# TYPE nutanix_vms_hypervisor_num_received_bytes gauge
+nutanix_vms_hypervisor_num_received_bytes{host_uuid="",uuid="0edd071e-6bd7-4ce8-a88c-dd32c4f34558"} 0
+nutanix_vms_hypervisor_num_received_bytes{host_uuid="",uuid="184e5d0d-1f3d-4de8-a715-8fc4c23fe60a"} 0
+nutanix_vms_hypervisor_num_received_bytes{host_uuid="",uuid="227ef30c-2cbd-407b-ac70-586ad3bd79e0"} 0
+nutanix_vms_hypervisor_num_received_bytes{host_uuid="",uuid="244e8907-492d-466b-96aa-5ee3094666a4"} 0
+nutanix_vms_hypervisor_num_received_bytes{host_uuid="",uuid="37243b2c-f16d-4e11-972b-b314e52a759c"} 0
+nutanix_vms_hypervisor_num_received_bytes{host_uuid="",uuid="4171c556-96f8-48a8-bef7-b085bf2d1b9c"} 0
+nutanix_vms_hypervisor_num_received_bytes{host_uuid="",uuid="5b9bafe4-89ad-4440-9a94-e6b73cbaa133"} 0
+nutanix_vms_hypervisor_num_received_bytes{host_uuid="",uuid="60f18b94-d7fd-40f7-9266-2577572af8f2"} 0
+nutanix_vms_hypervisor_num_received_bytes{host_uuid="",uuid="71846a85-17e3-4cbd-9c1e-f9f5ef3c50bb"} 0
+nutanix_vms_hypervisor_num_received_bytes{host_uuid="",uuid="7366fb9a-bd50-45d1-8091-1ad70b15f42e"} 0
+nutanix_vms_hypervisor_num_received_bytes{host_uuid="",uuid="8c2754e9-7996-40d8-a597-6cd28b623e4f"} 0
+nutanix_vms_hypervisor_num_received_bytes{host_uuid="",uuid="93d8b775-1a6f-4312-864f-adb9ad746b42"} 0
+nutanix_vms_hypervisor_num_received_bytes{host_uuid="",uuid="9fef76ea-9c77-47eb-bf0a-5bff563fdec8"} 0
+nutanix_vms_hypervisor_num_received_bytes{host_uuid="",uuid="a295618e-c637-4051-bc59-568531763413"} 0
+nutanix_vms_hypervisor_num_received_bytes{host_uuid="",uuid="a49743bc-0351-4bfc-a061-a54d9a6d27b1"} 0
+nutanix_vms_hypervisor_num_received_bytes{host_uuid="",uuid="ae12779b-b375-4206-a159-c71b257f8dc2"} 0
+nutanix_vms_hypervisor_num_received_bytes{host_uuid="",uuid="b606cb9b-5423-4985-8efe-7015146416a6"} 0
+nutanix_vms_hypervisor_num_received_bytes{host_uuid="",uuid="b89eedc3-7b73-4c0b-b86f-b696b3b9bf3e"} 0
+nutanix_vms_hypervisor_num_received_bytes{host_uuid="",uuid="bbcc2366-dabf-496a-b19c-d08f773eff8a"} 0
+nutanix_vms_hypervisor_num_received_bytes{host_uuid="",uuid="d3c9dd8a-32a7-41d2-8587-d7ea5fcb5170"} 0
+nutanix_vms_hypervisor_num_received_bytes{host_uuid="",uuid="d967258c-75ae-49db-bbcc-c01a690f15c7"} 0
+nutanix_vms_hypervisor_num_received_bytes{host_uuid="",uuid="da69bf52-dd1e-432a-96a5-5c746130cb45"} 0
+nutanix_vms_hypervisor_num_received_bytes{host_uuid="",uuid="eb454045-d152-4167-b4eb-3fdb1db8f277"} 0
+nutanix_vms_hypervisor_num_received_bytes{host_uuid="49009008-9783-460f-b04c-59265cde8ec9",uuid="21238650-52aa-48fd-9049-ee25b966773f"} 7.5802787e+07
+nutanix_vms_hypervisor_num_received_bytes{host_uuid="49009008-9783-460f-b04c-59265cde8ec9",uuid="ffa1ff75-cef6-4172-9f44-45cc37c7786c"} 4.1428601e+07
+nutanix_vms_hypervisor_num_received_bytes{host_uuid="5033d23b-3712-4b1f-994f-acc112f9749f",uuid="99e1c927-5349-4a4e-86a8-a23d42124b39"} 2.0811496e+07
+nutanix_vms_hypervisor_num_received_bytes{host_uuid="5033d23b-3712-4b1f-994f-acc112f9749f",uuid="aea3ec23-ee5a-438f-ae88-2e09aedd16c7"} 460517
+nutanix_vms_hypervisor_num_received_bytes{host_uuid="d77af9f2-f776-4479-b231-3e1cc9f24470",uuid="20e4e908-882f-40ee-b287-601c88841482"} 4.8958705e+07
+nutanix_vms_hypervisor_num_received_bytes{host_uuid="d77af9f2-f776-4479-b231-3e1cc9f24470",uuid="79a94fb8-b666-4bcf-b97b-3171684149d4"} 4.8150542e+07
+nutanix_vms_hypervisor_num_received_bytes{host_uuid="d77af9f2-f776-4479-b231-3e1cc9f24470",uuid="db738597-c261-4f47-95c1-2267a284deda"} 165371
+# HELP nutanix_vms_hypervisor_num_transmitted_bytes ...
+# TYPE nutanix_vms_hypervisor_num_transmitted_bytes gauge
+nutanix_vms_hypervisor_num_transmitted_bytes{host_uuid="",uuid="0edd071e-6bd7-4ce8-a88c-dd32c4f34558"} 0
+nutanix_vms_hypervisor_num_transmitted_bytes{host_uuid="",uuid="184e5d0d-1f3d-4de8-a715-8fc4c23fe60a"} 0
+nutanix_vms_hypervisor_num_transmitted_bytes{host_uuid="",uuid="227ef30c-2cbd-407b-ac70-586ad3bd79e0"} 0
+nutanix_vms_hypervisor_num_transmitted_bytes{host_uuid="",uuid="244e8907-492d-466b-96aa-5ee3094666a4"} 0
+nutanix_vms_hypervisor_num_transmitted_bytes{host_uuid="",uuid="37243b2c-f16d-4e11-972b-b314e52a759c"} 0
+nutanix_vms_hypervisor_num_transmitted_bytes{host_uuid="",uuid="4171c556-96f8-48a8-bef7-b085bf2d1b9c"} 0
+nutanix_vms_hypervisor_num_transmitted_bytes{host_uuid="",uuid="5b9bafe4-89ad-4440-9a94-e6b73cbaa133"} 0
+nutanix_vms_hypervisor_num_transmitted_bytes{host_uuid="",uuid="60f18b94-d7fd-40f7-9266-2577572af8f2"} 0
+nutanix_vms_hypervisor_num_transmitted_bytes{host_uuid="",uuid="71846a85-17e3-4cbd-9c1e-f9f5ef3c50bb"} 0
+nutanix_vms_hypervisor_num_transmitted_bytes{host_uuid="",uuid="7366fb9a-bd50-45d1-8091-1ad70b15f42e"} 0
+nutanix_vms_hypervisor_num_transmitted_bytes{host_uuid="",uuid="8c2754e9-7996-40d8-a597-6cd28b623e4f"} 0
+nutanix_vms_hypervisor_num_transmitted_bytes{host_uuid="",uuid="93d8b775-1a6f-4312-864f-adb9ad746b42"} 0
+nutanix_vms_hypervisor_num_transmitted_bytes{host_uuid="",uuid="9fef76ea-9c77-47eb-bf0a-5bff563fdec8"} 0
+nutanix_vms_hypervisor_num_transmitted_bytes{host_uuid="",uuid="a295618e-c637-4051-bc59-568531763413"} 0
+nutanix_vms_hypervisor_num_transmitted_bytes{host_uuid="",uuid="a49743bc-0351-4bfc-a061-a54d9a6d27b1"} 0
+nutanix_vms_hypervisor_num_transmitted_bytes{host_uuid="",uuid="ae12779b-b375-4206-a159-c71b257f8dc2"} 0
+nutanix_vms_hypervisor_num_transmitted_bytes{host_uuid="",uuid="b606cb9b-5423-4985-8efe-7015146416a6"} 0
+nutanix_vms_hypervisor_num_transmitted_bytes{host_uuid="",uuid="b89eedc3-7b73-4c0b-b86f-b696b3b9bf3e"} 0
+nutanix_vms_hypervisor_num_transmitted_bytes{host_uuid="",uuid="bbcc2366-dabf-496a-b19c-d08f773eff8a"} 0
+nutanix_vms_hypervisor_num_transmitted_bytes{host_uuid="",uuid="d3c9dd8a-32a7-41d2-8587-d7ea5fcb5170"} 0
+nutanix_vms_hypervisor_num_transmitted_bytes{host_uuid="",uuid="d967258c-75ae-49db-bbcc-c01a690f15c7"} 0
+nutanix_vms_hypervisor_num_transmitted_bytes{host_uuid="",uuid="da69bf52-dd1e-432a-96a5-5c746130cb45"} 0
+nutanix_vms_hypervisor_num_transmitted_bytes{host_uuid="",uuid="eb454045-d152-4167-b4eb-3fdb1db8f277"} 0
+nutanix_vms_hypervisor_num_transmitted_bytes{host_uuid="49009008-9783-460f-b04c-59265cde8ec9",uuid="21238650-52aa-48fd-9049-ee25b966773f"} 7.3157095e+07
+nutanix_vms_hypervisor_num_transmitted_bytes{host_uuid="49009008-9783-460f-b04c-59265cde8ec9",uuid="ffa1ff75-cef6-4172-9f44-45cc37c7786c"} 7.926275e+06
+nutanix_vms_hypervisor_num_transmitted_bytes{host_uuid="5033d23b-3712-4b1f-994f-acc112f9749f",uuid="99e1c927-5349-4a4e-86a8-a23d42124b39"} 2.8189274e+07
+nutanix_vms_hypervisor_num_transmitted_bytes{host_uuid="5033d23b-3712-4b1f-994f-acc112f9749f",uuid="aea3ec23-ee5a-438f-ae88-2e09aedd16c7"} 297481
+nutanix_vms_hypervisor_num_transmitted_bytes{host_uuid="d77af9f2-f776-4479-b231-3e1cc9f24470",uuid="20e4e908-882f-40ee-b287-601c88841482"} 5.3386633e+07
+nutanix_vms_hypervisor_num_transmitted_bytes{host_uuid="d77af9f2-f776-4479-b231-3e1cc9f24470",uuid="79a94fb8-b666-4bcf-b97b-3171684149d4"} 3.166289339e+09
+nutanix_vms_hypervisor_num_transmitted_bytes{host_uuid="d77af9f2-f776-4479-b231-3e1cc9f24470",uuid="db738597-c261-4f47-95c1-2267a284deda"} 42449
+# HELP nutanix_vms_memory_free_bytes ...
+# TYPE nutanix_vms_memory_free_bytes gauge
+nutanix_vms_memory_free_bytes{host_uuid="",uuid="0edd071e-6bd7-4ce8-a88c-dd32c4f34558"} 4.294967296e+09
+nutanix_vms_memory_free_bytes{host_uuid="",uuid="184e5d0d-1f3d-4de8-a715-8fc4c23fe60a"} 1.7179869184e+10
+nutanix_vms_memory_free_bytes{host_uuid="",uuid="227ef30c-2cbd-407b-ac70-586ad3bd79e0"} 6.8719476736e+10
+nutanix_vms_memory_free_bytes{host_uuid="",uuid="244e8907-492d-466b-96aa-5ee3094666a4"} 4.294967296e+09
+nutanix_vms_memory_free_bytes{host_uuid="",uuid="37243b2c-f16d-4e11-972b-b314e52a759c"} 2.147483648e+09
+nutanix_vms_memory_free_bytes{host_uuid="",uuid="4171c556-96f8-48a8-bef7-b085bf2d1b9c"} 4.294967296e+09
+nutanix_vms_memory_free_bytes{host_uuid="",uuid="5b9bafe4-89ad-4440-9a94-e6b73cbaa133"} 4.294967296e+09
+nutanix_vms_memory_free_bytes{host_uuid="",uuid="60f18b94-d7fd-40f7-9266-2577572af8f2"} 1.7179869184e+10
+nutanix_vms_memory_free_bytes{host_uuid="",uuid="71846a85-17e3-4cbd-9c1e-f9f5ef3c50bb"} 1.7179869184e+10
+nutanix_vms_memory_free_bytes{host_uuid="",uuid="7366fb9a-bd50-45d1-8091-1ad70b15f42e"} 2.147483648e+09
+nutanix_vms_memory_free_bytes{host_uuid="",uuid="8c2754e9-7996-40d8-a597-6cd28b623e4f"} 2.147483648e+09
+nutanix_vms_memory_free_bytes{host_uuid="",uuid="93d8b775-1a6f-4312-864f-adb9ad746b42"} 4.294967296e+09
+nutanix_vms_memory_free_bytes{host_uuid="",uuid="9fef76ea-9c77-47eb-bf0a-5bff563fdec8"} 4.294967296e+09
+nutanix_vms_memory_free_bytes{host_uuid="",uuid="a295618e-c637-4051-bc59-568531763413"} 4.294967296e+09
+nutanix_vms_memory_free_bytes{host_uuid="",uuid="a49743bc-0351-4bfc-a061-a54d9a6d27b1"} 4.294967296e+09
+nutanix_vms_memory_free_bytes{host_uuid="",uuid="ae12779b-b375-4206-a159-c71b257f8dc2"} 8.589934592e+09
+nutanix_vms_memory_free_bytes{host_uuid="",uuid="b606cb9b-5423-4985-8efe-7015146416a6"} 8.589934592e+09
+nutanix_vms_memory_free_bytes{host_uuid="",uuid="b89eedc3-7b73-4c0b-b86f-b696b3b9bf3e"} 4.294967296e+09
+nutanix_vms_memory_free_bytes{host_uuid="",uuid="bbcc2366-dabf-496a-b19c-d08f773eff8a"} 8.589934592e+09
+nutanix_vms_memory_free_bytes{host_uuid="",uuid="d3c9dd8a-32a7-41d2-8587-d7ea5fcb5170"} 4.294967296e+09
+nutanix_vms_memory_free_bytes{host_uuid="",uuid="d967258c-75ae-49db-bbcc-c01a690f15c7"} 4.294967296e+09
+nutanix_vms_memory_free_bytes{host_uuid="",uuid="da69bf52-dd1e-432a-96a5-5c746130cb45"} 4.294967296e+09
+nutanix_vms_memory_free_bytes{host_uuid="",uuid="eb454045-d152-4167-b4eb-3fdb1db8f277"} 2.147483648e+09
+nutanix_vms_memory_free_bytes{host_uuid="49009008-9783-460f-b04c-59265cde8ec9",uuid="21238650-52aa-48fd-9049-ee25b966773f"} 5.152559104e+09
+nutanix_vms_memory_free_bytes{host_uuid="49009008-9783-460f-b04c-59265cde8ec9",uuid="ffa1ff75-cef6-4172-9f44-45cc37c7786c"} 3.4346862888e+10
+nutanix_vms_memory_free_bytes{host_uuid="5033d23b-3712-4b1f-994f-acc112f9749f",uuid="99e1c927-5349-4a4e-86a8-a23d42124b39"} 3.4341010444e+10
+nutanix_vms_memory_free_bytes{host_uuid="5033d23b-3712-4b1f-994f-acc112f9749f",uuid="aea3ec23-ee5a-438f-ae88-2e09aedd16c7"} 1.7179869184e+10
+nutanix_vms_memory_free_bytes{host_uuid="d77af9f2-f776-4479-b231-3e1cc9f24470",uuid="20e4e908-882f-40ee-b287-601c88841482"} 3.4338426628e+10
+nutanix_vms_memory_free_bytes{host_uuid="d77af9f2-f776-4479-b231-3e1cc9f24470",uuid="79a94fb8-b666-4bcf-b97b-3171684149d4"} 6.152904704e+09
+nutanix_vms_memory_free_bytes{host_uuid="d77af9f2-f776-4479-b231-3e1cc9f24470",uuid="db738597-c261-4f47-95c1-2267a284deda"} 2.854576128e+09
+# HELP nutanix_vms_memorycapacityinbytes ...
+# TYPE nutanix_vms_memorycapacityinbytes gauge
+nutanix_vms_memorycapacityinbytes{host_uuid="",uuid="0edd071e-6bd7-4ce8-a88c-dd32c4f34558"} 4.294967296e+09
+nutanix_vms_memorycapacityinbytes{host_uuid="",uuid="184e5d0d-1f3d-4de8-a715-8fc4c23fe60a"} 1.7179869184e+10
+nutanix_vms_memorycapacityinbytes{host_uuid="",uuid="227ef30c-2cbd-407b-ac70-586ad3bd79e0"} 6.8719476736e+10
+nutanix_vms_memorycapacityinbytes{host_uuid="",uuid="244e8907-492d-466b-96aa-5ee3094666a4"} 4.294967296e+09
+nutanix_vms_memorycapacityinbytes{host_uuid="",uuid="37243b2c-f16d-4e11-972b-b314e52a759c"} 2.147483648e+09
+nutanix_vms_memorycapacityinbytes{host_uuid="",uuid="4171c556-96f8-48a8-bef7-b085bf2d1b9c"} 4.294967296e+09
+nutanix_vms_memorycapacityinbytes{host_uuid="",uuid="5b9bafe4-89ad-4440-9a94-e6b73cbaa133"} 4.294967296e+09
+nutanix_vms_memorycapacityinbytes{host_uuid="",uuid="60f18b94-d7fd-40f7-9266-2577572af8f2"} 1.7179869184e+10
+nutanix_vms_memorycapacityinbytes{host_uuid="",uuid="71846a85-17e3-4cbd-9c1e-f9f5ef3c50bb"} 1.7179869184e+10
+nutanix_vms_memorycapacityinbytes{host_uuid="",uuid="7366fb9a-bd50-45d1-8091-1ad70b15f42e"} 2.147483648e+09
+nutanix_vms_memorycapacityinbytes{host_uuid="",uuid="8c2754e9-7996-40d8-a597-6cd28b623e4f"} 2.147483648e+09
+nutanix_vms_memorycapacityinbytes{host_uuid="",uuid="93d8b775-1a6f-4312-864f-adb9ad746b42"} 4.294967296e+09
+nutanix_vms_memorycapacityinbytes{host_uuid="",uuid="9fef76ea-9c77-47eb-bf0a-5bff563fdec8"} 4.294967296e+09
+nutanix_vms_memorycapacityinbytes{host_uuid="",uuid="a295618e-c637-4051-bc59-568531763413"} 4.294967296e+09
+nutanix_vms_memorycapacityinbytes{host_uuid="",uuid="a49743bc-0351-4bfc-a061-a54d9a6d27b1"} 4.294967296e+09
+nutanix_vms_memorycapacityinbytes{host_uuid="",uuid="ae12779b-b375-4206-a159-c71b257f8dc2"} 8.589934592e+09
+nutanix_vms_memorycapacityinbytes{host_uuid="",uuid="b606cb9b-5423-4985-8efe-7015146416a6"} 8.589934592e+09
+nutanix_vms_memorycapacityinbytes{host_uuid="",uuid="b89eedc3-7b73-4c0b-b86f-b696b3b9bf3e"} 4.294967296e+09
+nutanix_vms_memorycapacityinbytes{host_uuid="",uuid="bbcc2366-dabf-496a-b19c-d08f773eff8a"} 8.589934592e+09
+nutanix_vms_memorycapacityinbytes{host_uuid="",uuid="d3c9dd8a-32a7-41d2-8587-d7ea5fcb5170"} 4.294967296e+09
+nutanix_vms_memorycapacityinbytes{host_uuid="",uuid="d967258c-75ae-49db-bbcc-c01a690f15c7"} 4.294967296e+09
+nutanix_vms_memorycapacityinbytes{host_uuid="",uuid="da69bf52-dd1e-432a-96a5-5c746130cb45"} 4.294967296e+09
+nutanix_vms_memorycapacityinbytes{host_uuid="",uuid="eb454045-d152-4167-b4eb-3fdb1db8f277"} 2.147483648e+09
+nutanix_vms_memorycapacityinbytes{host_uuid="49009008-9783-460f-b04c-59265cde8ec9",uuid="21238650-52aa-48fd-9049-ee25b966773f"} 8.589934592e+09
+nutanix_vms_memorycapacityinbytes{host_uuid="49009008-9783-460f-b04c-59265cde8ec9",uuid="ffa1ff75-cef6-4172-9f44-45cc37c7786c"} 3.4359738368e+10
+nutanix_vms_memorycapacityinbytes{host_uuid="5033d23b-3712-4b1f-994f-acc112f9749f",uuid="99e1c927-5349-4a4e-86a8-a23d42124b39"} 3.4359738368e+10
+nutanix_vms_memorycapacityinbytes{host_uuid="5033d23b-3712-4b1f-994f-acc112f9749f",uuid="aea3ec23-ee5a-438f-ae88-2e09aedd16c7"} 1.7179869184e+10
+nutanix_vms_memorycapacityinbytes{host_uuid="d77af9f2-f776-4479-b231-3e1cc9f24470",uuid="20e4e908-882f-40ee-b287-601c88841482"} 3.4359738368e+10
+nutanix_vms_memorycapacityinbytes{host_uuid="d77af9f2-f776-4479-b231-3e1cc9f24470",uuid="79a94fb8-b666-4bcf-b97b-3171684149d4"} 8.589934592e+09
+nutanix_vms_memorycapacityinbytes{host_uuid="d77af9f2-f776-4479-b231-3e1cc9f24470",uuid="db738597-c261-4f47-95c1-2267a284deda"} 3.4359738368e+10
+# HELP nutanix_vms_numvcpus ...
+# TYPE nutanix_vms_numvcpus gauge
+nutanix_vms_numvcpus{host_uuid="",uuid="0edd071e-6bd7-4ce8-a88c-dd32c4f34558"} 4
+nutanix_vms_numvcpus{host_uuid="",uuid="184e5d0d-1f3d-4de8-a715-8fc4c23fe60a"} 4
+nutanix_vms_numvcpus{host_uuid="",uuid="227ef30c-2cbd-407b-ac70-586ad3bd79e0"} 16
+nutanix_vms_numvcpus{host_uuid="",uuid="244e8907-492d-466b-96aa-5ee3094666a4"} 4
+nutanix_vms_numvcpus{host_uuid="",uuid="37243b2c-f16d-4e11-972b-b314e52a759c"} 1
+nutanix_vms_numvcpus{host_uuid="",uuid="4171c556-96f8-48a8-bef7-b085bf2d1b9c"} 4
+nutanix_vms_numvcpus{host_uuid="",uuid="5b9bafe4-89ad-4440-9a94-e6b73cbaa133"} 4
+nutanix_vms_numvcpus{host_uuid="",uuid="60f18b94-d7fd-40f7-9266-2577572af8f2"} 4
+nutanix_vms_numvcpus{host_uuid="",uuid="71846a85-17e3-4cbd-9c1e-f9f5ef3c50bb"} 4
+nutanix_vms_numvcpus{host_uuid="",uuid="7366fb9a-bd50-45d1-8091-1ad70b15f42e"} 1
+nutanix_vms_numvcpus{host_uuid="",uuid="8c2754e9-7996-40d8-a597-6cd28b623e4f"} 1
+nutanix_vms_numvcpus{host_uuid="",uuid="93d8b775-1a6f-4312-864f-adb9ad746b42"} 4
+nutanix_vms_numvcpus{host_uuid="",uuid="9fef76ea-9c77-47eb-bf0a-5bff563fdec8"} 4
+nutanix_vms_numvcpus{host_uuid="",uuid="a295618e-c637-4051-bc59-568531763413"} 4
+nutanix_vms_numvcpus{host_uuid="",uuid="a49743bc-0351-4bfc-a061-a54d9a6d27b1"} 4
+nutanix_vms_numvcpus{host_uuid="",uuid="ae12779b-b375-4206-a159-c71b257f8dc2"} 2
+nutanix_vms_numvcpus{host_uuid="",uuid="b606cb9b-5423-4985-8efe-7015146416a6"} 2
+nutanix_vms_numvcpus{host_uuid="",uuid="b89eedc3-7b73-4c0b-b86f-b696b3b9bf3e"} 4
+nutanix_vms_numvcpus{host_uuid="",uuid="bbcc2366-dabf-496a-b19c-d08f773eff8a"} 2
+nutanix_vms_numvcpus{host_uuid="",uuid="d3c9dd8a-32a7-41d2-8587-d7ea5fcb5170"} 4
+nutanix_vms_numvcpus{host_uuid="",uuid="d967258c-75ae-49db-bbcc-c01a690f15c7"} 4
+nutanix_vms_numvcpus{host_uuid="",uuid="da69bf52-dd1e-432a-96a5-5c746130cb45"} 4
+nutanix_vms_numvcpus{host_uuid="",uuid="eb454045-d152-4167-b4eb-3fdb1db8f277"} 8
+nutanix_vms_numvcpus{host_uuid="49009008-9783-460f-b04c-59265cde8ec9",uuid="21238650-52aa-48fd-9049-ee25b966773f"} 4
+nutanix_vms_numvcpus{host_uuid="49009008-9783-460f-b04c-59265cde8ec9",uuid="ffa1ff75-cef6-4172-9f44-45cc37c7786c"} 8
+nutanix_vms_numvcpus{host_uuid="5033d23b-3712-4b1f-994f-acc112f9749f",uuid="99e1c927-5349-4a4e-86a8-a23d42124b39"} 8
+nutanix_vms_numvcpus{host_uuid="5033d23b-3712-4b1f-994f-acc112f9749f",uuid="aea3ec23-ee5a-438f-ae88-2e09aedd16c7"} 2
+nutanix_vms_numvcpus{host_uuid="d77af9f2-f776-4479-b231-3e1cc9f24470",uuid="20e4e908-882f-40ee-b287-601c88841482"} 8
+nutanix_vms_numvcpus{host_uuid="d77af9f2-f776-4479-b231-3e1cc9f24470",uuid="79a94fb8-b666-4bcf-b97b-3171684149d4"} 4
+nutanix_vms_numvcpus{host_uuid="d77af9f2-f776-4479-b231-3e1cc9f24470",uuid="db738597-c261-4f47-95c1-2267a284deda"} 12
+# HELP nutanix_vms_powerstate ...
+# TYPE nutanix_vms_powerstate gauge
+nutanix_vms_powerstate{host_uuid="",uuid="0edd071e-6bd7-4ce8-a88c-dd32c4f34558"} 0
+nutanix_vms_powerstate{host_uuid="",uuid="184e5d0d-1f3d-4de8-a715-8fc4c23fe60a"} 0
+nutanix_vms_powerstate{host_uuid="",uuid="227ef30c-2cbd-407b-ac70-586ad3bd79e0"} 0
+nutanix_vms_powerstate{host_uuid="",uuid="244e8907-492d-466b-96aa-5ee3094666a4"} 0
+nutanix_vms_powerstate{host_uuid="",uuid="37243b2c-f16d-4e11-972b-b314e52a759c"} 0
+nutanix_vms_powerstate{host_uuid="",uuid="4171c556-96f8-48a8-bef7-b085bf2d1b9c"} 0
+nutanix_vms_powerstate{host_uuid="",uuid="5b9bafe4-89ad-4440-9a94-e6b73cbaa133"} 0
+nutanix_vms_powerstate{host_uuid="",uuid="60f18b94-d7fd-40f7-9266-2577572af8f2"} 0
+nutanix_vms_powerstate{host_uuid="",uuid="71846a85-17e3-4cbd-9c1e-f9f5ef3c50bb"} 0
+nutanix_vms_powerstate{host_uuid="",uuid="7366fb9a-bd50-45d1-8091-1ad70b15f42e"} 0
+nutanix_vms_powerstate{host_uuid="",uuid="8c2754e9-7996-40d8-a597-6cd28b623e4f"} 0
+nutanix_vms_powerstate{host_uuid="",uuid="93d8b775-1a6f-4312-864f-adb9ad746b42"} 0
+nutanix_vms_powerstate{host_uuid="",uuid="9fef76ea-9c77-47eb-bf0a-5bff563fdec8"} 0
+nutanix_vms_powerstate{host_uuid="",uuid="a295618e-c637-4051-bc59-568531763413"} 0
+nutanix_vms_powerstate{host_uuid="",uuid="a49743bc-0351-4bfc-a061-a54d9a6d27b1"} 0
+nutanix_vms_powerstate{host_uuid="",uuid="ae12779b-b375-4206-a159-c71b257f8dc2"} 0
+nutanix_vms_powerstate{host_uuid="",uuid="b606cb9b-5423-4985-8efe-7015146416a6"} 0
+nutanix_vms_powerstate{host_uuid="",uuid="b89eedc3-7b73-4c0b-b86f-b696b3b9bf3e"} 0
+nutanix_vms_powerstate{host_uuid="",uuid="bbcc2366-dabf-496a-b19c-d08f773eff8a"} 0
+nutanix_vms_powerstate{host_uuid="",uuid="d3c9dd8a-32a7-41d2-8587-d7ea5fcb5170"} 0
+nutanix_vms_powerstate{host_uuid="",uuid="d967258c-75ae-49db-bbcc-c01a690f15c7"} 0
+nutanix_vms_powerstate{host_uuid="",uuid="da69bf52-dd1e-432a-96a5-5c746130cb45"} 0
+nutanix_vms_powerstate{host_uuid="",uuid="eb454045-d152-4167-b4eb-3fdb1db8f277"} 0
+nutanix_vms_powerstate{host_uuid="49009008-9783-460f-b04c-59265cde8ec9",uuid="21238650-52aa-48fd-9049-ee25b966773f"} 1
+nutanix_vms_powerstate{host_uuid="49009008-9783-460f-b04c-59265cde8ec9",uuid="ffa1ff75-cef6-4172-9f44-45cc37c7786c"} 1
+nutanix_vms_powerstate{host_uuid="5033d23b-3712-4b1f-994f-acc112f9749f",uuid="99e1c927-5349-4a4e-86a8-a23d42124b39"} 1
+nutanix_vms_powerstate{host_uuid="5033d23b-3712-4b1f-994f-acc112f9749f",uuid="aea3ec23-ee5a-438f-ae88-2e09aedd16c7"} 1
+nutanix_vms_powerstate{host_uuid="d77af9f2-f776-4479-b231-3e1cc9f24470",uuid="20e4e908-882f-40ee-b287-601c88841482"} 1
+nutanix_vms_powerstate{host_uuid="d77af9f2-f776-4479-b231-3e1cc9f24470",uuid="79a94fb8-b666-4bcf-b97b-3171684149d4"} 1
+nutanix_vms_powerstate{host_uuid="d77af9f2-f776-4479-b231-3e1cc9f24470",uuid="db738597-c261-4f47-95c1-2267a284deda"} 1
+# HELP nutanix_vms_properties ...
+# TYPE nutanix_vms_properties gauge
+nutanix_vms_properties{cpuReservedInMHz="",diskCapacityInMB="",host_uuid="49009008-9783-460f-b04c-59265cde8ec9",ipAddresses="192.168.40.5,10.20.10.243,192.168.5.254,192.168.5.2",memoryCapacityInMB="32768",memoryReservedCapacityInMB="0",numVCpus="8",powerState="on",uuid="ffa1ff75-cef6-4172-9f44-45cc37c7786c",vmName="NTNX-18FM6G190019-C-CVM"} 1
+nutanix_vms_properties{cpuReservedInMHz="",diskCapacityInMB="",host_uuid="5033d23b-3712-4b1f-994f-acc112f9749f",ipAddresses="10.20.10.241,192.168.40.1,192.168.5.254,192.168.5.2",memoryCapacityInMB="32768",memoryReservedCapacityInMB="0",numVCpus="8",powerState="on",uuid="99e1c927-5349-4a4e-86a8-a23d42124b39",vmName="NTNX-18FM6G190019-A-CVM"} 1
+nutanix_vms_properties{cpuReservedInMHz="",diskCapacityInMB="",host_uuid="d77af9f2-f776-4479-b231-3e1cc9f24470",ipAddresses="192.168.40.3,10.20.10.242,192.168.5.254,192.168.5.2",memoryCapacityInMB="32768",memoryReservedCapacityInMB="0",numVCpus="8",powerState="on",uuid="20e4e908-882f-40ee-b287-601c88841482",vmName="NTNX-18FM6G190019-B-CVM"} 1
+nutanix_vms_properties{cpuReservedInMHz="",diskCapacityInMB="1048576",host_uuid="",ipAddresses="",memoryCapacityInMB="65536",memoryReservedCapacityInMB="0",numVCpus="16",powerState="off",uuid="227ef30c-2cbd-407b-ac70-586ad3bd79e0",vmName="ZTS-NutanixVW"} 1
+nutanix_vms_properties{cpuReservedInMHz="",diskCapacityInMB="110592",host_uuid="",ipAddresses="",memoryCapacityInMB="16384",memoryReservedCapacityInMB="0",numVCpus="4",powerState="off",uuid="184e5d0d-1f3d-4de8-a715-8fc4c23fe60a",vmName="StackPlay Engine 6.6.1 Demo03"} 1
+nutanix_vms_properties{cpuReservedInMHz="",diskCapacityInMB="110592",host_uuid="",ipAddresses="",memoryCapacityInMB="16384",memoryReservedCapacityInMB="0",numVCpus="4",powerState="off",uuid="60f18b94-d7fd-40f7-9266-2577572af8f2",vmName="StackPlay Engine 6.6.1 Demo02"} 1
+nutanix_vms_properties{cpuReservedInMHz="",diskCapacityInMB="110592",host_uuid="",ipAddresses="",memoryCapacityInMB="16384",memoryReservedCapacityInMB="0",numVCpus="4",powerState="off",uuid="71846a85-17e3-4cbd-9c1e-f9f5ef3c50bb",vmName="StackPlay Engine 6.6.1 Demo01"} 1
+nutanix_vms_properties{cpuReservedInMHz="",diskCapacityInMB="110592",host_uuid="",ipAddresses="",memoryCapacityInMB="2048",memoryReservedCapacityInMB="0",numVCpus="8",powerState="off",uuid="eb454045-d152-4167-b4eb-3fdb1db8f277",vmName="StackPlay Engine 6.6.1 Demo"} 1
+nutanix_vms_properties{cpuReservedInMHz="",diskCapacityInMB="110592",host_uuid="",ipAddresses="",memoryCapacityInMB="4096",memoryReservedCapacityInMB="0",numVCpus="4",powerState="off",uuid="0edd071e-6bd7-4ce8-a88c-dd32c4f34558",vmName="StackPlay Engine 6.6.1 Demo15"} 1
+nutanix_vms_properties{cpuReservedInMHz="",diskCapacityInMB="110592",host_uuid="",ipAddresses="",memoryCapacityInMB="4096",memoryReservedCapacityInMB="0",numVCpus="4",powerState="off",uuid="244e8907-492d-466b-96aa-5ee3094666a4",vmName="StackPlay Engine 6.6.1 Demo11"} 1
+nutanix_vms_properties{cpuReservedInMHz="",diskCapacityInMB="110592",host_uuid="",ipAddresses="",memoryCapacityInMB="4096",memoryReservedCapacityInMB="0",numVCpus="4",powerState="off",uuid="4171c556-96f8-48a8-bef7-b085bf2d1b9c",vmName="StackPlay Engine 6.6.1 Demo10"} 1
+nutanix_vms_properties{cpuReservedInMHz="",diskCapacityInMB="110592",host_uuid="",ipAddresses="",memoryCapacityInMB="4096",memoryReservedCapacityInMB="0",numVCpus="4",powerState="off",uuid="5b9bafe4-89ad-4440-9a94-e6b73cbaa133",vmName="StackPlay Engine 6.6.1 Demo07"} 1
+nutanix_vms_properties{cpuReservedInMHz="",diskCapacityInMB="110592",host_uuid="",ipAddresses="",memoryCapacityInMB="4096",memoryReservedCapacityInMB="0",numVCpus="4",powerState="off",uuid="93d8b775-1a6f-4312-864f-adb9ad746b42",vmName="StackPlay Engine 6.6.1 Demo13"} 1
+nutanix_vms_properties{cpuReservedInMHz="",diskCapacityInMB="110592",host_uuid="",ipAddresses="",memoryCapacityInMB="4096",memoryReservedCapacityInMB="0",numVCpus="4",powerState="off",uuid="9fef76ea-9c77-47eb-bf0a-5bff563fdec8",vmName="StackPlay Engine 6.6.1 Demo08"} 1
+nutanix_vms_properties{cpuReservedInMHz="",diskCapacityInMB="110592",host_uuid="",ipAddresses="",memoryCapacityInMB="4096",memoryReservedCapacityInMB="0",numVCpus="4",powerState="off",uuid="a295618e-c637-4051-bc59-568531763413",vmName="StackPlay Engine 6.6.1 Demo14"} 1
+nutanix_vms_properties{cpuReservedInMHz="",diskCapacityInMB="110592",host_uuid="",ipAddresses="",memoryCapacityInMB="4096",memoryReservedCapacityInMB="0",numVCpus="4",powerState="off",uuid="a49743bc-0351-4bfc-a061-a54d9a6d27b1",vmName="StackPlay Engine 6.6.1 Demo06"} 1
+nutanix_vms_properties{cpuReservedInMHz="",diskCapacityInMB="110592",host_uuid="",ipAddresses="",memoryCapacityInMB="4096",memoryReservedCapacityInMB="0",numVCpus="4",powerState="off",uuid="b89eedc3-7b73-4c0b-b86f-b696b3b9bf3e",vmName="StackPlay Engine 6.6.1 Demo04"} 1
+nutanix_vms_properties{cpuReservedInMHz="",diskCapacityInMB="110592",host_uuid="",ipAddresses="",memoryCapacityInMB="4096",memoryReservedCapacityInMB="0",numVCpus="4",powerState="off",uuid="d3c9dd8a-32a7-41d2-8587-d7ea5fcb5170",vmName="StackPlay Engine 6.6.1 Demo09"} 1
+nutanix_vms_properties{cpuReservedInMHz="",diskCapacityInMB="110592",host_uuid="",ipAddresses="",memoryCapacityInMB="4096",memoryReservedCapacityInMB="0",numVCpus="4",powerState="off",uuid="d967258c-75ae-49db-bbcc-c01a690f15c7",vmName="StackPlay Engine 6.6.1 Demo12"} 1
+nutanix_vms_properties{cpuReservedInMHz="",diskCapacityInMB="110592",host_uuid="",ipAddresses="",memoryCapacityInMB="4096",memoryReservedCapacityInMB="0",numVCpus="4",powerState="off",uuid="da69bf52-dd1e-432a-96a5-5c746130cb45",vmName="StackPlay Engine 6.6.1 Demo05"} 1
+nutanix_vms_properties{cpuReservedInMHz="",diskCapacityInMB="131072",host_uuid="",ipAddresses="",memoryCapacityInMB="8192",memoryReservedCapacityInMB="0",numVCpus="2",powerState="off",uuid="ae12779b-b375-4206-a159-c71b257f8dc2",vmName="StackPlay Dev Preconditioning"} 1
+nutanix_vms_properties{cpuReservedInMHz="",diskCapacityInMB="131072",host_uuid="",ipAddresses="",memoryCapacityInMB="8192",memoryReservedCapacityInMB="0",numVCpus="2",powerState="off",uuid="b606cb9b-5423-4985-8efe-7015146416a6",vmName="StackPlay 6.8 QE 04.06.2020"} 1
+nutanix_vms_properties{cpuReservedInMHz="",diskCapacityInMB="131072",host_uuid="",ipAddresses="",memoryCapacityInMB="8192",memoryReservedCapacityInMB="0",numVCpus="2",powerState="off",uuid="bbcc2366-dabf-496a-b19c-d08f773eff8a",vmName="StackPlay 6.8 QE-custom 04.06.2020"} 1
+nutanix_vms_properties{cpuReservedInMHz="",diskCapacityInMB="249394",host_uuid="5033d23b-3712-4b1f-994f-acc112f9749f",ipAddresses="10.20.12.212,10.20.12.210,10.20.12.215,10.20.12.213",memoryCapacityInMB="16384",memoryReservedCapacityInMB="16384",numVCpus="2",powerState="on",uuid="aea3ec23-ee5a-438f-ae88-2e09aedd16c7",vmName="Syslab_NTAP_914"} 1
+nutanix_vms_properties{cpuReservedInMHz="",diskCapacityInMB="512000",host_uuid="49009008-9783-460f-b04c-59265cde8ec9",ipAddresses="10.20.12.130",memoryCapacityInMB="8192",memoryReservedCapacityInMB="8192",numVCpus="4",powerState="on",uuid="21238650-52aa-48fd-9049-ee25b966773f",vmName="MB Windows Server 16"} 1
+nutanix_vms_properties{cpuReservedInMHz="",diskCapacityInMB="512000",host_uuid="d77af9f2-f776-4479-b231-3e1cc9f24470",ipAddresses="10.20.12.129",memoryCapacityInMB="8192",memoryReservedCapacityInMB="8192",numVCpus="4",powerState="on",uuid="79a94fb8-b666-4bcf-b97b-3171684149d4",vmName="MB-OpenSuse 15.5 Client"} 1
+nutanix_vms_properties{cpuReservedInMHz="",diskCapacityInMB="8192",host_uuid="",ipAddresses="",memoryCapacityInMB="2048",memoryReservedCapacityInMB="0",numVCpus="1",powerState="off",uuid="37243b2c-f16d-4e11-972b-b314e52a759c",vmName="SWWLG QA 02"} 1
+nutanix_vms_properties{cpuReservedInMHz="",diskCapacityInMB="8192",host_uuid="",ipAddresses="",memoryCapacityInMB="2048",memoryReservedCapacityInMB="0",numVCpus="1",powerState="off",uuid="7366fb9a-bd50-45d1-8091-1ad70b15f42e",vmName="SW WLG VM 0.3"} 1
+nutanix_vms_properties{cpuReservedInMHz="",diskCapacityInMB="8192",host_uuid="",ipAddresses="",memoryCapacityInMB="2048",memoryReservedCapacityInMB="0",numVCpus="1",powerState="off",uuid="8c2754e9-7996-40d8-a597-6cd28b623e4f",vmName="SWWLG QA 01"} 1
+nutanix_vms_properties{cpuReservedInMHz="",diskCapacityInMB="8367557",host_uuid="d77af9f2-f776-4479-b231-3e1cc9f24470",ipAddresses="10.20.12.222",memoryCapacityInMB="32768",memoryReservedCapacityInMB="32768",numVCpus="12",powerState="on",uuid="db738597-c261-4f47-95c1-2267a284deda",vmName="PrismCentral-SysLab"} 1

@@ -152,7 +152,7 @@ func (e *StorageContainerExporter) Collect(ch chan<- prometheus.Metric) {
 			var val string = ""
 			// format properties
 			switch property {
-			case "max_capacity":
+			case "max_capacity_mb":
 				propname := "max_capacity"
 				obj := ent[propname]
 				if obj != nil {
@@ -218,7 +218,7 @@ func NewStorageContainersCollector(_api *Nutanix) *StorageContainerExporter {
 			api:        *_api,
 			metrics:    make(map[string]*prometheus.GaugeVec),
 			namespace:  "nutanix_storage_containers",
-			properties: []string{"storage_container_uuid", "cluster_uuid", "name", "replication_factor", "compression_enabled", "max_capacity"},
+			properties: []string{"storage_container_uuid", "cluster_uuid", "name", "replication_factor", "compression_enabled", "max_capacity_mb"},
 			filter_stats: map[string]bool{
 				"storage.usage_bytes":                       true,
 				"storage.capacity_bytes":                    true,
