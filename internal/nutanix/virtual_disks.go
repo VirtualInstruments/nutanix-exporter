@@ -219,8 +219,8 @@ func NewVirtualDisksCollector(_api *Nutanix) *VirtualDisksExporter {
 			filter_stats: map[string]bool{
 				"controller_total_read_io_size_kbytes":  true,
 				"controller_total_io_size_kbytes":       true,
-				"controller_num_read_iops":              true,
-				"controller_num_write_iops":             true,
+				"controller_num_read_io":                true,
+				"controller_num_write_io":               true,
 				"controller_avg_read_io_latency_usecs":  true,
 				"controller_avg_write_io_latency_usecs": true,
 				//usage stats
