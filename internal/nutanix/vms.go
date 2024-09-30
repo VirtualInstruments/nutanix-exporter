@@ -11,10 +11,11 @@ package nutanix
 
 import (
 	"encoding/json"
-	"github.com/prometheus/client_golang/prometheus"
-	log "github.com/sirupsen/logrus"
 	"strconv"
 	"strings"
+
+	"github.com/prometheus/client_golang/prometheus"
+	log "github.com/sirupsen/logrus"
 )
 
 const (
@@ -253,6 +254,7 @@ func NewVmsCollector(_api *Nutanix) *VmsExporter {
 				"guest.memory_usage_bytes":         true,
 				"hypervisor_num_received_bytes":    true,
 				"hypervisor_num_transmitted_bytes": true,
+				"hypervisor.cpu_ready_time_ppm":    true,
 				// Calculated
 				METRIC_MEM_FREE_BYTES: true,
 			},
