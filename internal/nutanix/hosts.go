@@ -244,7 +244,6 @@ func NewHostsCollector(_api *Nutanix) *HostsExporter {
 				"hypervisor_memory_usage_ppm":          true,
 				"hypervisor_num_received_bytes":        true,
 				"hypervisor_num_transmitted_bytes":     true,
-				"hypervisor_full_name":                 true,
 				// Calculated
 				METRIC_TOTAL_WRITE_IO_SIZE: true,
 				METRIC_MEM_USAGE_BYTES:     true,
