@@ -10,47 +10,109 @@ import (
 
 const KEY_HOST_NETWORK_PROPERTIES = "properties"
 
-// HostsNetworkExporter
-type HostsNetworkExporter struct {
+// HostNetworkExporter
+type HostNetworkExporter struct {
 	*nutanixExporter
-	HostUUIDs []string
+	HostUUID string
 }
 
-func (e *HostsNetworkExporter) Describe(ch chan<- *prometheus.Desc) {
+func (e *HostNetworkExporter) Describe(ch chan<- *prometheus.Desc) {
 	log.Info("NewHostsNetworkCollector Describe")
-	for _, uuid := range e.HostUUIDs {
-		nicEndpoint := fmt.Sprintf("/hosts/%s/host_nics", uuid)
-		log.Info("nicEndpoint" + nicEndpoint)
-		resp, err := e.api.makeV2Request("GET", nicEndpoint)
-		if err != nil {
-			log.Errorf("Failed to get host_nics for UUID %s: %v", uuid, err)
-			continue
+	uuid := e.HostUUID
+	log.Info(uuid)
+
+	// Construct the NIC endpoint using the single host UUID
+	nicEndpoint := fmt.Sprintf("/hosts/%s/host_nics", uuid)
+	log.Info("nicEndpoint: " + nicEndpoint)
+
+	// Make the API request to fetch host NICs information
+	resp, err := e.api.makeV2Request("GET", nicEndpoint)
+	if err != nil {
+		e.result = nil
+		log.Error("Host discovery failed")
+		return
+	}
+
+	data := json.NewDecoder(resp.Body)
+	data.Decode(&e.result)
+
+	var entities []interface{} = nil
+	if obj, ok := e.result["entities"]; ok {
+		entities = obj.([]interface{})
+	}
+	log.Info("entities step 1--------------")
+	log.Info(entities)
+	if entities == nil {
+		return
+	}
+
+	log.Info("entities step 2--------------")
+	log.Info(entities)
+
+	for _, entity := range entities {
+
+		var stats, usageStats map[string]interface{} = nil, nil
+
+		ent := entity.(map[string]interface{})
+		log.Info("ent --------------")
+		log.Info(ent)
+		if obj, ok := ent["stats"]; ok {
+			stats = obj.(map[string]interface{})
+		}
+		if obj, ok := ent["usage_stats"]; ok {
+			usageStats = obj.(map[string]interface{})
 		}
 
-		// Step 4: Decode the /host_nics response
-		var hostNicsResult map[string]interface{}
-		data := json.NewDecoder(resp.Body)
-		if err := data.Decode(&hostNicsResult); err != nil {
-			log.Errorf("Failed to decode host_nics response for UUID %s: %v", uuid, err)
-			continue
-		}
+		// Publish host properties as separate record
+		key := KEY_HOST_NETWORK_PROPERTIES
+		e.metrics[key] = prometheus.NewGaugeVec(prometheus.GaugeOpts{
+			Namespace: e.namespace,
+			Name:      key, Help: "..."}, e.properties)
+		e.metrics[key].Describe(ch)
 
-		// Process host_nics information (e.g., store metrics, print, etc.)
-		if hostNics, ok := hostNicsResult["entities"].([]interface{}); ok {
-			log.Infof("Host %s has %d NIC(s)", uuid, len(hostNics))
-			for _, nic := range hostNics {
-				nicDetails := nic.(map[string]interface{})
-				// Print some nic details for example, you can change this as required
-				log.Infof("NIC Details for Host %s: %v", uuid, nicDetails)
+		if usageStats != nil {
+			for key := range usageStats {
+				if _, ok := e.filter_stats[key]; !ok {
+					continue
+				}
+
+				key = e.normalizeKey(key)
+
+				e.metrics[key] = prometheus.NewGaugeVec(prometheus.GaugeOpts{
+					Namespace: e.namespace,
+					Name:      key, Help: "..."}, []string{"uuid", "cluster_uuid"})
+
+				e.metrics[key].Describe(ch)
 			}
 		}
+		if stats != nil {
+			for key := range stats {
+				if _, ok := e.filter_stats[key]; !ok {
+					continue
+				}
+
+				key = e.normalizeKey(key)
+				e.metrics[key] = prometheus.NewGaugeVec(prometheus.GaugeOpts{
+					Namespace: e.namespace,
+					Name:      key, Help: "..."}, []string{"uuid", "cluster_uuid"})
+
+				e.metrics[key].Describe(ch)
+			}
+		}
+		for _, key := range e.fields {
+			e.metrics[key] = prometheus.NewGaugeVec(prometheus.GaugeOpts{
+				Namespace: e.namespace,
+				Name:      key, Help: "..."}, []string{"uuid", "cluster_uuid"})
+			e.metrics[key].Describe(ch)
+		}
+
 	}
 
 }
 
 // Collect - Implement prometheus.Collector interface
 // See https://github.com/prometheus/client_golang/blob/master/prometheus/collector.go
-func (e *HostsNetworkExporter) Collect(ch chan<- prometheus.Metric) {
+func (e *HostNetworkExporter) Collect(ch chan<- prometheus.Metric) {
 	log.Info("NewHostsNetworkCollector Collect")
 	if e.result == nil {
 		return
@@ -129,9 +191,9 @@ func (e *HostsNetworkExporter) Collect(ch chan<- prometheus.Metric) {
 }
 
 // NewHostsNetworkCollector
-func NewHostsNetworkCollector(_api *Nutanix) *HostsNetworkExporter {
+func NewHostsNetworkCollector(_api *Nutanix, uuid string) *HostNetworkExporter {
 	log.Info("NewHostsNetworkCollector call")
-	return &HostsNetworkExporter{
+	return &HostNetworkExporter{
 		nutanixExporter: &nutanixExporter{
 			api:        *_api,
 			metrics:    make(map[string]*prometheus.GaugeVec),

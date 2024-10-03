@@ -22,7 +22,7 @@ const KEY_HOST_PROPERTIES = "properties"
 // HostsExporter
 type HostsExporter struct {
 	*nutanixExporter
-	HostUUIDs []string
+	networkExpoters map[string]*HostNetworkExporter
 }
 
 // Describe - Implemente prometheus.Collector interface
@@ -48,6 +48,7 @@ func (e *HostsExporter) Describe(ch chan<- *prometheus.Desc) {
 	}
 
 	for _, entity := range entities {
+
 		var stats, usageStats map[string]interface{} = nil, nil
 
 		ent := entity.(map[string]interface{})
@@ -71,7 +72,8 @@ func (e *HostsExporter) Describe(ch chan<- *prometheus.Desc) {
 			case "uuid":
 				log.Info("property " + property)
 				log.Info(val)
-				e.HostUUIDs = append(e.HostUUIDs, val)
+				log.Info(&e.api)
+				e.networkExpoters[val] = NewHostsNetworkCollector(&e.api, val)
 			default:
 			}
 		}
@@ -114,6 +116,14 @@ func (e *HostsExporter) Describe(ch chan<- *prometheus.Desc) {
 		}
 
 	}
+
+	//loop on map call desc method of expotor
+	// Step 4: Loop through networkExpoters and call Describe on each HostNetworkExporter
+	for hostUUID, networkExporter := range e.networkExpoters {
+		networkExporter.HostUUID = hostUUID
+		log.Infof("Describing network metrics for host UUID: %s", hostUUID)
+		networkExporter.Describe(ch) // Call Describe on each HostNetworkExporter
+	}
 }
 
 func (e *HostsExporter) addCalculatedStats(ent map[string]interface{}, stats map[string]interface{}) {
@@ -152,11 +162,6 @@ func (e *HostsExporter) addCalculatedStats(ent map[string]interface{}, stats map
 	mem_used := (mem_usage_ppm / 1000000) * mem_total
 	stats[METRIC_MEM_USAGE_BYTES] = mem_used
 	stats[METRIC_MEM_FREE_BYTES] = mem_total - mem_used
-}
-
-// Getter function to access HostUUIDs
-func (e *HostsExporter) GetHostUUIDs() []string {
-	return e.HostUUIDs
 }
 
 // Collect - Implement prometheus.Collector interface
@@ -245,12 +250,19 @@ func (e *HostsExporter) Collect(ch chan<- prometheus.Metric) {
 			g.Collect(ch)
 		}
 	}
+
+	//loop call collerct of network expotor
+	for hostUUID, networkExporter := range e.networkExpoters {
+		log.Infof("Collect network metrics for host UUID: %s", hostUUID)
+		networkExporter.Collect(ch) // Call Collect on each HostNetworkExporter
+	}
 }
 
 // NewHostsCollector
 func NewHostsCollector(_api *Nutanix) *HostsExporter {
 	log.Info("NewHostsCollector call")
 	return &HostsExporter{
+		networkExpoters: make(map[string]*HostNetworkExporter),
 		nutanixExporter: &nutanixExporter{
 			api:        *_api,
 			metrics:    make(map[string]*prometheus.GaugeVec),

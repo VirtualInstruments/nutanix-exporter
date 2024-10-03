@@ -117,17 +117,8 @@ func main() {
 			registry.MustRegister(nutanix.NewStorageContainersCollector(nutanixAPI))
 		}
 		if checkCollect(config[section].Collect, "hosts") {
-			log.Info("start Register HostsCollector")
-
-			collector := nutanix.NewHostsCollector(nutanixAPI)
-			registry.MustRegister(collector)
-			log.Info("End Register HostsCollector")
-			hostUUIDs := collector.GetHostUUIDs()
-			log.Infof("Host UUIDs: %v", hostUUIDs)
-
-			//Question : I have hostUUIDs now next how to pass Describe and get call will work
-			registry.MustRegister(nutanix.NewHostsNetworkCollector(nutanixAPI))
-
+			log.Debugf("start Register HostsCollector")
+			registry.MustRegister(nutanix.NewHostsCollector(nutanixAPI))
 		}
 		if checkCollect(config[section].Collect, "cluster") {
 			log.Debugf("Register ClusterCollector")
