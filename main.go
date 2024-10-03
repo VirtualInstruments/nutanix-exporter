@@ -19,6 +19,7 @@ import (
 	"net/http"
 
 	"fmt"
+
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	log "github.com/sirupsen/logrus"
@@ -116,8 +117,17 @@ func main() {
 			registry.MustRegister(nutanix.NewStorageContainersCollector(nutanixAPI))
 		}
 		if checkCollect(config[section].Collect, "hosts") {
-			log.Debugf("Register HostsCollector")
-			registry.MustRegister(nutanix.NewHostsCollector(nutanixAPI))
+			log.Info("start Register HostsCollector")
+
+			collector := nutanix.NewHostsCollector(nutanixAPI)
+			registry.MustRegister(collector)
+			log.Info("End Register HostsCollector")
+			hostUUIDs := collector.GetHostUUIDs()
+			log.Infof("Host UUIDs: %v", hostUUIDs)
+
+			//Question : I have hostUUIDs now next how to pass Describe and get call will work
+			registry.MustRegister(nutanix.NewHostsNetworkCollector(nutanixAPI))
+
 		}
 		if checkCollect(config[section].Collect, "cluster") {
 			log.Debugf("Register ClusterCollector")
