@@ -28,8 +28,8 @@ import (
 var (
 	namespace       = "nutanix"
 	nutanixURL      = flag.String("nutanix.url", "", "Nutanix URL to connect to API https://nutanix.local.host:9440")
-	nutanixUser     = flag.String("nutanix.username", "", "Nutanix API User")
-	nutanixPassword = flag.String("nutanix.password", "", "Nutanix API User Password")
+	nutanixUser     = flag.String("nutanix.username", "<no value>", "Nutanix API User")
+	nutanixPassword = flag.String("nutanix.password", "<no value>", "Nutanix API User Password")
 	listenAddress   = flag.String("listen-address", ":9405", "The address to lisiten on for HTTP requests.")
 	nutanixConfig   = flag.String("nutanix.conf", "", "Which Nutanixconf.yml file should be used")
 
@@ -51,26 +51,28 @@ type cluster struct {
 // }
 
 func main() {
+	// add config file watch
+	go monitorConfigFileChange()
+
 	flag.Parse()
 
 	//Use locale configfile
 	var config map[string]cluster
-	var file []byte
+	var file []byte = nil
 	var err error
 
 	if len(*nutanixConfig) > 0 {
 		//Read complete Config
 		file, err = os.ReadFile(*nutanixConfig)
 		if err != nil {
-			log.Fatal(err)
+			log.Infof("No config file by name %s found. Using dummy config...", *nutanixConfig)
+			file = nil // use default config
 		}
-	} else {
-		file = []byte(fmt.Sprintf("default: {nutanix_host: %s, nutanix_user: %s, nutanix_password: %s}",
+	}
+	if file == nil {
+		file = []byte(fmt.Sprintf("default:\n  nutanix_host: %s\n  nutanix_user: %s\n  nutanix_password: %s}",
 			*nutanixURL, *nutanixUser, *nutanixPassword))
 	}
-
-	// add config file watch
-	go monitorConfigFileChange()
 
 	log.Debugf("Config File:\n%s\n", string(file))
 	err = yaml.Unmarshal(file, &config)
@@ -164,6 +166,7 @@ func monitorConfigFileChange() {
 			fileInfo, err := os.Stat(*nutanixConfig)
 			if err != nil {
 				log.Errorf("Failed to get config file (%v) err : %v\n", *nutanixConfig, err.Error())
+				configModTime = time.Now() // this will force restart when new file is added
 			} else {
 				modTime := fileInfo.ModTime()
 				if !configModTime.IsZero() && configModTime != modTime {
