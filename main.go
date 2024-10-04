@@ -171,7 +171,7 @@ func monitorConfigFileChange() {
 				modTime := fileInfo.ModTime()
 				if !configModTime.IsZero() && configModTime != modTime {
 					log.Infof("Config %v file has changed. Restarting exporter...\n", *nutanixConfig)
-					os.Exit(0)
+					os.Exit(1)
 				}
 				configModTime = modTime
 			}
