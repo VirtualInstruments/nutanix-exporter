@@ -22,11 +22,13 @@ const KEY_HOST_PROPERTIES = "properties"
 // HostsExporter
 type HostsExporter struct {
 	*nutanixExporter
+	networkExpoters map[string]*HostNetworkExporter
 }
 
 // Describe - Implemente prometheus.Collector interface
 // See https://github.com/prometheus/client_golang/blob/master/prometheus/collector.go
 func (e *HostsExporter) Describe(ch chan<- *prometheus.Desc) {
+	log.Info("Describe")
 	resp, err := e.api.makeV2Request("GET", "/hosts/")
 	if err != nil {
 		e.result = nil
@@ -46,6 +48,7 @@ func (e *HostsExporter) Describe(ch chan<- *prometheus.Desc) {
 	}
 
 	for _, entity := range entities {
+
 		var stats, usageStats map[string]interface{} = nil, nil
 
 		ent := entity.(map[string]interface{})
@@ -62,6 +65,18 @@ func (e *HostsExporter) Describe(ch chan<- *prometheus.Desc) {
 			Namespace: e.namespace,
 			Name:      key, Help: "..."}, e.properties)
 		e.metrics[key].Describe(ch)
+
+		for _, property := range e.properties {
+			val := fmt.Sprintf("%v", ent[property])
+			switch property {
+			case "uuid":
+				log.Info("property " + property)
+				log.Info(val)
+				log.Info(&e.api)
+				e.networkExpoters[val] = NewHostsNetworkCollector(&e.api, val)
+			default:
+			}
+		}
 
 		if usageStats != nil {
 			for key := range usageStats {
@@ -100,6 +115,14 @@ func (e *HostsExporter) Describe(ch chan<- *prometheus.Desc) {
 			e.metrics[key].Describe(ch)
 		}
 
+	}
+
+	//loop on map call desc method of expotor
+	// Step 4: Loop through networkExpoters and call Describe on each HostNetworkExporter
+	for hostUUID, networkExporter := range e.networkExpoters {
+		networkExporter.HostUUID = hostUUID
+		log.Infof("Describing network metrics for host UUID: %s", hostUUID)
+		networkExporter.Describe(ch) // Call Describe on each HostNetworkExporter
 	}
 }
 
@@ -144,6 +167,7 @@ func (e *HostsExporter) addCalculatedStats(ent map[string]interface{}, stats map
 // Collect - Implement prometheus.Collector interface
 // See https://github.com/prometheus/client_golang/blob/master/prometheus/collector.go
 func (e *HostsExporter) Collect(ch chan<- prometheus.Metric) {
+	log.Info("Collect")
 	if e.result == nil {
 		return
 	}
@@ -170,8 +194,17 @@ func (e *HostsExporter) Collect(ch chan<- prometheus.Metric) {
 		var property_values []string
 		for _, property := range e.properties {
 			val := fmt.Sprintf("%v", ent[property])
+			// switch property {
+			// case "uuid":
+			// 	log.Info("property " + property)
+			// 	log.Info(val)
+			// 	e.HostUUIDs = append(e.HostUUIDs, val)
+			// default:
+			// }
+
 			property_values = append(property_values, val)
 		}
+		//log.Info(e.HostUUIDs)
 		g := e.metrics[key].WithLabelValues(property_values...)
 		g.Set(1)
 		g.Collect(ch)
@@ -217,13 +250,20 @@ func (e *HostsExporter) Collect(ch chan<- prometheus.Metric) {
 			g.Collect(ch)
 		}
 	}
+
+	//loop call collerct of network expotor
+	for hostUUID, networkExporter := range e.networkExpoters {
+		log.Infof("Collect network metrics for host UUID: %s", hostUUID)
+		networkExporter.Collect(ch) // Call Collect on each HostNetworkExporter
+	}
 }
 
 // NewHostsCollector
 func NewHostsCollector(_api *Nutanix) *HostsExporter {
-
+	log.Info("NewHostsCollector call")
 	return &HostsExporter{
-		&nutanixExporter{
+		networkExpoters: make(map[string]*HostNetworkExporter),
+		nutanixExporter: &nutanixExporter{
 			api:        *_api,
 			metrics:    make(map[string]*prometheus.GaugeVec),
 			namespace:  "nutanix_hosts",
