@@ -33,29 +33,27 @@ func (e *HostNetworkExporter) Describe(ch chan<- *prometheus.Desc) {
 		return
 	}
 
+	var entitiesArray []any = make([]any, 0)
+
 	data := json.NewDecoder(resp.Body)
-	data.Decode(&e.result)
+	data.Decode(&entitiesArray)
 
 	var entities []interface{} = nil
-	if obj, ok := e.result["entities"]; ok {
-		entities = obj.([]interface{})
+	if len(entitiesArray) > 0 {
+		entities = entitiesArray
+		e.result = map[string]interface{}{
+			"entities": entities,
+		}
 	}
-	log.Info("entities step 1--------------")
-	log.Info(entities)
 	if entities == nil {
 		return
 	}
-
-	log.Info("entities step 2--------------")
-	log.Info(entities)
 
 	for _, entity := range entities {
 
 		var stats, usageStats map[string]interface{} = nil, nil
 
 		ent := entity.(map[string]interface{})
-		log.Info("ent --------------")
-		log.Info(ent)
 		if obj, ok := ent["stats"]; ok {
 			stats = obj.(map[string]interface{})
 		}
