@@ -33,7 +33,8 @@ var (
 	listenAddress   = flag.String("listen-address", ":9405", "The address to lisiten on for HTTP requests.")
 	nutanixConfig   = flag.String("nutanix.conf", "", "Which Nutanixconf.yml file should be used")
 
-	configModTime time.Time = time.Time{}
+	configModTime        time.Time = time.Time{}
+	configFileWasMissing           = false
 )
 
 type cluster struct {
@@ -166,10 +167,10 @@ func monitorConfigFileChange() {
 			fileInfo, err := os.Stat(*nutanixConfig)
 			if err != nil {
 				log.Errorf("Failed to get config file (%v) err : %v\n", *nutanixConfig, err.Error())
-				configModTime = time.Now() // this will force restart when new file is added
+				configFileWasMissing = true
 			} else {
 				modTime := fileInfo.ModTime()
-				if !configModTime.IsZero() && configModTime != modTime {
+				if configFileWasMissing || (!configModTime.IsZero() && configModTime != modTime) {
 					log.Infof("Config %v file has changed. Restarting exporter...\n", *nutanixConfig)
 					os.Exit(1)
 				}
