@@ -108,12 +108,10 @@ func (e *HostsExporter) Describe(ch chan<- *prometheus.Desc) {
 
 	}
 
-	//loop on map call desc method of expotor
-	// Step 4: Loop through networkExpoters and call Describe on each HostNicsExporter
 	for hostUUID, networkExporter := range e.networkExpoters {
 		networkExporter.HostUUID = hostUUID
-		log.Infof("Describing host nic metrics for host UUID: %s", hostUUID)
-		networkExporter.Describe(ch) // Call Describe on each HostNicsExporter
+		log.Debugf("Describing host nic metrics for host UUID: %s", hostUUID)
+		networkExporter.Describe(ch)
 	}
 }
 
@@ -232,10 +230,9 @@ func (e *HostsExporter) Collect(ch chan<- prometheus.Metric) {
 		}
 	}
 
-	//loop call collerct of network expotor
 	for hostUUID, networkExporter := range e.networkExpoters {
 		log.Debugf("Collect nic metrics for host UUID: %s", hostUUID)
-		networkExporter.Collect(ch) // Call Collect on each HostNicsExporter
+		networkExporter.Collect(ch)
 	}
 }
 

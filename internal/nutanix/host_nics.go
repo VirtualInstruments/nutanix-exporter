@@ -3,6 +3,7 @@ package nutanix
 import (
 	"encoding/json"
 	"fmt"
+	"strings"
 
 	"github.com/prometheus/client_golang/prometheus"
 	log "github.com/sirupsen/logrus"
@@ -17,13 +18,11 @@ type HostNicsExporter struct {
 }
 
 func (e *HostNicsExporter) Describe(ch chan<- *prometheus.Desc) {
-	log.Info("NewHostsNetworkCollector Describe")
 	uuid := e.HostUUID
-	log.Info(uuid)
 
 	// Construct the NIC endpoint using the single host UUID
 	nicEndpoint := fmt.Sprintf("/hosts/%s/host_nics", uuid)
-	log.Info("nicEndpoint: " + nicEndpoint)
+	log.Debug("Host Nic Endpoint: " + nicEndpoint)
 
 	// Make the API request to fetch host NICs information
 	resp, err := e.api.makeV2Request("GET", nicEndpoint)
@@ -86,7 +85,6 @@ func (e *HostNicsExporter) Describe(ch chan<- *prometheus.Desc) {
 // Collect - Implement prometheus.Collector interface
 // See https://github.com/prometheus/client_golang/blob/master/prometheus/collector.go
 func (e *HostNicsExporter) Collect(ch chan<- prometheus.Metric) {
-	log.Info("NewHostsNetworkCollector Collect")
 	if e.result == nil {
 		return
 	}
@@ -109,10 +107,26 @@ func (e *HostNicsExporter) Collect(ch chan<- prometheus.Metric) {
 		key := KEY_HOST_NIC_PROPERTIES
 		var property_values []string
 		for _, property := range e.properties {
-			val := fmt.Sprintf("%v", ent[property])
+			var val string = ""
+			// format properties
+			switch property {
+			case "ipv4_addresses":
+				obj := ent[property]
+				if obj != nil {
+					strarr := []string{}
+					for _, addr := range obj.([]interface{}) {
+						strarr = append(strarr, addr.(string))
+					}
+					val = strings.Join(strarr, ",")
+				}
+			default:
+				obj := ent[property]
+				if obj != nil {
+					val = fmt.Sprintf("%v", ent[property])
+				}
+			}
 			property_values = append(property_values, val)
 		}
-		//log.Info(e.HostUUIDs)
 		g := e.metrics[key].WithLabelValues(property_values...)
 		g.Set(1)
 		g.Collect(ch)
@@ -145,7 +159,6 @@ func (e *HostNicsExporter) Collect(ch chan<- prometheus.Metric) {
 
 // NewHostsNetworkCollector
 func NewHostsNetworkCollector(_api *Nutanix, uuid string) *HostNicsExporter {
-	log.Info("NewHostsNetworkCollector call")
 	return &HostNicsExporter{
 		nutanixExporter: &nutanixExporter{
 			api:        *_api,
