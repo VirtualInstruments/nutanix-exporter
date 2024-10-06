@@ -11,14 +11,13 @@
 package main
 
 import (
+	"flag"
+	"fmt"
+	"net/http"
 	"nutanix-exporter/internal/nutanix"
 	"os"
 	"time"
 
-	"flag"
-	"net/http"
-
-	"fmt"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	log "github.com/sirupsen/logrus"

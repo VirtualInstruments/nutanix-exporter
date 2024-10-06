@@ -22,6 +22,7 @@ const KEY_HOST_PROPERTIES = "properties"
 // HostsExporter
 type HostsExporter struct {
 	*nutanixExporter
+	networkExpoters map[string]*HostNicsExporter
 }
 
 // Describe - Implemente prometheus.Collector interface
@@ -63,6 +64,11 @@ func (e *HostsExporter) Describe(ch chan<- *prometheus.Desc) {
 			Name:      key, Help: "..."}, e.properties)
 		e.metrics[key].Describe(ch)
 
+		if obj, ok := ent["uuid"]; ok {
+			uuid := obj.(string)
+			e.networkExpoters[uuid] = NewHostsNetworkCollector(&e.api, uuid)
+		}
+
 		if usageStats != nil {
 			for key := range usageStats {
 				if _, ok := e.filter_stats[key]; !ok {
@@ -100,6 +106,12 @@ func (e *HostsExporter) Describe(ch chan<- *prometheus.Desc) {
 			e.metrics[key].Describe(ch)
 		}
 
+	}
+
+	for hostUUID, networkExporter := range e.networkExpoters {
+		networkExporter.HostUUID = hostUUID
+		log.Debugf("Describing host nic metrics for host UUID: %s", hostUUID)
+		networkExporter.Describe(ch)
 	}
 }
 
@@ -217,13 +229,18 @@ func (e *HostsExporter) Collect(ch chan<- prometheus.Metric) {
 			g.Collect(ch)
 		}
 	}
+
+	for hostUUID, networkExporter := range e.networkExpoters {
+		log.Debugf("Collect nic metrics for host UUID: %s", hostUUID)
+		networkExporter.Collect(ch)
+	}
 }
 
 // NewHostsCollector
 func NewHostsCollector(_api *Nutanix) *HostsExporter {
-
 	return &HostsExporter{
-		&nutanixExporter{
+		networkExpoters: make(map[string]*HostNicsExporter),
+		nutanixExporter: &nutanixExporter{
 			api:        *_api,
 			metrics:    make(map[string]*prometheus.GaugeVec),
 			namespace:  "nutanix_hosts",
