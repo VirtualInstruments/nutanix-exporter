@@ -27,6 +27,7 @@ const (
 // VmsExporter
 type VmsExporter struct {
 	*nutanixExporter
+	networkExpoters map[string]*VMNicsExporter
 }
 
 // Describe - Implement prometheus.Collector interface
@@ -72,6 +73,12 @@ func (e *VmsExporter) Describe(ch chan<- *prometheus.Desc) {
 		if obj, ok := ent["stats"]; ok {
 			stats = obj.(map[string]interface{})
 		}
+
+		if obj, ok := ent["uuid"]; ok {
+			uuid := obj.(string)
+			e.networkExpoters[uuid] = NewVMsNetworkCollector(&e.api, uuid)
+		}
+
 		if stats != nil {
 			e.addCalculatedStats(ent, stats)
 			for key := range stats {
@@ -99,6 +106,12 @@ func (e *VmsExporter) Describe(ch chan<- *prometheus.Desc) {
 			Name:      key, Help: "..."}, []string{"uuid", "host_uuid"})
 
 		e.metrics[key].Describe(ch)
+	}
+
+	for vmUUID, networkExporter := range e.networkExpoters {
+		networkExporter.VMUUID = vmUUID
+		log.Debugf("Describing vm nic metrics for vm UUID: %s", vmUUID)
+		networkExporter.Describe(ch)
 	}
 
 }
@@ -237,13 +250,18 @@ func (e *VmsExporter) Collect(ch chan<- prometheus.Metric) {
 		}
 	}
 
+	for vmUUID, networkExporter := range e.networkExpoters {
+		log.Debugf("Collect nic metrics for vm UUID: %s", vmUUID)
+		networkExporter.Collect(ch)
+	}
 }
 
 // NewVmsCollector - Create the Collector for VMs
 func NewVmsCollector(_api *Nutanix) *VmsExporter {
 
 	return &VmsExporter{
-		&nutanixExporter{
+		networkExpoters: make(map[string]*VMNicsExporter),
+		nutanixExporter: &nutanixExporter{
 			api:        *_api,
 			metrics:    make(map[string]*prometheus.GaugeVec),
 			namespace:  "nutanix_vms",
