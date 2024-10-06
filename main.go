@@ -11,14 +11,12 @@
 package main
 
 import (
+	"flag"
+	"fmt"
+	"net/http"
 	"nutanix-exporter/internal/nutanix"
 	"os"
 	"time"
-
-	"flag"
-	"net/http"
-
-	"fmt"
 
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
@@ -117,7 +115,7 @@ func main() {
 			registry.MustRegister(nutanix.NewStorageContainersCollector(nutanixAPI))
 		}
 		if checkCollect(config[section].Collect, "hosts") {
-			log.Debugf("start Register HostsCollector")
+			log.Debugf("Register HostsCollector")
 			registry.MustRegister(nutanix.NewHostsCollector(nutanixAPI))
 		}
 		if checkCollect(config[section].Collect, "cluster") {
