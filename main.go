@@ -92,11 +92,20 @@ func main() {
 		log.Infof("Section: %s", section)
 		log.Debug("Create Nutanix instance")
 
+		var hostnics bool = false
+		var vmnics bool = false
+
 		//Write new Parameters
 		if conf, ok := config[section]; ok {
 			*nutanixURL = conf.Host
 			*nutanixUser = conf.Username
 			*nutanixPassword = conf.Password
+			if hostnicsValue, exists := conf.Collect["hostnics"]; exists {
+				hostnics = hostnicsValue
+			}
+			if vmnicsValue, exists := conf.Collect["vmnics"]; exists {
+				vmnics = vmnicsValue
+			}
 		} else {
 			log.Errorf("Section '%s' not found in config file", section)
 			return
@@ -119,7 +128,7 @@ func main() {
 		}
 		if checkCollect(config[section].Collect, "hosts") {
 			log.Debugf("Register HostsCollector")
-			registry.MustRegister(nutanix.NewHostsCollector(nutanixAPI))
+			registry.MustRegister(nutanix.NewHostsCollector(nutanixAPI, hostnics))
 		}
 		if checkCollect(config[section].Collect, "cluster") {
 			log.Debugf("Register ClusterCollector")
@@ -127,7 +136,7 @@ func main() {
 		}
 		if checkCollect(config[section].Collect, "vms") {
 			log.Debugf("Register VmsCollector")
-			registry.MustRegister(nutanix.NewVmsCollector(nutanixAPI))
+			registry.MustRegister(nutanix.NewVmsCollector(nutanixAPI, vmnics))
 		}
 		if checkCollect(config[section].Collect, "snapshots") {
 			log.Debugf("Register Snapshots")

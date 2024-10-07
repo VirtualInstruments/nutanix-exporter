@@ -15,6 +15,7 @@ const KEY_HOST_NIC_PROPERTIES = "properties"
 type HostNicsExporter struct {
 	*nutanixExporter
 	HostUUID string
+	HostName string
 }
 
 func (e *HostNicsExporter) Describe(ch chan<- *prometheus.Desc) {
@@ -119,6 +120,8 @@ func (e *HostNicsExporter) Collect(ch chan<- prometheus.Metric) {
 					}
 					val = strings.Join(strarr, ",")
 				}
+			case "hostname":
+				val = e.HostName
 			default:
 				obj := ent[property]
 				if obj != nil {
@@ -158,13 +161,15 @@ func (e *HostNicsExporter) Collect(ch chan<- prometheus.Metric) {
 }
 
 // NewHostsNetworkCollector
-func NewHostsNetworkCollector(_api *Nutanix, uuid string) *HostNicsExporter {
+func NewHostsNetworkCollector(_api *Nutanix, hostname string, hostuuid string) *HostNicsExporter {
 	return &HostNicsExporter{
+		HostName: hostname,
+		HostUUID: hostuuid,
 		nutanixExporter: &nutanixExporter{
 			api:        *_api,
 			metrics:    make(map[string]*prometheus.GaugeVec),
 			namespace:  "nutanix_hostnics",
-			properties: []string{"node_uuid", "uuid", "mac_address", "ipv4_addresses", "name", "mtu_in_bytes"},
+			properties: []string{"node_uuid", "uuid", "hostname", "mac_address", "ipv4_addresses", "name", "mtu_in_bytes"},
 			filter_stats: map[string]bool{
 				"network.received_bytes":         true,
 				"network.received_pkts":          true,

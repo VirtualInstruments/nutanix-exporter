@@ -15,6 +15,7 @@ const KEY_VM_NIC_PROPERTIES = "properties"
 type VMNicsExporter struct {
 	*nutanixExporter
 	VMUUID string
+	VMName string
 }
 
 func (e *VMNicsExporter) Describe(ch chan<- *prometheus.Desc) {
@@ -119,6 +120,8 @@ func (e *VMNicsExporter) Collect(ch chan<- prometheus.Metric) {
 					}
 					val = strings.Join(strarr, ",")
 				}
+			case "vmName":
+				val = e.VMName
 			default:
 				obj := ent[property]
 				if obj != nil {
@@ -158,13 +161,15 @@ func (e *VMNicsExporter) Collect(ch chan<- prometheus.Metric) {
 }
 
 // NewVMsNetworkCollector
-func NewVMsNetworkCollector(_api *Nutanix, uuid string) *VMNicsExporter {
+func NewVMsNetworkCollector(_api *Nutanix, vmname string, vmuuid string) *VMNicsExporter {
 	return &VMNicsExporter{
+		VMName: vmname,
+		VMUUID: vmuuid,
 		nutanixExporter: &nutanixExporter{
 			api:        *_api,
 			metrics:    make(map[string]*prometheus.GaugeVec),
 			namespace:  "nutanix_vmnics",
-			properties: []string{"vmUuid", "uuid", "macAddress", "ipv4Addresses", "name", "mtuInBytes"},
+			properties: []string{"vmUuid", "uuid", "vmName", "macAddress", "ipv4Addresses", "name", "mtuInBytes"},
 			filter_stats: map[string]bool{
 				"network.received_bytes":         true,
 				"network.received_pkts":          true,
