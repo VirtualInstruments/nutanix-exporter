@@ -80,9 +80,9 @@ func (e *VmsExporter) Describe(ch chan<- *prometheus.Desc) {
 			vmName = obj.(string)
 		}
 
-		if obj, ok := ent["uuid"]; ok {
-			uuid := obj.(string)
-			if e.vmnics {
+		if e.vmnics {
+			if obj, ok := ent["uuid"]; ok {
+				uuid := obj.(string)
 				e.networkExpoters[uuid] = NewVMsNetworkCollector(&e.api, vmName, uuid)
 			}
 		}

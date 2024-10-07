@@ -69,10 +69,9 @@ func (e *HostsExporter) Describe(ch chan<- *prometheus.Desc) {
 		if obj, ok := ent["name"]; ok {
 			hostName = obj.(string)
 		}
-
-		if obj, ok := ent["uuid"]; ok {
-			uuid := obj.(string)
-			if e.hostnics {
+		if e.hostnics {
+			if obj, ok := ent["uuid"]; ok {
+				uuid := obj.(string)
 				e.networkExpoters[uuid] = NewHostsNetworkCollector(&e.api, hostName, uuid)
 			}
 		}

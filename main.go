@@ -92,8 +92,8 @@ func main() {
 		log.Infof("Section: %s", section)
 		log.Debug("Create Nutanix instance")
 
-		var hostnics bool
-		var vmnics bool
+		var hostnics bool = false
+		var vmnics bool = false
 
 		//Write new Parameters
 		if conf, ok := config[section]; ok {
