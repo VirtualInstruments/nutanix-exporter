@@ -64,9 +64,14 @@ func (e *HostsExporter) Describe(ch chan<- *prometheus.Desc) {
 			Name:      key, Help: "..."}, e.properties)
 		e.metrics[key].Describe(ch)
 
+		var name string
+		if obj, ok := ent["name"]; ok {
+			name = obj.(string)
+		}
+
 		if obj, ok := ent["uuid"]; ok {
 			uuid := obj.(string)
-			e.networkExpoters[uuid] = NewHostsNetworkCollector(&e.api, uuid)
+			e.networkExpoters[uuid] = NewHostsNetworkCollector(&e.api, name, uuid)
 		}
 
 		if usageStats != nil {
@@ -109,7 +114,6 @@ func (e *HostsExporter) Describe(ch chan<- *prometheus.Desc) {
 	}
 
 	for hostUUID, networkExporter := range e.networkExpoters {
-		networkExporter.HostUUID = hostUUID
 		log.Debugf("Describing host nic metrics for host UUID: %s", hostUUID)
 		networkExporter.Describe(ch)
 	}
