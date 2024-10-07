@@ -74,14 +74,14 @@ func (e *VmsExporter) Describe(ch chan<- *prometheus.Desc) {
 			stats = obj.(map[string]interface{})
 		}
 
-		var name string
+		var vmName string
 		if obj, ok := ent["vmName"]; ok {
-			name = obj.(string)
+			vmName = obj.(string)
 		}
 
 		if obj, ok := ent["uuid"]; ok {
 			uuid := obj.(string)
-			e.networkExpoters[uuid] = NewVMsNetworkCollector(&e.api, name, uuid)
+			e.networkExpoters[uuid] = NewVMsNetworkCollector(&e.api, vmName, uuid)
 		}
 
 		if stats != nil {

@@ -64,14 +64,14 @@ func (e *HostsExporter) Describe(ch chan<- *prometheus.Desc) {
 			Name:      key, Help: "..."}, e.properties)
 		e.metrics[key].Describe(ch)
 
-		var name string
+		var hostName string
 		if obj, ok := ent["name"]; ok {
-			name = obj.(string)
+			hostName = obj.(string)
 		}
 
 		if obj, ok := ent["uuid"]; ok {
 			uuid := obj.(string)
-			e.networkExpoters[uuid] = NewHostsNetworkCollector(&e.api, name, uuid)
+			e.networkExpoters[uuid] = NewHostsNetworkCollector(&e.api, hostName, uuid)
 		}
 
 		if usageStats != nil {
