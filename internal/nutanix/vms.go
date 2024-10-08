@@ -13,6 +13,7 @@ import (
 	"encoding/json"
 	"strconv"
 	"strings"
+	"sync"
 
 	"github.com/prometheus/client_golang/prometheus"
 	log "github.com/sirupsen/logrus"
@@ -27,8 +28,8 @@ const (
 // VmsExporter
 type VmsExporter struct {
 	*nutanixExporter
-	networkExpoters map[string]*VMNicsExporter
-	vmnics          bool
+	networkExporters map[string]*VMNicsExporter
+	collectvmnics    bool
 }
 
 // Describe - Implement prometheus.Collector interface
@@ -75,15 +76,14 @@ func (e *VmsExporter) Describe(ch chan<- *prometheus.Desc) {
 			stats = obj.(map[string]interface{})
 		}
 
-		var vmName string
-		if obj, ok := ent["vmName"]; ok {
-			vmName = obj.(string)
-		}
-
-		if e.vmnics {
+		if e.collectvmnics {
+			var vmName string
+			if obj, ok := ent["vmName"]; ok {
+				vmName = obj.(string)
+			}
 			if obj, ok := ent["uuid"]; ok {
 				uuid := obj.(string)
-				e.networkExpoters[uuid] = NewVMsNetworkCollector(&e.api, vmName, uuid)
+				e.networkExporters[uuid] = NewVMsNetworkCollector(&e.api, vmName, uuid)
 			}
 		}
 
@@ -116,12 +116,7 @@ func (e *VmsExporter) Describe(ch chan<- *prometheus.Desc) {
 		e.metrics[key].Describe(ch)
 	}
 
-	for vmUUID, networkExporter := range e.networkExpoters {
-		networkExporter.VMUUID = vmUUID
-		log.Debugf("Describing vm nic metrics for vm UUID: %s", vmUUID)
-		networkExporter.Describe(ch)
-	}
-
+	e.DescribeNicsParallel(ch)
 }
 
 func (e *VmsExporter) addCalculatedStats(ent map[string]interface{}, stats map[string]interface{}) {
@@ -258,18 +253,18 @@ func (e *VmsExporter) Collect(ch chan<- prometheus.Metric) {
 		}
 	}
 
-	for vmUUID, networkExporter := range e.networkExpoters {
+	for vmUUID, networkExporter := range e.networkExporters {
 		log.Debugf("Collect nic metrics for vm UUID: %s", vmUUID)
 		networkExporter.Collect(ch)
 	}
 }
 
 // NewVmsCollector - Create the Collector for VMs
-func NewVmsCollector(_api *Nutanix, vmnics bool) *VmsExporter {
+func NewVmsCollector(_api *Nutanix, collectvmnics bool) *VmsExporter {
 
 	return &VmsExporter{
-		networkExpoters: make(map[string]*VMNicsExporter),
-		vmnics:          vmnics,
+		networkExporters: make(map[string]*VMNicsExporter),
+		collectvmnics:    collectvmnics,
 		nutanixExporter: &nutanixExporter{
 			api:        *_api,
 			metrics:    make(map[string]*prometheus.GaugeVec),
@@ -286,4 +281,22 @@ func NewVmsCollector(_api *Nutanix, vmnics bool) *VmsExporter {
 				METRIC_MEM_FREE_BYTES: true,
 			},
 		}}
+}
+
+func (e *VmsExporter) DescribeNicsParallel(ch chan<- *prometheus.Desc) {
+	var wg sync.WaitGroup
+	maxGoroutines := 10
+	// Create a buffered channel to limit concurrent Describe calls
+	semaphore := make(chan struct{}, maxGoroutines)
+	for vmUUID, networkExporter := range e.networkExporters {
+		wg.Add(1)
+		go func(vmUUID string, exporter *VMNicsExporter) {
+			defer wg.Done()
+			semaphore <- struct{}{}        // Acquire a token
+			defer func() { <-semaphore }() // Release the token
+			log.Debugf("Describing vm nic metrics for vm UUID: %s", vmUUID)
+			exporter.Describe(ch)
+		}(vmUUID, networkExporter)
+	}
+	wg.Wait()
 }

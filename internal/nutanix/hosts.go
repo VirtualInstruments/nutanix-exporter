@@ -1,7 +1,7 @@
 //
 // nutanix-exporter
 //
-// Prometheus Exportewr for Nutanix API
+// Prometheus Exporter for Nutanix API
 //
 // Author: Martin Weber <martin.weber@de.clara.net>
 // Company: Claranet GmbH
@@ -12,6 +12,7 @@ package nutanix
 import (
 	"encoding/json"
 	"fmt"
+	"sync"
 
 	"github.com/prometheus/client_golang/prometheus"
 	log "github.com/sirupsen/logrus"
@@ -22,8 +23,8 @@ const KEY_HOST_PROPERTIES = "properties"
 // HostsExporter
 type HostsExporter struct {
 	*nutanixExporter
-	networkExpoters map[string]*HostNicsExporter
-	hostnics        bool
+	networkExporters map[string]*HostNicsExporter
+	collecthostnics  bool
 }
 
 // Describe - Implemente prometheus.Collector interface
@@ -65,14 +66,14 @@ func (e *HostsExporter) Describe(ch chan<- *prometheus.Desc) {
 			Name:      key, Help: "..."}, e.properties)
 		e.metrics[key].Describe(ch)
 
-		var hostName string
-		if obj, ok := ent["name"]; ok {
-			hostName = obj.(string)
-		}
-		if e.hostnics {
+		if e.collecthostnics {
+			var hostName string
+			if obj, ok := ent["name"]; ok {
+				hostName = obj.(string)
+			}
 			if obj, ok := ent["uuid"]; ok {
 				uuid := obj.(string)
-				e.networkExpoters[uuid] = NewHostsNetworkCollector(&e.api, hostName, uuid)
+				e.networkExporters[uuid] = NewHostsNetworkCollector(&e.api, hostName, uuid)
 			}
 		}
 
@@ -115,10 +116,7 @@ func (e *HostsExporter) Describe(ch chan<- *prometheus.Desc) {
 
 	}
 
-	for hostUUID, networkExporter := range e.networkExpoters {
-		log.Debugf("Describing host nic metrics for host UUID: %s", hostUUID)
-		networkExporter.Describe(ch)
-	}
+	e.DescribeNicsParallel(ch)
 }
 
 func (e *HostsExporter) addCalculatedStats(ent map[string]interface{}, stats map[string]interface{}) {
@@ -236,17 +234,17 @@ func (e *HostsExporter) Collect(ch chan<- prometheus.Metric) {
 		}
 	}
 
-	for hostUUID, networkExporter := range e.networkExpoters {
+	for hostUUID, networkExporter := range e.networkExporters {
 		log.Debugf("Collect nic metrics for host UUID: %s", hostUUID)
 		networkExporter.Collect(ch)
 	}
 }
 
 // NewHostsCollector
-func NewHostsCollector(_api *Nutanix, hostnics bool) *HostsExporter {
+func NewHostsCollector(_api *Nutanix, collecthostnics bool) *HostsExporter {
 	return &HostsExporter{
-		networkExpoters: make(map[string]*HostNicsExporter),
-		hostnics:        hostnics,
+		networkExporters: make(map[string]*HostNicsExporter),
+		collecthostnics:  collecthostnics,
 		nutanixExporter: &nutanixExporter{
 			api:        *_api,
 			metrics:    make(map[string]*prometheus.GaugeVec),
@@ -275,4 +273,22 @@ func NewHostsCollector(_api *Nutanix, hostnics bool) *HostsExporter {
 			},
 		},
 	}
+}
+
+func (e *HostsExporter) DescribeNicsParallel(ch chan<- *prometheus.Desc) {
+	var wg sync.WaitGroup
+	maxGoroutines := 10
+	// Create a buffered channel to limit concurrent Describe calls
+	semaphore := make(chan struct{}, maxGoroutines)
+	for hostUUID, networkExporter := range e.networkExporters {
+		wg.Add(1)
+		go func(hostUUID string, exporter *HostNicsExporter) {
+			defer wg.Done()
+			semaphore <- struct{}{}        // Acquire a token
+			defer func() { <-semaphore }() // Release the token
+			log.Debugf("Describing host nic metrics for host UUID: %s", hostUUID)
+			exporter.Describe(ch)
+		}(hostUUID, networkExporter)
+	}
+	wg.Wait()
 }
