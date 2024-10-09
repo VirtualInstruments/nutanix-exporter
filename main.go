@@ -113,10 +113,10 @@ func main() {
 			*nutanixUser = conf.Username
 			*nutanixPassword = conf.Password
 			maxParallelReq = conf.MaxParallelRequests
-			if hostnicsValue, exists := conf.Collect["collecthostnics"]; exists {
+			if hostnicsValue, exists := conf.Collect["hostnics"]; exists {
 				collecthostnics = hostnicsValue
 			}
-			if vmnicsValue, exists := conf.Collect["collectvmnics"]; exists {
+			if vmnicsValue, exists := conf.Collect["vmnics"]; exists {
 				collectvmnics = vmnicsValue
 			}
 		} else {
