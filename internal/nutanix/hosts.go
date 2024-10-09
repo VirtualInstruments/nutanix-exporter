@@ -277,9 +277,8 @@ func NewHostsCollector(_api *Nutanix, collecthostnics bool) *HostsExporter {
 
 func (e *HostsExporter) DescribeNicsParallel(ch chan<- *prometheus.Desc) {
 	var wg sync.WaitGroup
-	maxGoroutines := 10
 	// Create a buffered channel to limit concurrent Describe calls
-	semaphore := make(chan struct{}, maxGoroutines)
+	semaphore := make(chan struct{}, e.api.maxParallelRequests)
 	for hostUUID, networkExporter := range e.networkExporters {
 		wg.Add(1)
 		go func(hostUUID string, exporter *HostNicsExporter) {

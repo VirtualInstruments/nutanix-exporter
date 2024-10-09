@@ -16,6 +16,7 @@ import (
 	"net/http"
 	"nutanix-exporter/internal/nutanix"
 	"os"
+	"strings"
 	"time"
 
 	"github.com/prometheus/client_golang/prometheus"
@@ -37,10 +38,12 @@ var (
 )
 
 type cluster struct {
-	Host     string          `yaml:"nutanix_host"`
-	Username string          `yaml:"nutanix_user"`
-	Password string          `yaml:"nutanix_password"`
-	Collect  map[string]bool `yaml:"collect"`
+	Host                string          `yaml:"nutanix_host"`
+	Username            string          `yaml:"nutanix_user"`
+	Password            string          `yaml:"nutanix_password"`
+	LogLevel            string          `yaml:"log_level"`
+	MaxParallelRequests int             `yaml:"max_parallel_requests"`
+	Collect             map[string]bool `yaml:"collect"`
 }
 
 // type clusterCollect struct {
@@ -67,6 +70,7 @@ func main() {
 		if err != nil {
 			log.Infof("No config file by name %s found. Using dummy config...", *nutanixConfig)
 			file = nil // use default config
+			configFileWasMissing = true
 		}
 	}
 	if file == nil {
@@ -92,19 +96,28 @@ func main() {
 		log.Infof("Section: %s", section)
 		log.Debug("Create Nutanix instance")
 
-		var hostnics bool = false
-		var vmnics bool = false
-
+		var collecthostnics bool = false
+		var collectvmnics bool = false
+		var maxParallelReq int = 0
 		//Write new Parameters
 		if conf, ok := config[section]; ok {
+			switch strings.ToLower(conf.LogLevel) {
+			case "debug":
+				log.SetLevel(log.DebugLevel)
+			case "trace":
+				log.SetLevel(log.TraceLevel)
+			default:
+				log.SetLevel(log.InfoLevel)
+			}
 			*nutanixURL = conf.Host
 			*nutanixUser = conf.Username
 			*nutanixPassword = conf.Password
-			if hostnicsValue, exists := conf.Collect["hostnics"]; exists {
-				hostnics = hostnicsValue
+			maxParallelReq = conf.MaxParallelRequests
+			if hostnicsValue, exists := conf.Collect["collecthostnics"]; exists {
+				collecthostnics = hostnicsValue
 			}
-			if vmnicsValue, exists := conf.Collect["vmnics"]; exists {
-				vmnics = vmnicsValue
+			if vmnicsValue, exists := conf.Collect["collectvmnics"]; exists {
+				collectvmnics = vmnicsValue
 			}
 		} else {
 			log.Errorf("Section '%s' not found in config file", section)
@@ -113,7 +126,7 @@ func main() {
 
 		log.Infof("Host: %s", *nutanixURL)
 
-		nutanixAPI := nutanix.NewNutanix(*nutanixURL, *nutanixUser, *nutanixPassword)
+		nutanixAPI := nutanix.NewNutanix(*nutanixURL, *nutanixUser, *nutanixPassword, maxParallelReq)
 
 		registry := prometheus.NewRegistry()
 
@@ -128,7 +141,7 @@ func main() {
 		}
 		if checkCollect(config[section].Collect, "hosts") {
 			log.Debugf("Register HostsCollector")
-			registry.MustRegister(nutanix.NewHostsCollector(nutanixAPI, hostnics))
+			registry.MustRegister(nutanix.NewHostsCollector(nutanixAPI, collecthostnics))
 		}
 		if checkCollect(config[section].Collect, "cluster") {
 			log.Debugf("Register ClusterCollector")
@@ -136,7 +149,7 @@ func main() {
 		}
 		if checkCollect(config[section].Collect, "vms") {
 			log.Debugf("Register VmsCollector")
-			registry.MustRegister(nutanix.NewVmsCollector(nutanixAPI, vmnics))
+			registry.MustRegister(nutanix.NewVmsCollector(nutanixAPI, collectvmnics))
 		}
 		if checkCollect(config[section].Collect, "snapshots") {
 			log.Debugf("Register Snapshots")

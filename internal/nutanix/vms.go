@@ -285,9 +285,8 @@ func NewVmsCollector(_api *Nutanix, collectvmnics bool) *VmsExporter {
 
 func (e *VmsExporter) DescribeNicsParallel(ch chan<- *prometheus.Desc) {
 	var wg sync.WaitGroup
-	maxGoroutines := 10
 	// Create a buffered channel to limit concurrent Describe calls
-	semaphore := make(chan struct{}, maxGoroutines)
+	semaphore := make(chan struct{}, e.api.maxParallelRequests)
 	for vmUUID, networkExporter := range e.networkExporters {
 		wg.Add(1)
 		go func(vmUUID string, exporter *VMNicsExporter) {

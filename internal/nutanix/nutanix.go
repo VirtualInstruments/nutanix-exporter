@@ -22,9 +22,10 @@ import (
 )
 
 const (
-	PRISM_API_PATH_VERSION_V1 = "v1/"
-	PRISM_API_PATH_VERSION_V2 = "v2.0/"
-	HTTP_TIMEOUT              = 10 * time.Second
+	PRISM_API_PATH_VERSION_V1     = "v1/"
+	PRISM_API_PATH_VERSION_V2     = "v2.0/"
+	HTTP_TIMEOUT                  = 10 * time.Second
+	MAX_PARALLEL_REQUESTS_DEFAULT = 10
 )
 
 type RequestParams struct {
@@ -33,9 +34,10 @@ type RequestParams struct {
 }
 
 type Nutanix struct {
-	url      string
-	username string
-	password string
+	url                 string
+	username            string
+	password            string
+	maxParallelRequests int
 }
 
 func (g *Nutanix) makeV1Request(reqType string, action string) (*http.Response, error) {
@@ -85,13 +87,16 @@ func (g *Nutanix) makeRequestWithParams(versionPath, reqType, action string, p R
 	return resp, nil
 }
 
-func NewNutanix(url string, username string, password string) *Nutanix {
-	//	log.SetOutput(os.Stdout)
-	//	log.SetPrefix("Nutanix Logger")
-
-	return &Nutanix{
-		url:      url,
-		username: username,
-		password: password,
+func NewNutanix(url, username, password string, maxParallelReq int) *Nutanix {
+	nu := Nutanix{
+		url:                 url,
+		username:            username,
+		password:            password,
+		maxParallelRequests: maxParallelReq,
 	}
+	if nu.maxParallelRequests <= 0 {
+		nu.maxParallelRequests = MAX_PARALLEL_REQUESTS_DEFAULT
+	}
+	log.Debugf("Max parallel request count is set to %d", nu.maxParallelRequests)
+	return &nu
 }
