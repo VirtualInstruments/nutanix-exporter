@@ -11,7 +11,8 @@ package nutanix
 
 import (
 	"encoding/json"
-	"fmt"
+	"strconv"
+	"strings"
 	"sync"
 
 	"github.com/prometheus/client_golang/prometheus"
@@ -184,8 +185,39 @@ func (e *HostsExporter) Collect(ch chan<- prometheus.Metric) {
 
 		key := KEY_HOST_PROPERTIES
 		var property_values []string
+
 		for _, property := range e.properties {
-			val := fmt.Sprintf("%v", ent[property])
+			var val string = ""
+			// format properties
+			switch property {
+			case "memory_capacity_in_mb":
+				propname := strings.Replace(property, "_mb", "_bytes", 1)
+				obj := ent[propname]
+				if obj != nil {
+					floatval := e.valueToFloat64(obj)
+					floatval = floatval / (1024 * 1024)
+					val = strconv.FormatFloat(floatval, 'f', 0, 64)
+				}
+			case "cpu_frequency_in_mhz", "cpu_capacity_in_mhz":
+				propname := strings.Replace(property, "mhz", "hz", 1)
+				obj := ent[propname]
+				if obj != nil {
+					floatval := e.valueToFloat64(obj)
+					floatval = floatval / 1000000
+					val = strconv.FormatFloat(floatval, 'f', 0, 64)
+				}
+			case "num_vms", "num_cpu_cores", "num_cpu_sockets", "num_cpu_threads":
+				obj := ent[property]
+				if obj != nil {
+					floatval := e.valueToFloat64(obj)
+					val = strconv.FormatFloat(floatval, 'f', 0, 64)
+				}
+			default:
+				obj := ent[property]
+				if obj != nil {
+					val = ent[property].(string)
+				}
+			}
 			property_values = append(property_values, val)
 		}
 		g := e.metrics[key].WithLabelValues(property_values...)
@@ -250,7 +282,7 @@ func NewHostsCollector(_api *Nutanix, collecthostnics bool) *HostsExporter {
 			metrics:    make(map[string]*prometheus.GaugeVec),
 			namespace:  "nutanix_hosts",
 			fields:     []string{"num_vms", "num_cpu_cores", "num_cpu_sockets", "num_cpu_threads", "cpu_frequency_in_hz", "cpu_capacity_in_hz", "memory_capacity_in_bytes", "boot_time_in_usecs"},
-			properties: []string{"uuid", "cluster_uuid", "name", "host_type", "hypervisor_address", "serial", "hypervisor_full_name"},
+			properties: []string{"uuid", "cluster_uuid", "name", "host_type", "hypervisor_address", "serial", "hypervisor_full_name", "num_vms", "num_cpu_cores", "num_cpu_sockets", "num_cpu_threads", "cpu_frequency_in_mhz", "cpu_capacity_in_mhz", "memory_capacity_in_mb"},
 			filter_stats: map[string]bool{
 				"storage.capacity_bytes":               true,
 				"storage.usage_bytes":                  true,
