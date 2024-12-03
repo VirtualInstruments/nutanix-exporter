@@ -20,9 +20,11 @@ import (
 )
 
 const (
-	KEY_VM_PROPERTIES      = "properties"
-	METRIC_MEM_FREE_BYTES  = "memory_free_bytes"
-	METRIC_MEM_USAGE_BYTES = "memory_usage_bytes"
+	KEY_VM_PROPERTIES           = "properties"
+	METRIC_MEM_FREE_BYTES       = "memory_free_bytes"
+	METRIC_MEM_USAGE_BYTES      = "memory_usage_bytes"
+	METRIC_MEM_SWAPPED_IN_RATE  = "memory_swapped_in_rate_bps"
+	METRIC_MEM_SWAPPED_OUT_RATE = "memory_swapped_out_rate_bps"
 )
 
 // VmsExporter
@@ -134,6 +136,36 @@ func (e *VmsExporter) addCalculatedStats(ent map[string]interface{}, stats map[s
 		}
 	}
 	stats[METRIC_MEM_FREE_BYTES] = mem_total - mem_usage
+	// add swapped in rate stat
+	var mem_swapped_in_bytes, mem_swapped_out_bytes, controller_timespan_usecs float64 = 0, 0, 0
+	val, ok = stats["guest.memory_swapped_in_bytes"]
+	if ok {
+		v := e.valueToFloat64(val)
+		if v > 0 {
+			mem_swapped_in_bytes = v
+		}
+	}
+	val, ok = stats["guest.memory_swapped_out_bytes"]
+	if ok {
+		v := e.valueToFloat64(val)
+		if v > 0 {
+			mem_swapped_out_bytes = v
+		}
+	}
+	val, ok = stats["controller_timespan_usecs"]
+	if ok {
+		v := e.valueToFloat64(val)
+		if v > 0 {
+			controller_timespan_usecs = v
+		}
+	}
+	if controller_timespan_usecs > 0 {
+		stats[METRIC_MEM_SWAPPED_IN_RATE] = (mem_swapped_in_bytes * 1000000) / controller_timespan_usecs
+		stats[METRIC_MEM_SWAPPED_OUT_RATE] = (mem_swapped_out_bytes * 1000000) / controller_timespan_usecs
+	} else {
+		stats[METRIC_MEM_SWAPPED_IN_RATE] = 0
+		stats[METRIC_MEM_SWAPPED_OUT_RATE] = 0
+	}
 }
 
 // Collect - Implemente prometheus.Collector interface
@@ -277,8 +309,13 @@ func NewVmsCollector(_api *Nutanix, collectvmnics bool) *VmsExporter {
 				"hypervisor_num_received_bytes":    true,
 				"hypervisor_num_transmitted_bytes": true,
 				"hypervisor.cpu_ready_time_ppm":    true,
+				// The swapped in and out bytes metrics are collected on timestamp different that collection interval. So not publishing
+				//"guest.memory_swapped_in_bytes":    true,
+				//"guest.memory_swapped_out_bytes":   true,
 				// Calculated
-				METRIC_MEM_FREE_BYTES: true,
+				METRIC_MEM_FREE_BYTES:       true,
+				METRIC_MEM_SWAPPED_IN_RATE:  true,
+				METRIC_MEM_SWAPPED_OUT_RATE: true,
 			},
 		}}
 }
