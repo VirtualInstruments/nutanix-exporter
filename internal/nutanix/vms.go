@@ -230,6 +230,10 @@ func (e *VmsExporter) Collect(ch chan<- prometheus.Metric) {
 					}
 					val = strings.Join(strarr, ",")
 				}
+            case "controllerVm":
+                if obj, ok := ent[property].(bool); ok {
+                    val = strconv.FormatBool(obj)  // Convert bool to string
+                }
 			default:
 				obj := ent[property]
 				if obj != nil {
@@ -302,7 +306,7 @@ func NewVmsCollector(_api *Nutanix, collectvmnics bool) *VmsExporter {
 			metrics:    make(map[string]*prometheus.GaugeVec),
 			namespace:  "nutanix_vms",
 			fields:     []string{"memoryCapacityInBytes", "numVCpus", "powerState", "cpuReservedInHz"},
-			properties: []string{"uuid", "hostUuid", "vmName", "memoryCapacityInMB", "memoryReservedCapacityInMB", "numVCpus", "powerState", "cpuReservedInMHz", "diskCapacityInMB", "ipAddresses"},
+			properties: []string{"uuid", "hostUuid", "vmName", "memoryCapacityInMB", "memoryReservedCapacityInMB", "numVCpus", "powerState", "cpuReservedInMHz", "diskCapacityInMB", "ipAddresses", "controllerVm"},
 			filter_stats: map[string]bool{
 				"hypervisor_cpu_usage_ppm":         true,
 				"guest.memory_usage_bytes":         true,
@@ -316,6 +320,7 @@ func NewVmsCollector(_api *Nutanix, collectvmnics bool) *VmsExporter {
 				METRIC_MEM_FREE_BYTES:       true,
 				METRIC_MEM_SWAPPED_IN_RATE:  true,
 				METRIC_MEM_SWAPPED_OUT_RATE: true,
+				"controllerVm":              true,
 			},
 		}}
 }
