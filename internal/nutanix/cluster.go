@@ -145,7 +145,7 @@ func (e *ClusterExporter) Collect(ch chan<- prometheus.Metric) {
 	g.Collect(ch)
 
 	if uuid, ok := ent["uuid"]; ok {
-		e.ClusterUUID = uuid.(string)
+		e.uuid = uuid.(string)
 	} else {
 		log.Warn("Cluster UUID not found in response")
 	}
@@ -189,7 +189,7 @@ func (e *ClusterExporter) Collect(ch chan<- prometheus.Metric) {
 		g.Set(e.valueToFloat64(ent[key]))
 		g.Collect(ch)
 	}
-	log.Debug("Cluster data collected for UUID : ", e.ClusterUUID)
+	log.Debug("Cluster data collected for UUID : ", e.uuid)
 }
 
 // NewClusterCollector
