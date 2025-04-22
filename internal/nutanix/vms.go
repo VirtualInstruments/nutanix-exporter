@@ -286,9 +286,9 @@ func (e *VmsExporter) Collect(ch chan<- prometheus.Metric) {
 			}
 
 			g.Collect(ch)
+			log.Debug("VMs data collected for VM=%s, VM UUID= %s", ent["vmName"], ent["uuid"])
 		}
 	}
-	log.Debug("VMs data collected")
 
 	for vmUUID, networkExporter := range e.networkExporters {
 		log.Debugf("Collect nic metrics for vm UUID: %s", vmUUID)

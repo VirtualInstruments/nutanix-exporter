@@ -156,8 +156,7 @@ func (e *VMNicsExporter) Collect(ch chan<- prometheus.Metric) {
 			g.Set(e.valueToFloat64(ent[key]))
 			g.Collect(ch)
 		}
-		log.Debug("VMs NIC data collected")
-
+		log.Debugf("VMs NIC data collected for VM=%s VM_UUID=%s", e.VMName, e.VMUUID)
 	}
 }
 

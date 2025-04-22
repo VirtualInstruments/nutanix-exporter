@@ -24,6 +24,7 @@ type nutanixExporter struct {
 	fields       []string
 	properties   []string
 	filter_stats map[string]bool
+	ClusterUUID  string
 }
 
 // ValueToFloat64 converts given value to Float64

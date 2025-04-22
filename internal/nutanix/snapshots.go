@@ -76,7 +76,7 @@ func (e *SnapshotsExporter) Collect(ch chan<- prometheus.Metric) {
 			g.Set(e.valueToFloat64(ent[key]))
 			g.Collect(ch)
 		}
-		log.Debug("Snapshot data collected")
+		log.Debugf("Snapshot data collected for cluster uuid:%s", e.ClusterUUID)
 	}
 
 }

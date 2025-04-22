@@ -203,7 +203,7 @@ func (e *VirtualDisksExporter) Collect(ch chan<- prometheus.Metric) {
 			g.Set(e.valueToFloat64(ent[key]))
 			g.Collect(ch)
 		}
-		log.Debug("Virtual Disk data collected")
+		log.Debugf("Virtual Disk data collected for virtual disk: UUID=%s", ent["uuid"])
 	}
 }
 

@@ -156,7 +156,7 @@ func (e *HostNicsExporter) Collect(ch chan<- prometheus.Metric) {
 			g.Set(e.valueToFloat64(ent[key]))
 			g.Collect(ch)
 		}
-		log.Debug("Host NIC data collected")
+		log.Debug("Host NIC data collected for host: %s (UUID: %s)", e.HostName, e.HostUUID)
 	}
 }
 
