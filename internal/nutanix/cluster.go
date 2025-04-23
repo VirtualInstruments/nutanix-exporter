@@ -144,12 +144,6 @@ func (e *ClusterExporter) Collect(ch chan<- prometheus.Metric) {
 	g.Set(1)
 	g.Collect(ch)
 
-	if uuid, ok := ent["uuid"]; ok {
-		e.uuid = uuid.(string)
-	} else {
-		log.Warn("Cluster UUID not found in response")
-	}
-
 	if usageStats != nil {
 		for key, value := range usageStats {
 			if _, ok := e.filter_stats[key]; !ok {
@@ -189,7 +183,7 @@ func (e *ClusterExporter) Collect(ch chan<- prometheus.Metric) {
 		g.Set(e.valueToFloat64(ent[key]))
 		g.Collect(ch)
 	}
-	log.Debug("Cluster data collected for UUID : ", e.uuid)
+	log.Debug("Cluster data collected for UUID : ", ent["uuid"].(string))
 }
 
 // NewClusterCollector
