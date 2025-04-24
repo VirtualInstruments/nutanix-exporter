@@ -179,12 +179,11 @@ func (e *ClusterExporter) Collect(ch chan<- prometheus.Metric) {
 		}
 	}
 	for _, key := range e.fields {
-		log.Debugf("%s > %s", key, ent[key])
 		g := e.metrics[key].WithLabelValues(ent["uuid"].(string))
 		g.Set(e.valueToFloat64(ent[key]))
 		g.Collect(ch)
 	}
-
+	log.Debug("Cluster data collected for UUID : ", ent["uuid"].(string))
 }
 
 // NewClusterCollector

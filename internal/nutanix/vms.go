@@ -230,10 +230,10 @@ func (e *VmsExporter) Collect(ch chan<- prometheus.Metric) {
 					}
 					val = strings.Join(strarr, ",")
 				}
-            case "controllerVm":
-                if obj, ok := ent[property].(bool); ok {
-                    val = strconv.FormatBool(obj)  // Convert bool to string
-                }
+			case "controllerVm":
+				if obj, ok := ent[property].(bool); ok {
+					val = strconv.FormatBool(obj) // Convert bool to string
+				}
 			default:
 				obj := ent[property]
 				if obj != nil {
@@ -286,6 +286,7 @@ func (e *VmsExporter) Collect(ch chan<- prometheus.Metric) {
 			}
 
 			g.Collect(ch)
+			log.Debug("VMs data collected for VM=%s, VM UUID= %s", ent["vmName"], ent["uuid"])
 		}
 	}
 

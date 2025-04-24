@@ -72,11 +72,11 @@ func (e *SnapshotsExporter) Collect(ch chan<- prometheus.Metric) {
 		vm_name := vm_details["name"].(string)
 
 		for _, key := range e.fields {
-			log.Debugf("%s > %s", key, ent[key])
 			g := e.metrics[key].WithLabelValues(snapshot_uuid, snapshot_name, vm_uuid, vm_name)
 			g.Set(e.valueToFloat64(ent[key]))
 			g.Collect(ch)
 		}
+		log.Debugf("Snapshot data collected for name=%s, uuid=%s", snapshot_name, snapshot_uuid)
 	}
 
 }

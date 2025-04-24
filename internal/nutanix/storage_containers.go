@@ -207,6 +207,7 @@ func (e *StorageContainerExporter) Collect(ch chan<- prometheus.Metric) {
 				g.Collect(ch)
 			}
 		}
+		log.Debugf("Storage data collected for storage: %s (UUID: %s)", ent["name"].(string), ent["storage_container_uuid"].(string))
 	}
 }
 

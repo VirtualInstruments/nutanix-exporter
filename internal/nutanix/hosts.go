@@ -259,11 +259,11 @@ func (e *HostsExporter) Collect(ch chan<- prometheus.Metric) {
 			}
 		}
 		for _, key := range e.fields {
-			log.Debugf("%s > %s", key, ent[key])
 			g := e.metrics[key].WithLabelValues(ent["uuid"].(string), ent["cluster_uuid"].(string))
 			g.Set(e.valueToFloat64(ent[key]))
 			g.Collect(ch)
 		}
+		log.Debugf("Host data collected for host: UUID=%s, Name=%s", ent["uuid"], ent["name"])
 	}
 
 	for hostUUID, networkExporter := range e.networkExporters {

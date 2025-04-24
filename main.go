@@ -78,12 +78,12 @@ func main() {
 			*nutanixURL, *nutanixUser, *nutanixPassword))
 	}
 
-	log.Debugf("Config File:\n%s\n", string(file))
+	log.Debugf("Config File readed")
 	err = yaml.Unmarshal(file, &config)
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Debugf("Config: %v", config)
+	log.Debug("Config file unmarshalled")
 
 	//	http.Handle("/metrics", prometheus.Handler())
 	http.HandleFunc("/metrics", func(w http.ResponseWriter, r *http.Request) {
