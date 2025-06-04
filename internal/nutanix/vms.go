@@ -125,20 +125,34 @@ func (e *VmsExporter) addCalculatedStats(ent map[string]interface{}, stats map[s
 	if stats == nil {
 		return
 	}
-	// Add free memory stat
+
 	mem_total := e.valueToFloat64(ent["memoryCapacityInBytes"])
 	var mem_usage float64 = 0
-	val, ok := stats["guest.memory_usage_bytes"]
-	if ok {
-		v := e.valueToFloat64(val)
-		if v > 0 {
-			mem_usage = v
+
+	// Try to get guest memory usage first
+	guestVal, ok := stats["guest.memory_usage_bytes"]
+	if ok && e.valueToFloat64(guestVal) >= 0 {
+		mem_usage = e.valueToFloat64(guestVal)
+	} else {
+		// If guest memory is not available or -1, use hypervisor metric
+		hyperVal, ok := stats["hypervisor_memory_usage_ppm"]
+		if ok {
+			hyperUsage := e.valueToFloat64(hyperVal)
+			if hyperUsage > 0 {
+				mem_usage = (mem_total * hyperUsage) / 1000000
+			}
 		}
 	}
+
+	// Set memory usage metric
+	stats[METRIC_MEM_USAGE_BYTES] = mem_usage
+
+	// Calculate free memory based on the usage
 	stats[METRIC_MEM_FREE_BYTES] = mem_total - mem_usage
-	// add swapped in rate stat
+
+	// Rest of the existing swapped memory calculations...
 	var mem_swapped_in_bytes, mem_swapped_out_bytes, controller_timespan_usecs float64 = 0, 0, 0
-	val, ok = stats["guest.memory_swapped_in_bytes"]
+	val, ok := stats["guest.memory_swapped_in_bytes"]
 	if ok {
 		v := e.valueToFloat64(val)
 		if v > 0 {
@@ -310,15 +324,12 @@ func NewVmsCollector(_api *Nutanix, collectvmnics bool) *VmsExporter {
 			properties: []string{"uuid", "hostUuid", "vmName", "memoryCapacityInMB", "memoryReservedCapacityInMB", "numVCpus", "powerState", "cpuReservedInMHz", "diskCapacityInMB", "ipAddresses", "controllerVm"},
 			filter_stats: map[string]bool{
 				"hypervisor_cpu_usage_ppm":         true,
-				"guest.memory_usage_bytes":         true,
 				"hypervisor_num_received_bytes":    true,
 				"hypervisor_num_transmitted_bytes": true,
 				"hypervisor.cpu_ready_time_ppm":    true,
-				// The swapped in and out bytes metrics are collected on timestamp different that collection interval. So not publishing
-				//"guest.memory_swapped_in_bytes":    true,
-				//"guest.memory_swapped_out_bytes":   true,
 				// Calculated
 				METRIC_MEM_FREE_BYTES:       true,
+				METRIC_MEM_USAGE_BYTES:      true,
 				METRIC_MEM_SWAPPED_IN_RATE:  true,
 				METRIC_MEM_SWAPPED_OUT_RATE: true,
 				"controllerVm":              true,
