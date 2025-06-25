@@ -11,7 +11,6 @@ import (
 
 const (
 	KEY_VIRTUAL_DISK_PROPERTIES = "properties"
-	METRIC_TOTAL_USAGE_BYTES    = "controller.storage_tier.total.usage_bytes"
 	METRIC_TOTAL_WRITE_IO_SIZE  = "controller_total_write_io_size_kbytes"
 )
 
@@ -84,26 +83,6 @@ func (e *VirtualDisksExporter) addCalculatedStats(stats map[string]interface{}) 
 	if stats == nil {
 		return
 	}
-	// Add usage stats
-	usage_bytes_metric_keys := []string{
-		"controller.storage_tier.cloud.pinned_usage_bytes",
-		"controller.storage_tier.cloud.usage_bytes",
-		"controller.storage_tier.das-sata.pinned_usage_bytes",
-		"controller.storage_tier.das-sata.usage_bytes",
-		"controller.storage_tier.ssd.pinned_usage_bytes",
-		"controller.storage_tier.ssd.usage_bytes",
-	}
-	var usage_bytes float64 = 0
-	for _, key := range usage_bytes_metric_keys {
-		val, ok := stats[key]
-		if ok {
-			v := e.valueToFloat64(val)
-			if v > 0 {
-				usage_bytes = usage_bytes + e.valueToFloat64(val)
-			}
-		}
-	}
-	stats[METRIC_TOTAL_USAGE_BYTES] = usage_bytes
 
 	// Calculate write io size
 	var total_size, read_size float64 = 0, 0
@@ -224,15 +203,9 @@ func NewVirtualDisksCollector(_api *Nutanix) *VirtualDisksExporter {
 				"controller_avg_read_io_latency_usecs":  true,
 				"controller_avg_write_io_latency_usecs": true,
 				//usage stats
-				"controller.storage_tier.cloud.pinned_usage_bytes":    true,
-				"controller.storage_tier.cloud.usage_bytes":           true,
-				"controller.storage_tier.das-sata.pinned_usage_bytes": true,
-				"controller.storage_tier.das-sata.usage_bytes":        true,
-				"controller.storage_tier.ssd.pinned_usage_bytes":      true,
-				"controller.storage_tier.ssd.usage_bytes":             true,
+				"controller_user_bytes": true,
 				// Calculated
 				METRIC_TOTAL_WRITE_IO_SIZE: true,
-				METRIC_TOTAL_USAGE_BYTES:   true,
 			},
 		},
 	}
