@@ -1,11 +1,9 @@
-//
 // nutanix-exporter
 //
-// Prometheus Exportewr for Nutanix API
+// # Prometheus Exportewr for Nutanix API
 //
 // Author: Martin Weber <martin.weber@de.clara.net>
 // Company: Claranet GmbH
-//
 
 package nutanix
 
@@ -19,13 +17,27 @@ import (
 
 const KEY_CLUSTER_PROPERTIES = "properties"
 
-// ClusterExporter
 type ClusterExporter struct {
 	*nutanixExporter
 }
 
-// Describe - Implemente prometheus.Collector interface
-// See https://github.com/prometheus/client_golang/blob/master/prometheus/collector.go
+func (e *nutanixExporter) hasAllProperties(ent map[string]interface{}) bool {
+	for _, prop := range e.properties {
+		if val, ok := ent[prop]; !ok || val == nil {
+			return false
+		}
+	}
+	return true
+}
+
+func (e *nutanixExporter) getLabelValues(ent map[string]interface{}) []string {
+	var values []string
+	for _, prop := range e.properties {
+		values = append(values, fmt.Sprintf("%v", ent[prop]))
+	}
+	return values
+}
+
 func (e *ClusterExporter) Describe(ch chan<- *prometheus.Desc) {
 
 	resp, err := e.api.makeV2Request("GET", "/cluster/")
@@ -34,168 +46,164 @@ func (e *ClusterExporter) Describe(ch chan<- *prometheus.Desc) {
 		log.Error("Cluster discovery failed")
 		return
 	}
+	defer resp.Body.Close()
+
 	data := json.NewDecoder(resp.Body)
 	data.Decode(&e.result)
-
-	var stats, usageStats map[string]interface{} = nil, nil
-
 	ent := e.result
-	if obj, ok := ent["stats"]; ok {
-		stats = obj.(map[string]interface{})
+
+	if !e.hasAllProperties(ent) {
+		log.Warn("Skipping Describe: cluster object missing properties")
+		return
 	}
+
+	e.metrics[KEY_CLUSTER_PROPERTIES] = prometheus.NewGaugeVec(prometheus.GaugeOpts{
+		Namespace: e.namespace,
+		Name:      KEY_CLUSTER_PROPERTIES,
+		Help:      "Cluster properties metric",
+	}, e.properties)
+	e.metrics[KEY_CLUSTER_PROPERTIES].Describe(ch)
+
+	// Extract usage_stats and stats
+	var usageStats, stats map[string]interface{}
 	if obj, ok := ent["usage_stats"]; ok {
 		usageStats = obj.(map[string]interface{})
 	}
-
-	// Publish cluster properties as separate record
-	key := KEY_CLUSTER_PROPERTIES
-	e.metrics[key] = prometheus.NewGaugeVec(prometheus.GaugeOpts{
-		Namespace: e.namespace,
-		Name:      key, Help: "..."}, e.properties)
-	e.metrics[key].Describe(ch)
-
-	if usageStats != nil {
-		for key := range usageStats {
-			if _, ok := e.filter_stats[key]; !ok {
-				continue
-			}
-			key = e.normalizeKey(key)
-
-			e.metrics[key] = prometheus.NewGaugeVec(prometheus.GaugeOpts{
-				Namespace: e.namespace,
-				Name:      key, Help: "..."}, []string{"uuid"})
-
-			e.metrics[key].Describe(ch)
-		}
+	if obj, ok := ent["stats"]; ok {
+		stats = obj.(map[string]interface{})
 	}
+
+	// Add calculated stats
 	if stats != nil {
 		e.addCalculatedStats(stats)
-		for key := range stats {
-			if _, ok := e.filter_stats[key]; !ok {
-				continue
-			}
-
-			key = e.normalizeKey(key)
-
-			e.metrics[key] = prometheus.NewGaugeVec(prometheus.GaugeOpts{
-				Namespace: e.namespace,
-				Name:      key, Help: "..."}, []string{"uuid"})
-
-			e.metrics[key].Describe(ch)
-		}
 	}
+
+	// Describe usage_stats
+	for key := range usageStats {
+		if !e.filter_stats[key] {
+			continue
+		}
+		nKey := e.normalizeKey(key)
+		e.metrics[nKey] = prometheus.NewGaugeVec(prometheus.GaugeOpts{
+			Namespace: e.namespace,
+			Name:      nKey,
+			Help:      "Cluster usage stat",
+		}, e.properties)
+		e.metrics[nKey].Describe(ch)
+	}
+
+	// Describe stats
+	for key := range stats {
+		if !e.filter_stats[key] {
+			continue
+		}
+		nKey := e.normalizeKey(key)
+		e.metrics[nKey] = prometheus.NewGaugeVec(prometheus.GaugeOpts{
+			Namespace: e.namespace,
+			Name:      nKey,
+			Help:      "Cluster stat",
+		}, e.properties)
+		e.metrics[nKey].Describe(ch)
+	}
+
+	// Describe fields
 	for _, key := range e.fields {
 		e.metrics[key] = prometheus.NewGaugeVec(prometheus.GaugeOpts{
 			Namespace: e.namespace,
-			Name:      key, Help: "..."}, []string{"uuid"})
+			Name:      key,
+			Help:      "Cluster field",
+		}, e.properties)
 		e.metrics[key].Describe(ch)
 	}
 }
 
+// Collect - implements prometheus.Collector
+func (e *ClusterExporter) Collect(ch chan<- prometheus.Metric) {
+	ent := e.result
+	if ent == nil || !e.hasAllProperties(ent) {
+		log.Warn("Skipping Collect: cluster object missing or incomplete")
+		return
+	}
+	labelValues := e.getLabelValues(ent)
+
+	// Set cluster properties metric
+	g := e.metrics[KEY_CLUSTER_PROPERTIES].WithLabelValues(labelValues...)
+	g.Set(1)
+	g.Collect(ch)
+
+	// usage_stats
+	if usageStats, ok := ent["usage_stats"].(map[string]interface{}); ok {
+		for key, value := range usageStats {
+			if !e.filter_stats[key] {
+				continue
+			}
+			v := e.valueToFloat64(value)
+			if v == -1 {
+				continue
+			}
+			nKey := e.normalizeKey(key)
+			g := e.metrics[nKey].WithLabelValues(labelValues...)
+			g.Set(v)
+			g.Collect(ch)
+		}
+	}
+
+	// stats
+	if stats, ok := ent["stats"].(map[string]interface{}); ok {
+		e.addCalculatedStats(stats)
+		for key, value := range stats {
+			if !e.filter_stats[key] {
+				continue
+			}
+			v := e.valueToFloat64(value)
+			if v == -1 {
+				continue
+			}
+			nKey := e.normalizeKey(key)
+			g := e.metrics[nKey].WithLabelValues(labelValues...)
+			g.Set(v)
+			g.Collect(ch)
+		}
+	}
+
+	// fields
+	for _, key := range e.fields {
+		v := e.valueToFloat64(ent[key])
+		g := e.metrics[key].WithLabelValues(labelValues...)
+		g.Set(v)
+		g.Collect(ch)
+	}
+
+	log.Debug("Cluster data collected for UUID: ", ent["uuid"].(string))
+}
+
+// addCalculatedStats adds derived metrics to stats
 func (e *ClusterExporter) addCalculatedStats(stats map[string]interface{}) {
 	if stats == nil {
 		return
 	}
 
-	// Calculate write io size
-	var total_size, read_size float64 = 0, 0
-	val, ok := stats["controller_total_io_size_kbytes"]
-	if ok {
-		v := e.valueToFloat64(val)
-		if v > 0 {
-			total_size = v
-		}
+	var totalSize, readSize float64
+	if val, ok := stats["controller_total_io_size_kbytes"]; ok {
+		totalSize = e.valueToFloat64(val)
 	}
-	val, ok = stats["controller_total_read_io_size_kbytes"]
-	if ok {
-		v := e.valueToFloat64(val)
-		if v > 0 {
-			read_size = v
-		}
+	if val, ok := stats["controller_total_read_io_size_kbytes"]; ok {
+		readSize = e.valueToFloat64(val)
 	}
-	stats[METRIC_TOTAL_WRITE_IO_SIZE] = total_size - read_size
+	stats[METRIC_TOTAL_WRITE_IO_SIZE] = totalSize - readSize
 }
 
-// Collect - Implement prometheus.Collector interface
-// See https://github.com/prometheus/client_golang/blob/master/prometheus/collector.go
-func (e *ClusterExporter) Collect(ch chan<- prometheus.Metric) {
-	// entities, _ := e.result.([]interface{})
-
-	var stats, usageStats map[string]interface{} = nil, nil
-
-	ent := e.result
-	if ent == nil {
-		return
-	}
-	if obj, ok := ent["stats"]; ok {
-		stats = obj.(map[string]interface{})
-	}
-	if obj, ok := ent["usage_stats"]; ok {
-		usageStats = obj.(map[string]interface{})
-	}
-
-	key := KEY_CLUSTER_PROPERTIES
-	var property_values []string
-	for _, property := range e.properties {
-		val := fmt.Sprintf("%v", ent[property])
-		property_values = append(property_values, val)
-	}
-	g := e.metrics[key].WithLabelValues(property_values...)
-	g.Set(1)
-	g.Collect(ch)
-
-	if usageStats != nil {
-		for key, value := range usageStats {
-			if _, ok := e.filter_stats[key]; !ok {
-				continue
-			}
-
-			v := e.valueToFloat64(value)
-			// ignore stats which are not available
-			if v == -1 {
-				continue
-			}
-			key = e.normalizeKey(key)
-			g := e.metrics[key].WithLabelValues(ent["uuid"].(string))
-			g.Set(v)
-			g.Collect(ch)
-		}
-	}
-	if stats != nil {
-		for key, value := range stats {
-			if _, ok := e.filter_stats[key]; !ok {
-				continue
-			}
-
-			v := e.valueToFloat64(value)
-			// ignore stats which are not available
-			if v == -1 {
-				continue
-			}
-			key = e.normalizeKey(key)
-			g := e.metrics[key].WithLabelValues(ent["uuid"].(string))
-			g.Set(v)
-			g.Collect(ch)
-		}
-	}
-	for _, key := range e.fields {
-		g := e.metrics[key].WithLabelValues(ent["uuid"].(string))
-		g.Set(e.valueToFloat64(ent[key]))
-		g.Collect(ch)
-	}
-	log.Debug("Cluster data collected for UUID : ", ent["uuid"].(string))
-}
-
-// NewClusterCollector
+// NewClusterCollector creates the cluster exporter
 func NewClusterCollector(_api *Nutanix) *ClusterExporter {
-
-	exporter := &ClusterExporter{
+	return &ClusterExporter{
 		&nutanixExporter{
-			api:        *_api,
-			metrics:    make(map[string]*prometheus.GaugeVec),
-			namespace:  "nutanix_cluster",
-			fields:     []string{"num_nodes"},
-			properties: []string{"uuid", "name", "cluster_external_ipaddress", "version"},
+			api:       *_api,
+			metrics:   make(map[string]*prometheus.GaugeVec),
+			namespace: "nutanix_cluster",
+			fields:    []string{"num_nodes"},
+			properties: []string{
+				"uuid", "name", "cluster_external_ipaddress", "version",
+			},
 			filter_stats: map[string]bool{
 				"storage.capacity_bytes":                true,
 				"storage.usage_bytes":                   true,
@@ -211,12 +219,8 @@ func NewClusterCollector(_api *Nutanix) *ClusterExporter {
 				"hypervisor_memory_usage_ppm":           true,
 				"hypervisor_num_received_bytes":         true,
 				"hypervisor_num_transmitted_bytes":      true,
-				// Calculated
-				METRIC_TOTAL_WRITE_IO_SIZE: true,
+				METRIC_TOTAL_WRITE_IO_SIZE:              true,
 			},
 		},
 	}
-
-	return exporter
-
 }
