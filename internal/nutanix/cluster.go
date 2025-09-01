@@ -28,7 +28,7 @@ type ClusterExporter struct {
 // See https://github.com/prometheus/client_golang/blob/master/prometheus/collector.go
 func (e *ClusterExporter) Describe(ch chan<- *prometheus.Desc) {
 
-	resp, err := e.api.makeV2Request("GET", "/cluster/")
+	resp, err := e.api.makeV2Request("GET", "/cluster/", nil)
 	if err != nil {
 		e.result = nil
 		log.Error("Cluster discovery failed")

@@ -10,7 +10,6 @@
 package nutanix
 
 import (
-	"encoding/json"
 	"strconv"
 	"strings"
 	"sync"
@@ -37,21 +36,17 @@ type VmsExporter struct {
 // Describe - Implement prometheus.Collector interface
 // See https://github.com/prometheus/client_golang/blob/master/prometheus/collector.go
 func (e *VmsExporter) Describe(ch chan<- *prometheus.Desc) {
-	resp, err := e.api.makeV1Request("GET", "/vms/")
+
+	entities, err := e.api.fetchAllPagesV1("/vms", nil)
 	if err != nil {
 		e.result = nil
 		log.Error("VM discovery failed")
 		return
 	}
 
-	data := json.NewDecoder(resp.Body)
-	data.Decode(&e.result)
+	e.result = map[string]interface{}{"entities": entities}
 
-	var entities []interface{} = nil
-	if obj, ok := e.result["entities"]; ok {
-		entities = obj.([]interface{})
-	}
-	if entities == nil || len(entities) == 0 {
+	if len(entities) == 0 {
 		return
 	}
 
@@ -71,8 +66,7 @@ func (e *VmsExporter) Describe(ch chan<- *prometheus.Desc) {
 		Name:      key, Help: "..."}, property_keys)
 	e.metrics[key].Describe(ch)
 
-	for _, entity := range entities {
-		ent := entity.(map[string]interface{})
+	for _, ent := range entities {
 		var stats map[string]interface{} = nil
 		if obj, ok := ent["stats"]; ok {
 			stats = obj.(map[string]interface{})
@@ -300,7 +294,7 @@ func (e *VmsExporter) Collect(ch chan<- prometheus.Metric) {
 			}
 
 			g.Collect(ch)
-			log.Debug("VMs data collected for VM=%s, VM UUID= %s", ent["vmName"], ent["uuid"])
+			log.Debugf("VMs data collected for VM=%s, VM UUID= %s", ent["vmName"], ent["uuid"])
 		}
 	}
 
