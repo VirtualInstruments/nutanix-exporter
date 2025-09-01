@@ -276,7 +276,7 @@ func NewHostsCollector(_api *Nutanix, collecthostnics bool) *HostsExporter {
 			metrics:    make(map[string]*prometheus.GaugeVec),
 			namespace:  "nutanix_hosts",
 			fields:     []string{"num_vms", "num_cpu_cores", "num_cpu_sockets", "num_cpu_threads", "cpu_frequency_in_hz", "cpu_capacity_in_hz", "memory_capacity_in_bytes", "boot_time_in_usecs"},
-			properties: []string{"uuid", "cluster_uuid", "name", "host_type", "hypervisor_address", "serial", "hypervisor_full_name", "num_vms", "num_cpu_cores", "num_cpu_sockets", "num_cpu_threads", "cpu_frequency_in_mhz", "cpu_capacity_in_mhz", "memory_capacity_in_mb"},
+			properties: []string{"uuid", "cluster_uuid", "name", "host_type", "hypervisor_address", "serial", "hypervisor_full_name", "num_vms", "num_cpu_cores", "num_cpu_sockets", "num_cpu_threads", "cpu_frequency_in_mhz", "cpu_capacity_in_mhz", "memory_capacity_in_mb", "block_model_name"},
 			filter_stats: map[string]bool{
 				"storage.capacity_bytes":                true,
 				"storage.usage_bytes":                   true,
