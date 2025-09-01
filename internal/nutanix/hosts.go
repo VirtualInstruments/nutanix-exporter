@@ -44,7 +44,8 @@ func (e *HostsExporter) Describe(ch chan<- *prometheus.Desc) {
 		return
 	}
 
-	for _, ent := range entities {
+	for _, entRaw := range entities {
+		ent := entRaw.(map[string]interface{})
 		var stats, usageStats map[string]interface{} = nil, nil
 
 		if obj, ok := ent["stats"]; ok {

@@ -66,7 +66,8 @@ func (e *VmsExporter) Describe(ch chan<- *prometheus.Desc) {
 		Name:      key, Help: "..."}, property_keys)
 	e.metrics[key].Describe(ch)
 
-	for _, ent := range entities {
+	for _, entRaw := range entities {
+		ent := entRaw.(map[string]interface{})
 		var stats map[string]interface{} = nil
 		if obj, ok := ent["stats"]; ok {
 			stats = obj.(map[string]interface{})

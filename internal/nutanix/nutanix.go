@@ -81,6 +81,7 @@ func (g *Nutanix) makeRequestWithParams(versionPath, reqType, action string, p R
 		log.Errorf("failed to execute request; error=%v\n", err)
 		return nil, err
 	}
+
 	if resp.StatusCode >= 400 {
 		log.Errorf("error status from server; status=%v code=%v\n", resp.Status, resp.StatusCode)
 		return nil, fmt.Errorf("error status received")

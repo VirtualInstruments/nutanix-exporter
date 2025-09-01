@@ -32,7 +32,8 @@ func (e *VirtualDisksExporter) Describe(ch chan<- *prometheus.Desc) {
 		return
 	}
 
-	for _, ent := range entities {
+	for _, entRaw := range entities {
+		ent := entRaw.(map[string]interface{})
 		var stats map[string]interface{} = nil
 
 		if obj, ok := ent["stats"]; ok {

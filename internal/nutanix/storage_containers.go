@@ -42,7 +42,8 @@ func (e *StorageContainerExporter) Describe(ch chan<- *prometheus.Desc) {
 		return
 	}
 
-	for _, ent := range entities {
+	for _, entRaw := range entities {
+		ent := entRaw.(map[string]interface{})
 		var stats, usageStats map[string]interface{} = nil, nil
 		if obj, ok := ent["stats"]; ok {
 			stats = obj.(map[string]interface{})
@@ -129,9 +130,9 @@ func (e *StorageContainerExporter) Collect(ch chan<- prometheus.Metric) {
 		return
 	}
 
-	for _, entity := range entities {
+	for _, entRaw := range entities {
+		ent := entRaw.(map[string]interface{})
 		var stats, usageStats map[string]interface{} = nil, nil
-		ent := entity.(map[string]interface{})
 		if obj, ok := ent["stats"]; ok {
 			stats = obj.(map[string]interface{})
 		}

@@ -31,12 +31,12 @@ type V1ResponseMetadata struct {
 }
 
 // fetchAllPages is a unified helper that defaults to v2 paging
-func (g *Nutanix) fetchAllPages(action string, baseParams url.Values) ([]map[string]interface{}, error) {
+func (g *Nutanix) fetchAllPages(action string, baseParams url.Values) ([]interface{}, error) {
 	return g.fetchAllPagesV2(action, baseParams)
 }
 
 // fetchAllPagesV2 is a generic helper to retrieve all pages from a v2 API endpoint
-func (g *Nutanix) fetchAllPagesV2(action string, baseParams url.Values) ([]map[string]interface{}, error) {
+func (g *Nutanix) fetchAllPagesV2(action string, baseParams url.Values) ([]interface{}, error) {
 	if baseParams == nil {
 		baseParams = url.Values{}
 	}
@@ -45,7 +45,7 @@ func (g *Nutanix) fetchAllPagesV2(action string, baseParams url.Values) ([]map[s
 		baseParams.Set("count", "100")
 	}
 
-	var allEntities []map[string]interface{}
+	var allEntities []interface{}
 	page := 1
 	for {
 		baseParams.Set("page", fmt.Sprintf("%d", page))
@@ -69,9 +69,7 @@ func (g *Nutanix) fetchAllPagesV2(action string, baseParams url.Values) ([]map[s
 			break
 		}
 		for _, e := range entities {
-			if ent, ok := e.(map[string]interface{}); ok {
-				allEntities = append(allEntities, ent)
-			}
+			allEntities = append(allEntities, e)
 		}
 
 		// parse metadata
@@ -95,7 +93,7 @@ func (g *Nutanix) fetchAllPagesV2(action string, baseParams url.Values) ([]map[s
 }
 
 // fetchAllPagesV1 is a generic helper to retrieve all pages from a v1 API endpoint
-func (g *Nutanix) fetchAllPagesV1(action string, baseParams url.Values) ([]map[string]interface{}, error) {
+func (g *Nutanix) fetchAllPagesV1(action string, baseParams url.Values) ([]interface{}, error) {
 	if baseParams == nil {
 		baseParams = url.Values{}
 	}
@@ -104,7 +102,7 @@ func (g *Nutanix) fetchAllPagesV1(action string, baseParams url.Values) ([]map[s
 		baseParams.Set("count", "100")
 	}
 
-	var allEntities []map[string]interface{}
+	var allEntities []interface{}
 	page := 1
 	for {
 		baseParams.Set("page", fmt.Sprintf("%d", page))
@@ -128,9 +126,7 @@ func (g *Nutanix) fetchAllPagesV1(action string, baseParams url.Values) ([]map[s
 			break
 		}
 		for _, e := range entities {
-			if ent, ok := e.(map[string]interface{}); ok {
-				allEntities = append(allEntities, ent)
-			}
+			allEntities = append(allEntities, e)
 		}
 
 		// parse metadata

@@ -55,7 +55,8 @@ func (e *SnapshotsExporter) Collect(ch chan<- prometheus.Metric) {
 	g.Collect(ch)
 
 	log.Debugf("Results: %d", len(entities))
-	for _, ent := range entities {
+	for _, entRaw := range entities {
+		ent := entRaw.(map[string]interface{})
 		vm_details := ent["vm_create_spec"].(map[string]interface{})
 
 		snapshot_name := ent["snapshot_name"].(string)
