@@ -10,7 +10,6 @@
 package nutanix
 
 import (
-	"encoding/json"
 	"fmt"
 	"strconv"
 
@@ -30,27 +29,21 @@ type StorageContainerExporter struct {
 func (e *StorageContainerExporter) Describe(ch chan<- *prometheus.Desc) {
 	// prometheus.DescribeByCollect(e, ch)
 
-	resp, err := e.api.makeV2Request("GET", "/storage_containers/")
+	entities, err := e.api.fetchAllPages("/storage_containers", nil)
 	if err != nil {
 		e.result = nil
-		log.Error("Storage contianer discovery failed")
+		log.Error("Storage container discovery failed")
 		return
 	}
 
-	data := json.NewDecoder(resp.Body)
-	data.Decode(&e.result)
+	e.result = map[string]interface{}{"entities": entities}
 
-	var entities []interface{} = nil
-	if obj, ok := e.result["entities"]; ok {
-		entities = obj.([]interface{})
-	}
-	if entities == nil {
+	if len(entities) == 0 {
 		return
 	}
 
-	for _, entity := range entities {
+	for _, ent := range entities {
 		var stats, usageStats map[string]interface{} = nil, nil
-		ent := entity.(map[string]interface{})
 		if obj, ok := ent["stats"]; ok {
 			stats = obj.(map[string]interface{})
 		}

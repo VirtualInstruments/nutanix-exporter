@@ -10,8 +10,6 @@
 package nutanix
 
 import (
-	"encoding/json"
-
 	"github.com/prometheus/client_golang/prometheus"
 	log "github.com/sirupsen/logrus"
 )
@@ -43,27 +41,21 @@ func (e *SnapshotsExporter) Describe(ch chan<- *prometheus.Desc) {
 // Collect - Implemente prometheus.Collector interface
 // See https://github.com/prometheus/client_golang/blob/master/prometheus/collector.go
 func (e *SnapshotsExporter) Collect(ch chan<- prometheus.Metric) {
-	var snapshots map[string]interface{}
-
-	resp, err := e.api.makeV2Request("GET", "/snapshots/")
+	entities, err := e.api.fetchAllPages("/snapshots", nil)
 	if err != nil {
 		e.result = nil
 		log.Error("Snapshots discovery failed")
 		return
 	}
 
-	data := json.NewDecoder(resp.Body)
-	data.Decode(&snapshots)
+	e.result = map[string]interface{}{"entities": entities}
 
-	metadata, _ := snapshots["metadata"].(map[string]interface{})
 	g := e.metrics["count"].WithLabelValues()
-	g.Set(e.valueToFloat64(metadata["total_entities"]))
+	g.Set(float64(len(entities)))
 	g.Collect(ch)
 
-	entities, _ := snapshots["entities"].([]interface{})
-	log.Debugf("Results: %s", len(entities))
-	for _, entity := range entities {
-		ent := entity.(map[string]interface{})
+	log.Debugf("Results: %d", len(entities))
+	for _, ent := range entities {
 		vm_details := ent["vm_create_spec"].(map[string]interface{})
 
 		snapshot_name := ent["snapshot_name"].(string)
@@ -78,7 +70,6 @@ func (e *SnapshotsExporter) Collect(ch chan<- prometheus.Metric) {
 		}
 		log.Debugf("Snapshot data collected for name=%s, uuid=%s", snapshot_name, snapshot_uuid)
 	}
-
 }
 
 // NewHostsCollector

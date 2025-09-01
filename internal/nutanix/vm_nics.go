@@ -25,35 +25,38 @@ func (e *VMNicsExporter) Describe(ch chan<- *prometheus.Desc) {
 	nicEndpoint := fmt.Sprintf("/vms/%s/virtual_nics", uuid)
 	log.Debug("VM Nic Endpoint: " + nicEndpoint)
 
-	// Make the API request to fetch vm NICs information
-	resp, err := e.api.makeV1Request("GET", nicEndpoint)
+	// Make the API request to fetch vm NICs information (no paging)
+	resp, err := e.api.makeV1Request("GET", nicEndpoint, nil)
 	if err != nil {
 		e.result = nil
 		log.Error("VM nic discovery failed")
 		return
 	}
 
-	var entitiesArray []any = make([]any, 0)
-
-	data := json.NewDecoder(resp.Body)
-	data.Decode(&entitiesArray)
-
-	var entities []interface{} = nil
-	if len(entitiesArray) > 0 {
-		entities = entitiesArray
-		e.result = map[string]interface{}{
-			"entities": entities,
-		}
-	}
-	if entities == nil {
+	var entities []map[string]interface{}
+	if err := json.NewDecoder(resp.Body).Decode(&entities); err != nil {
+		e.result = nil
+		log.Error("Failed to decode VM NICs response")
 		return
 	}
 
-	for _, entity := range entities {
+	// convert to []interface{} for consistency
+	var genericEntities []interface{}
+	for _, ent := range entities {
+		genericEntities = append(genericEntities, ent)
+	}
+
+	e.result = map[string]interface{}{"entities": genericEntities}
+
+	if len(genericEntities) == 0 {
+		return
+	}
+
+	for _, entRaw := range genericEntities {
+		ent := entRaw.(map[string]interface{})
 
 		var stats map[string]interface{} = nil
 
-		ent := entity.(map[string]interface{})
 		if obj, ok := ent["stats"]; ok {
 			stats = obj.(map[string]interface{})
 		}

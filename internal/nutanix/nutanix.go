@@ -40,12 +40,12 @@ type Nutanix struct {
 	maxParallelRequests int
 }
 
-func (g *Nutanix) makeV1Request(reqType string, action string) (*http.Response, error) {
-	return g.makeRequestWithParams(PRISM_API_PATH_VERSION_V1, reqType, action, RequestParams{})
+func (g *Nutanix) makeV1Request(reqType string, action string, params url.Values) (*http.Response, error) {
+	return g.makeRequestWithParams(PRISM_API_PATH_VERSION_V1, reqType, action, RequestParams{params: params})
 }
 
-func (g *Nutanix) makeV2Request(reqType string, action string) (*http.Response, error) {
-	return g.makeRequestWithParams(PRISM_API_PATH_VERSION_V2, reqType, action, RequestParams{})
+func (g *Nutanix) makeV2Request(reqType string, action string, params url.Values) (*http.Response, error) {
+	return g.makeRequestWithParams(PRISM_API_PATH_VERSION_V2, reqType, action, RequestParams{params: params})
 }
 
 func (g *Nutanix) makeRequestWithParams(versionPath, reqType, action string, p RequestParams) (*http.Response, error) {
@@ -63,7 +63,9 @@ func (g *Nutanix) makeRequestWithParams(versionPath, reqType, action string, p R
 
 	body := p.body
 
-	_url += "?" + p.params.Encode()
+	if p.params != nil && len(p.params) > 0 {
+		_url += "?" + p.params.Encode()
+	}
 
 	req, err := http.NewRequest(reqType, _url, strings.NewReader(body))
 	if err != nil {

@@ -10,7 +10,6 @@
 package nutanix
 
 import (
-	"encoding/json"
 	"strconv"
 	"strings"
 	"sync"
@@ -31,28 +30,23 @@ type HostsExporter struct {
 // Describe - Implemente prometheus.Collector interface
 // See https://github.com/prometheus/client_golang/blob/master/prometheus/collector.go
 func (e *HostsExporter) Describe(ch chan<- *prometheus.Desc) {
-	resp, err := e.api.makeV2Request("GET", "/hosts/")
+
+	entities, err := e.api.fetchAllPages("/hosts", nil)
 	if err != nil {
 		e.result = nil
 		log.Error("Host discovery failed")
 		return
 	}
 
-	data := json.NewDecoder(resp.Body)
-	data.Decode(&e.result)
+	e.result = map[string]interface{}{"entities": entities}
 
-	var entities []interface{} = nil
-	if obj, ok := e.result["entities"]; ok {
-		entities = obj.([]interface{})
-	}
-	if entities == nil {
+	if len(entities) == 0 {
 		return
 	}
 
-	for _, entity := range entities {
+	for _, ent := range entities {
 		var stats, usageStats map[string]interface{} = nil, nil
 
-		ent := entity.(map[string]interface{})
 		if obj, ok := ent["stats"]; ok {
 			stats = obj.(map[string]interface{})
 		}

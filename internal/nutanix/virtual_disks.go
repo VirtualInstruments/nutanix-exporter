@@ -1,7 +1,6 @@
 package nutanix
 
 import (
-	"encoding/json"
 	"strconv"
 	"strings"
 
@@ -19,28 +18,23 @@ type VirtualDisksExporter struct {
 }
 
 func (e *VirtualDisksExporter) Describe(ch chan<- *prometheus.Desc) {
-	resp, err := e.api.makeV2Request("GET", "/virtual_disks/")
+
+	entities, err := e.api.fetchAllPages("/virtual_disks", nil)
 	if err != nil {
 		e.result = nil
 		log.Error("Virtual disk discovery failed")
 		return
 	}
 
-	data := json.NewDecoder(resp.Body)
-	data.Decode(&e.result)
+	e.result = map[string]interface{}{"entities": entities}
 
-	var entities []interface{} = nil
-	if obj, ok := e.result["entities"]; ok {
-		entities = obj.([]interface{})
-	}
-	if entities == nil {
+	if len(entities) == 0 {
 		return
 	}
 
-	for _, entity := range entities {
+	for _, ent := range entities {
 		var stats map[string]interface{} = nil
 
-		ent := entity.(map[string]interface{})
 		if obj, ok := ent["stats"]; ok {
 			stats = obj.(map[string]interface{})
 		}

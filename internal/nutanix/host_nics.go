@@ -25,27 +25,24 @@ func (e *HostNicsExporter) Describe(ch chan<- *prometheus.Desc) {
 	nicEndpoint := fmt.Sprintf("/hosts/%s/host_nics", uuid)
 	log.Debug("Host Nic Endpoint: " + nicEndpoint)
 
-	// Make the API request to fetch host NICs information
-	resp, err := e.api.makeV2Request("GET", nicEndpoint)
+	// Make the API request to fetch host NICs information (no paging)
+	resp, err := e.api.makeV2Request("GET", nicEndpoint, nil)
 	if err != nil {
 		e.result = nil
 		log.Error("Host nic discovery failed")
 		return
 	}
 
-	var entitiesArray []any = make([]any, 0)
-
-	data := json.NewDecoder(resp.Body)
-	data.Decode(&entitiesArray)
-
-	var entities []interface{} = nil
-	if len(entitiesArray) > 0 {
-		entities = entitiesArray
-		e.result = map[string]interface{}{
-			"entities": entities,
-		}
+	var entities []interface{}
+	if err := json.NewDecoder(resp.Body).Decode(&entities); err != nil {
+		e.result = nil
+		log.Error("Failed to decode host NICs response")
+		return
 	}
-	if entities == nil {
+
+	e.result = map[string]interface{}{"entities": entities}
+
+	if len(entities) == 0 {
 		return
 	}
 
@@ -156,7 +153,7 @@ func (e *HostNicsExporter) Collect(ch chan<- prometheus.Metric) {
 			g.Set(e.valueToFloat64(ent[key]))
 			g.Collect(ch)
 		}
-		log.Debug("Host NIC data collected for host: %s (UUID: %s)", e.HostName, e.HostUUID)
+		log.Debugf("Host NIC data collected for host: %s (UUID: %s)", e.HostName, e.HostUUID)
 	}
 }
 
