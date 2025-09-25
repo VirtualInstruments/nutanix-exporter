@@ -5,7 +5,7 @@
 
 # Builder image, where we build the example.
 
-FROM vi-nexus.lab.vi.local//golang:1.23.12-alpine3.22 AS builder
+FROM vi-nexus.lab.vi.local/golang:1.23.12-alpine3.22 AS builder
 
 ENV GOPATH /go
 
