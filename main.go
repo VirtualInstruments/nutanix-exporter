@@ -160,6 +160,12 @@ func main() {
 			registry.MustRegister(nutanix.NewVirtualDisksCollector(nutanixAPI))
 		}
 
+		// Register HealthCollector (Cluster Health)
+		if checkCollect(config[section].Collect, "health") {
+			log.Debugf("Register HealthCollector")
+			registry.MustRegister(nutanix.NewHealthCollector(nutanixAPI))
+		}
+
 		h := promhttp.HandlerFor(registry, promhttp.HandlerOpts{})
 		h.ServeHTTP(w, r)
 	})

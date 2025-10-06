@@ -12,6 +12,7 @@ package nutanix
 import (
 	//	"os"
 	"crypto/tls"
+	"encoding/json"
 	"fmt"
 	"net/http"
 	"net/url"
@@ -38,6 +39,30 @@ type Nutanix struct {
 	username            string
 	password            string
 	maxParallelRequests int
+}
+
+// ---- Cluster Health API ----
+
+// ClusterHealthResponse represents Nutanix cluster health info
+type ClusterHealthResponse struct {
+	Status      string `json:"status"`
+	ClusterName string `json:"cluster_name"`
+}
+
+// GetClusterHealth queries the Nutanix Prism API for overall cluster health
+func (g *Nutanix) GetClusterHealth() (*ClusterHealthResponse, error) {
+	resp, err := g.makeV2Request("GET", "cluster/health", nil)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	var result ClusterHealthResponse
+	if err := json.NewDecoder(resp.Body).Decode(&result); err != nil {
+		log.Errorf("failed to parse health response: %v", err)
+		return nil, err
+	}
+	return &result, nil
 }
 
 func (g *Nutanix) makeV1Request(reqType string, action string, params url.Values) (*http.Response, error) {
