@@ -57,6 +57,11 @@ func main() {
 	// add config file watch
 	go monitorConfigFileChange()
 
+	// start exporter self-health 30s ticker
+	stopTicker := make(chan struct{})
+	nutanix.StartHealthTicker(stopTicker)
+	defer close(stopTicker)
+
 	flag.Parse()
 
 	//Use locale configfile
@@ -87,11 +92,22 @@ func main() {
 
 	//	http.Handle("/metrics", prometheus.Handler())
 	http.HandleFunc("/metrics", func(w http.ResponseWriter, r *http.Request) {
+		// mark collection boundaries for health
+		started := nutanix.MarkCollectionStart()
+		collStart := time.Now()
+		defer func() {
+			if started {
+				nutanix.MarkCollectionEnd(true, time.Since(collStart))
+			}
+		}()
 		params := r.URL.Query()
 		section := params.Get("section")
 		if len(section) == 0 {
 			section = "default"
 		}
+
+		// health-only toggle
+		healthOnly := params.Get("health") == "true"
 
 		log.Infof("Section: %s", section)
 		log.Debug("Create Nutanix instance")
@@ -135,29 +151,34 @@ func main() {
 			return !exist || (exist && val)
 		}
 
-		if checkCollect(config[section].Collect, "storage_containers") {
+		if !healthOnly && checkCollect(config[section].Collect, "storage_containers") {
 			log.Debugf("Register StorageContainersCollector")
 			registry.MustRegister(nutanix.NewStorageContainersCollector(nutanixAPI))
 		}
-		if checkCollect(config[section].Collect, "hosts") {
+		if !healthOnly && checkCollect(config[section].Collect, "hosts") {
 			log.Debugf("Register HostsCollector")
 			registry.MustRegister(nutanix.NewHostsCollector(nutanixAPI, collecthostnics))
 		}
-		if checkCollect(config[section].Collect, "cluster") {
+		if !healthOnly && checkCollect(config[section].Collect, "cluster") {
 			log.Debugf("Register ClusterCollector")
 			registry.MustRegister(nutanix.NewClusterCollector(nutanixAPI))
 		}
-		if checkCollect(config[section].Collect, "vms") {
+		if !healthOnly && checkCollect(config[section].Collect, "vms") {
 			log.Debugf("Register VmsCollector")
 			registry.MustRegister(nutanix.NewVmsCollector(nutanixAPI, collectvmnics))
 		}
-		if checkCollect(config[section].Collect, "snapshots") {
+		if !healthOnly && checkCollect(config[section].Collect, "snapshots") {
 			log.Debugf("Register Snapshots")
 			registry.MustRegister(nutanix.NewSnapshotsCollector(nutanixAPI))
 		}
-		if checkCollect(config[section].Collect, "virtual_disks") {
+		if !healthOnly && checkCollect(config[section].Collect, "virtual_disks") {
 			log.Debugf("Register VirtualDisksCollector")
 			registry.MustRegister(nutanix.NewVirtualDisksCollector(nutanixAPI))
+		}
+
+		// exporter self health collector
+		if healthOnly || checkCollect(config[section].Collect, "health") {
+			registry.MustRegister(nutanix.NewExporterHealthCollector())
 		}
 
 		h := promhttp.HandlerFor(registry, promhttp.HandlerOpts{})

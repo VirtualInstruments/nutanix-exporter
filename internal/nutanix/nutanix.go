@@ -29,8 +29,8 @@ const (
 )
 
 type RequestParams struct {
-	body, header string
-	params       url.Values
+	body   string
+	params url.Values
 }
 
 type Nutanix struct {
@@ -63,7 +63,7 @@ func (g *Nutanix) makeRequestWithParams(versionPath, reqType, action string, p R
 
 	body := p.body
 
-	if p.params != nil && len(p.params) > 0 {
+	if len(p.params) > 0 {
 		_url += "?" + p.params.Encode()
 	}
 
@@ -76,17 +76,29 @@ func (g *Nutanix) makeRequestWithParams(versionPath, reqType, action string, p R
 
 	req.SetBasicAuth(g.username, g.password)
 
+	start := time.Now()
 	resp, err := netClient.Do(req)
 	if err != nil {
 		log.Errorf("failed to execute request; error=%v\n", err)
+		// heuristics for health
+		if strings.Contains(strings.ToLower(err.Error()), "timeout") {
+			IncConnTimeout()
+		} else if strings.Contains(strings.ToLower(err.Error()), "no such host") {
+			IncDNSFailure()
+		} else {
+			IncException()
+		}
+		MarkCmdFailure(time.Since(start))
 		return nil, err
 	}
 
 	if resp.StatusCode >= 400 {
 		log.Errorf("error status from server; status=%v code=%v\n", resp.Status, resp.StatusCode)
+		MarkCmdFailure(time.Since(start))
 		return nil, fmt.Errorf("error status received")
 	}
 
+	MarkCmdSuccess(time.Since(start))
 	return resp, nil
 }
 
