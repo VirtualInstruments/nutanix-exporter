@@ -28,10 +28,25 @@ type ExporterHealth struct {
 	totalFailureCollectionDurationUS uint64
 
 	// internal state
-	collecting bool
+	activeCollections int
 }
 
-var exporterHealth = &ExporterHealth{}
+// healthBySection keeps one health state per configuration/section
+var (
+	healthMu        sync.RWMutex
+	healthBySection = map[string]*ExporterHealth{}
+)
+
+func getHealth(section string) *ExporterHealth {
+	healthMu.Lock()
+	defer healthMu.Unlock()
+	h, ok := healthBySection[section]
+	if !ok {
+		h = &ExporterHealth{}
+		healthBySection[section] = h
+	}
+	return h
+}
 
 // Exposed Prometheus descriptors
 var (
@@ -50,9 +65,11 @@ var (
 )
 
 // ExporterHealthCollector exposes ExporterHealth as Prometheus metrics
-type ExporterHealthCollector struct{}
+type ExporterHealthCollector struct{ section string }
 
-func NewExporterHealthCollector() *ExporterHealthCollector { return &ExporterHealthCollector{} }
+func NewExporterHealthCollector(section string) *ExporterHealthCollector {
+	return &ExporterHealthCollector{section: section}
+}
 
 func (c *ExporterHealthCollector) Describe(ch chan<- *prometheus.Desc) {
 	ch <- descErrConnTimeout
@@ -70,21 +87,22 @@ func (c *ExporterHealthCollector) Describe(ch chan<- *prometheus.Desc) {
 }
 
 func (c *ExporterHealthCollector) Collect(ch chan<- prometheus.Metric) {
-	exporterHealth.mu.RLock()
-	defer exporterHealth.mu.RUnlock()
+	h := getHealth(c.section)
+	h.mu.RLock()
+	defer h.mu.RUnlock()
 
-	ch <- prometheus.MustNewConstMetric(descErrConnTimeout, prometheus.CounterValue, float64(exporterHealth.errConnTimeout))
-	ch <- prometheus.MustNewConstMetric(descErrCollectionStillRunning, prometheus.CounterValue, float64(exporterHealth.errCollectionStillRunning))
-	ch <- prometheus.MustNewConstMetric(descErrException, prometheus.CounterValue, float64(exporterHealth.errException))
-	ch <- prometheus.MustNewConstMetric(descErrDNSFailure, prometheus.CounterValue, float64(exporterHealth.errDNSFailure))
-	ch <- prometheus.MustNewConstMetric(descSuccessDeviceCmd, prometheus.CounterValue, float64(exporterHealth.successDeviceCmd))
-	ch <- prometheus.MustNewConstMetric(descTotalSuccessCmdExecDurationUS, prometheus.CounterValue, float64(exporterHealth.totalSuccessCmdExecDurationUS))
-	ch <- prometheus.MustNewConstMetric(descTotalSuccessCollectionDurationUS, prometheus.CounterValue, float64(exporterHealth.totalSuccessCollectionDurationUS))
-	ch <- prometheus.MustNewConstMetric(descFailureDeviceCmd, prometheus.CounterValue, float64(exporterHealth.failureDeviceCmd))
-	ch <- prometheus.MustNewConstMetric(descTotalFailureCmdExecDurationUS, prometheus.CounterValue, float64(exporterHealth.totalFailureCmdExecDurationUS))
-	ch <- prometheus.MustNewConstMetric(descTotalFailureCollectionDurationUS, prometheus.CounterValue, float64(exporterHealth.totalFailureCollectionDurationUS))
-	ch <- prometheus.MustNewConstMetric(descTotalPollCycles, prometheus.CounterValue, float64(exporterHealth.totalPollCycles))
-	ch <- prometheus.MustNewConstMetric(descSuccessfulPCCallNoErrors, prometheus.CounterValue, float64(exporterHealth.successfulPCCallNoErrors))
+	ch <- prometheus.MustNewConstMetric(descErrConnTimeout, prometheus.CounterValue, float64(h.errConnTimeout))
+	ch <- prometheus.MustNewConstMetric(descErrCollectionStillRunning, prometheus.CounterValue, float64(h.errCollectionStillRunning))
+	ch <- prometheus.MustNewConstMetric(descErrException, prometheus.CounterValue, float64(h.errException))
+	ch <- prometheus.MustNewConstMetric(descErrDNSFailure, prometheus.CounterValue, float64(h.errDNSFailure))
+	ch <- prometheus.MustNewConstMetric(descSuccessDeviceCmd, prometheus.CounterValue, float64(h.successDeviceCmd))
+	ch <- prometheus.MustNewConstMetric(descTotalSuccessCmdExecDurationUS, prometheus.CounterValue, float64(h.totalSuccessCmdExecDurationUS))
+	ch <- prometheus.MustNewConstMetric(descTotalSuccessCollectionDurationUS, prometheus.CounterValue, float64(h.totalSuccessCollectionDurationUS))
+	ch <- prometheus.MustNewConstMetric(descFailureDeviceCmd, prometheus.CounterValue, float64(h.failureDeviceCmd))
+	ch <- prometheus.MustNewConstMetric(descTotalFailureCmdExecDurationUS, prometheus.CounterValue, float64(h.totalFailureCmdExecDurationUS))
+	ch <- prometheus.MustNewConstMetric(descTotalFailureCollectionDurationUS, prometheus.CounterValue, float64(h.totalFailureCollectionDurationUS))
+	ch <- prometheus.MustNewConstMetric(descTotalPollCycles, prometheus.CounterValue, float64(h.totalPollCycles))
+	ch <- prometheus.MustNewConstMetric(descSuccessfulPCCallNoErrors, prometheus.CounterValue, float64(h.successfulPCCallNoErrors))
 }
 
 // HealthTicker increments poll cycles every 30s.
@@ -94,9 +112,13 @@ func StartHealthTicker(stopCh <-chan struct{}) {
 		for {
 			select {
 			case <-ticker.C:
-				exporterHealth.mu.Lock()
-				exporterHealth.totalPollCycles++
-				exporterHealth.mu.Unlock()
+				healthMu.RLock()
+				for _, h := range healthBySection {
+					h.mu.Lock()
+					h.totalPollCycles++
+					h.mu.Unlock()
+				}
+				healthMu.RUnlock()
 			case <-stopCh:
 				ticker.Stop()
 				return
@@ -106,55 +128,62 @@ func StartHealthTicker(stopCh <-chan struct{}) {
 }
 
 // Helpers used by main and Nutanix client to record events
-func MarkCollectionStart() bool {
-	exporterHealth.mu.Lock()
-	defer exporterHealth.mu.Unlock()
-	if exporterHealth.collecting {
-		exporterHealth.errCollectionStillRunning++
-		return false
+func MarkCollectionStart(section string) {
+	h := getHealth(section)
+	h.mu.Lock()
+	if h.activeCollections > 0 {
+		h.errCollectionStillRunning++
 	}
-	exporterHealth.collecting = true
-	return true
+	h.activeCollections++
+	h.mu.Unlock()
 }
 
-func MarkCollectionEnd(success bool, duration time.Duration) {
-	exporterHealth.mu.Lock()
-	defer exporterHealth.mu.Unlock()
+func MarkCollectionEnd(section string, success bool, duration time.Duration) {
+	h := getHealth(section)
+	h.mu.Lock()
 	if success {
-		exporterHealth.totalSuccessCollectionDurationUS += uint64(duration / time.Microsecond)
-		exporterHealth.successfulPCCallNoErrors++
+		h.totalSuccessCollectionDurationUS += uint64(duration / time.Microsecond)
+		h.successfulPCCallNoErrors++
 	} else {
-		exporterHealth.totalFailureCollectionDurationUS += uint64(duration / time.Microsecond)
+		h.totalFailureCollectionDurationUS += uint64(duration / time.Microsecond)
 	}
-	exporterHealth.collecting = false
+	if h.activeCollections > 0 {
+		h.activeCollections--
+	}
+	h.mu.Unlock()
 }
 
-func MarkCmdSuccess(d time.Duration) {
-	exporterHealth.mu.Lock()
-	exporterHealth.successDeviceCmd++
-	exporterHealth.totalSuccessCmdExecDurationUS += uint64(d / time.Microsecond)
-	exporterHealth.mu.Unlock()
+func MarkCmdSuccess(section string, d time.Duration) {
+	h := getHealth(section)
+	h.mu.Lock()
+	h.successDeviceCmd++
+	h.totalSuccessCmdExecDurationUS += uint64(d / time.Microsecond)
+	h.mu.Unlock()
 }
 
-func MarkCmdFailure(d time.Duration) {
-	exporterHealth.mu.Lock()
-	exporterHealth.failureDeviceCmd++
-	exporterHealth.totalFailureCmdExecDurationUS += uint64(d / time.Microsecond)
-	exporterHealth.mu.Unlock()
+func MarkCmdFailure(section string, d time.Duration) {
+	h := getHealth(section)
+	h.mu.Lock()
+	h.failureDeviceCmd++
+	h.totalFailureCmdExecDurationUS += uint64(d / time.Microsecond)
+	h.mu.Unlock()
 }
 
-func IncConnTimeout() {
-	exporterHealth.mu.Lock()
-	exporterHealth.errConnTimeout++
-	exporterHealth.mu.Unlock()
+func IncConnTimeout(section string) {
+	h := getHealth(section)
+	h.mu.Lock()
+	h.errConnTimeout++
+	h.mu.Unlock()
 }
-func IncDNSFailure() {
-	exporterHealth.mu.Lock()
-	exporterHealth.errDNSFailure++
-	exporterHealth.mu.Unlock()
+func IncDNSFailure(section string) {
+	h := getHealth(section)
+	h.mu.Lock()
+	h.errDNSFailure++
+	h.mu.Unlock()
 }
-func IncException() {
-	exporterHealth.mu.Lock()
-	exporterHealth.errException++
-	exporterHealth.mu.Unlock()
+func IncException(section string) {
+	h := getHealth(section)
+	h.mu.Lock()
+	h.errException++
+	h.mu.Unlock()
 }

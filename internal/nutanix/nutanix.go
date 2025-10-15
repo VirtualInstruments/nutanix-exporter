@@ -82,23 +82,23 @@ func (g *Nutanix) makeRequestWithParams(versionPath, reqType, action string, p R
 		log.Errorf("failed to execute request; error=%v\n", err)
 		// heuristics for health
 		if strings.Contains(strings.ToLower(err.Error()), "timeout") {
-			IncConnTimeout()
+			IncConnTimeout(g.url)
 		} else if strings.Contains(strings.ToLower(err.Error()), "no such host") {
-			IncDNSFailure()
+			IncDNSFailure(g.url)
 		} else {
-			IncException()
+			IncException(g.url)
 		}
-		MarkCmdFailure(time.Since(start))
+		MarkCmdFailure(g.url, time.Since(start))
 		return nil, err
 	}
 
 	if resp.StatusCode >= 400 {
 		log.Errorf("error status from server; status=%v code=%v\n", resp.Status, resp.StatusCode)
-		MarkCmdFailure(time.Since(start))
+		MarkCmdFailure(g.url, time.Since(start))
 		return nil, fmt.Errorf("error status received")
 	}
 
-	MarkCmdSuccess(time.Since(start))
+	MarkCmdSuccess(g.url, time.Since(start))
 	return resp, nil
 }
 

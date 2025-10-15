@@ -92,21 +92,22 @@ func main() {
 
 	//	http.Handle("/metrics", prometheus.Handler())
 	http.HandleFunc("/metrics", func(w http.ResponseWriter, r *http.Request) {
-		// mark collection boundaries for health
-		started := nutanix.MarkCollectionStart()
+		// mark collection boundaries for health per section
 		collStart := time.Now()
-		defer func() {
-			if started {
-				nutanix.MarkCollectionEnd(true, time.Since(collStart))
-			}
-		}()
+		// section key might be parsed below; use temporary key first
+		sectionKey := r.URL.Query().Get("section")
+		if len(sectionKey) == 0 {
+			sectionKey = "default"
+		}
+		nutanix.MarkCollectionStart(sectionKey)
+		defer func() { nutanix.MarkCollectionEnd(sectionKey, true, time.Since(collStart)) }()
 		params := r.URL.Query()
 		section := params.Get("section")
 		if len(section) == 0 {
 			section = "default"
 		}
 
-		// health-only toggle
+		// health is always exposed; healthOnly narrows output
 		healthOnly := params.Get("health") == "true"
 
 		log.Infof("Section: %s", section)
@@ -115,8 +116,9 @@ func main() {
 		var collecthostnics bool = false
 		var collectvmnics bool = false
 		var maxParallelReq int = 0
-		//Write new Parameters
-		if conf, ok := config[section]; ok {
+		//Write new Parameters (skip section requirement for healthOnly)
+		conf, ok := config[section]
+		if ok {
 			switch strings.ToLower(conf.LogLevel) {
 			case "debug":
 				log.SetLevel(log.DebugLevel)
@@ -135,16 +137,34 @@ func main() {
 			if vmnicsValue, exists := conf.Collect["vmnics"]; exists {
 				collectvmnics = vmnicsValue
 			}
-		} else {
+		} else if !healthOnly {
 			log.Errorf("Section '%s' not found in config file", section)
 			return
 		}
 
-		log.Infof("Host: %s", *nutanixURL)
-
-		nutanixAPI := nutanix.NewNutanix(*nutanixURL, *nutanixUser, *nutanixPassword, maxParallelReq)
-
 		registry := prometheus.NewRegistry()
+
+		// always expose health per section (use host URL as key when available, else section)
+		healthSectionKey := section
+		if ok && len(conf.Host) > 0 {
+			healthSectionKey = conf.Host
+		}
+		// update sectionKey if conf.Host is available (track by host)
+		if ok && len(conf.Host) > 0 {
+			sectionKey = conf.Host
+		}
+		registry.MustRegister(nutanix.NewExporterHealthCollector(healthSectionKey))
+		// If only health is requested, do not touch cluster/API at all
+		if healthOnly {
+			registry.MustRegister(prometheus.NewProcessCollector(prometheus.ProcessCollectorOpts{}))
+			registry.MustRegister(prometheus.NewGoCollector())
+			h := promhttp.HandlerFor(registry, promhttp.HandlerOpts{})
+			h.ServeHTTP(w, r)
+			return
+		}
+
+		log.Infof("Host: %s", *nutanixURL)
+		nutanixAPI := nutanix.NewNutanix(*nutanixURL, *nutanixUser, *nutanixPassword, maxParallelReq)
 
 		checkCollect := func(c map[string]bool, f string) bool {
 			val, exist := c[f]
@@ -176,10 +196,8 @@ func main() {
 			registry.MustRegister(nutanix.NewVirtualDisksCollector(nutanixAPI))
 		}
 
-		// exporter self health collector
-		if healthOnly || checkCollect(config[section].Collect, "health") {
-			registry.MustRegister(nutanix.NewExporterHealthCollector())
-		}
+		// exporter self health collector (always registered with per-section key)
+		registry.MustRegister(nutanix.NewExporterHealthCollector(sectionKey))
 
 		h := promhttp.HandlerFor(registry, promhttp.HandlerOpts{})
 		h.ServeHTTP(w, r)
