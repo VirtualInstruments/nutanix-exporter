@@ -20,6 +20,7 @@ type ExporterHealth struct {
 	failureDeviceCmd          uint64
 	totalPollCycles           uint64
 	successfulPCCallNoErrors  uint64
+	failedCollections         uint64
 
 	// durations (microseconds, totals)
 	totalSuccessCmdExecDurationUS    uint64
@@ -48,20 +49,21 @@ func getHealth(section string) *ExporterHealth {
 	return h
 }
 
-// Exposed Prometheus descriptors with labels
+// Exposed Prometheus descriptors
 var (
-	descErrConnTimeout                   = prometheus.NewDesc("nutanix_exporter_ErrorPCNoDataConnectionTimeout_C", "Exporter: connection timeouts encountered while calling Prism API", []string{"uuid", "section"}, nil)
-	descErrCollectionStillRunning        = prometheus.NewDesc("nutanix_exporter_ErrorPCNoDataCollectionStillRunning_C", "Exporter: collection overlap occurrences", []string{"uuid", "section"}, nil)
-	descErrException                     = prometheus.NewDesc("nutanix_exporter_ErrorPCNoDataException_C", "Exporter: generic errors while calling Prism API", []string{"uuid", "section"}, nil)
-	descErrDNSFailure                    = prometheus.NewDesc("nutanix_exporter_ErrorPCNoDataDNSLookupFailure_C", "Exporter: DNS lookup failures", []string{"uuid", "section"}, nil)
-	descSuccessDeviceCmd                 = prometheus.NewDesc("nutanix_exporter_SuccessDeviceCommand_C", "Exporter: successful device/API commands", []string{"uuid", "section"}, nil)
-	descTotalSuccessCmdExecDurationUS    = prometheus.NewDesc("nutanix_exporter_TotalSuccessDeviceCmdExecDuration_US", "Exporter: total duration of successful API commands (microseconds)", []string{"uuid", "section"}, nil)
-	descTotalSuccessCollectionDurationUS = prometheus.NewDesc("nutanix_exporter_TotalSuccessDeviceCollectionDuration_US", "Exporter: total duration of successful collections (microseconds)", []string{"uuid", "section"}, nil)
-	descFailureDeviceCmd                 = prometheus.NewDesc("nutanix_exporter_FailureDeviceCommand_C", "Exporter: failed device/API commands", []string{"uuid", "section"}, nil)
-	descTotalFailureCmdExecDurationUS    = prometheus.NewDesc("nutanix_exporter_TotalFailureDeviceCmdExecDuration_US", "Exporter: total duration of failed API commands (microseconds)", []string{"uuid", "section"}, nil)
-	descTotalFailureCollectionDurationUS = prometheus.NewDesc("nutanix_exporter_TotalFailureDeviceCollectionDuration_US", "Exporter: total duration of failed collections (microseconds)", []string{"uuid", "section"}, nil)
+	descErrConnTimeout                   = prometheus.NewDesc("nutanix_exporter_ErrorPCNoDataConnectionTimeout_C", "Exporter: connection timeouts encountered while calling Prism API", nil, nil)
+	descErrCollectionStillRunning        = prometheus.NewDesc("nutanix_exporter_ErrorPCNoDataCollectionStillRunning_C", "Exporter: collection overlap occurrences", nil, nil)
+	descErrException                     = prometheus.NewDesc("nutanix_exporter_ErrorPCNoDataException_C", "Exporter: generic errors while calling Prism API", nil, nil)
+	descErrDNSFailure                    = prometheus.NewDesc("nutanix_exporter_ErrorPCNoDataDNSLookupFailure_C", "Exporter: DNS lookup failures", nil, nil)
+	descSuccessDeviceCmd                 = prometheus.NewDesc("nutanix_exporter_SuccessDeviceCommand_C", "Exporter: successful device/API commands", nil, nil)
+	descTotalSuccessCmdExecDurationUS    = prometheus.NewDesc("nutanix_exporter_TotalSuccessDeviceCmdExecDuration_US", "Exporter: total duration of successful API commands (microseconds)", nil, nil)
+	descTotalSuccessCollectionDurationUS = prometheus.NewDesc("nutanix_exporter_TotalSuccessDeviceCollectionDuration_US", "Exporter: total duration of successful collections (microseconds)", nil, nil)
+	descFailureDeviceCmd                 = prometheus.NewDesc("nutanix_exporter_FailureDeviceCommand_C", "Exporter: failed device/API commands", nil, nil)
+	descTotalFailureCmdExecDurationUS    = prometheus.NewDesc("nutanix_exporter_TotalFailureDeviceCmdExecDuration_US", "Exporter: total duration of failed API commands (microseconds)", nil, nil)
+	descTotalFailureCollectionDurationUS = prometheus.NewDesc("nutanix_exporter_TotalFailureDeviceCollectionDuration_US", "Exporter: total duration of failed collections (microseconds)", nil, nil)
 	descTotalPollCycles                  = prometheus.NewDesc("nutanix_exporter_TotalPollCycles_C", "Exporter: total poll cycles (30s ticker)", []string{"uuid", "section"}, nil)
 	descSuccessfulPCCallNoErrors         = prometheus.NewDesc("nutanix_exporter_SuccessfulPCCallNoErrors_C", "Exporter: successful poll cycles with no errors", []string{"uuid", "section"}, nil)
+	descFailedCollections                = prometheus.NewDesc("nutanix_exporter_FailedCollections_C", "Exporter: failed collection attempts", []string{"uuid", "section"}, nil)
 )
 
 // ExporterHealthCollector exposes ExporterHealth as Prometheus metrics
@@ -84,6 +86,7 @@ func (c *ExporterHealthCollector) Describe(ch chan<- *prometheus.Desc) {
 	ch <- descTotalFailureCollectionDurationUS
 	ch <- descTotalPollCycles
 	ch <- descSuccessfulPCCallNoErrors
+	ch <- descFailedCollections
 }
 
 func (c *ExporterHealthCollector) Collect(ch chan<- prometheus.Metric) {
@@ -91,23 +94,27 @@ func (c *ExporterHealthCollector) Collect(ch chan<- prometheus.Metric) {
 	h.mu.RLock()
 	defer h.mu.RUnlock()
 
-	ch <- prometheus.MustNewConstMetric(descErrConnTimeout, prometheus.CounterValue, float64(h.errConnTimeout), c.uuid, c.section)
-	ch <- prometheus.MustNewConstMetric(descErrCollectionStillRunning, prometheus.CounterValue, float64(h.errCollectionStillRunning), c.uuid, c.section)
-	ch <- prometheus.MustNewConstMetric(descErrException, prometheus.CounterValue, float64(h.errException), c.uuid, c.section)
-	ch <- prometheus.MustNewConstMetric(descErrDNSFailure, prometheus.CounterValue, float64(h.errDNSFailure), c.uuid, c.section)
-	ch <- prometheus.MustNewConstMetric(descSuccessDeviceCmd, prometheus.CounterValue, float64(h.successDeviceCmd), c.uuid, c.section)
-	ch <- prometheus.MustNewConstMetric(descTotalSuccessCmdExecDurationUS, prometheus.CounterValue, float64(h.totalSuccessCmdExecDurationUS), c.uuid, c.section)
-	ch <- prometheus.MustNewConstMetric(descTotalSuccessCollectionDurationUS, prometheus.CounterValue, float64(h.totalSuccessCollectionDurationUS), c.uuid, c.section)
-	ch <- prometheus.MustNewConstMetric(descFailureDeviceCmd, prometheus.CounterValue, float64(h.failureDeviceCmd), c.uuid, c.section)
-	ch <- prometheus.MustNewConstMetric(descTotalFailureCmdExecDurationUS, prometheus.CounterValue, float64(h.totalFailureCmdExecDurationUS), c.uuid, c.section)
-	ch <- prometheus.MustNewConstMetric(descTotalFailureCollectionDurationUS, prometheus.CounterValue, float64(h.totalFailureCollectionDurationUS), c.uuid, c.section)
+	ch <- prometheus.MustNewConstMetric(descErrConnTimeout, prometheus.CounterValue, float64(h.errConnTimeout))
+	ch <- prometheus.MustNewConstMetric(descErrCollectionStillRunning, prometheus.CounterValue, float64(h.errCollectionStillRunning))
+	ch <- prometheus.MustNewConstMetric(descErrException, prometheus.CounterValue, float64(h.errException))
+	ch <- prometheus.MustNewConstMetric(descErrDNSFailure, prometheus.CounterValue, float64(h.errDNSFailure))
+	ch <- prometheus.MustNewConstMetric(descSuccessDeviceCmd, prometheus.CounterValue, float64(h.successDeviceCmd))
+	ch <- prometheus.MustNewConstMetric(descTotalSuccessCmdExecDurationUS, prometheus.CounterValue, float64(h.totalSuccessCmdExecDurationUS))
+	ch <- prometheus.MustNewConstMetric(descTotalSuccessCollectionDurationUS, prometheus.CounterValue, float64(h.totalSuccessCollectionDurationUS))
+	ch <- prometheus.MustNewConstMetric(descFailureDeviceCmd, prometheus.CounterValue, float64(h.failureDeviceCmd))
+	ch <- prometheus.MustNewConstMetric(descTotalFailureCmdExecDurationUS, prometheus.CounterValue, float64(h.totalFailureCmdExecDurationUS))
+	ch <- prometheus.MustNewConstMetric(descTotalFailureCollectionDurationUS, prometheus.CounterValue, float64(h.totalFailureCollectionDurationUS))
 	ch <- prometheus.MustNewConstMetric(descTotalPollCycles, prometheus.CounterValue, float64(h.totalPollCycles), c.uuid, c.section)
 	ch <- prometheus.MustNewConstMetric(descSuccessfulPCCallNoErrors, prometheus.CounterValue, float64(h.successfulPCCallNoErrors), c.uuid, c.section)
+	ch <- prometheus.MustNewConstMetric(descFailedCollections, prometheus.CounterValue, float64(h.failedCollections), c.uuid, c.section)
 }
 
-// HealthTicker increments poll cycles every 30s.
-func StartHealthTicker(stopCh <-chan struct{}) {
-	ticker := time.NewTicker(30 * time.Second)
+// HealthTicker increments poll cycles based on collection interval
+func StartHealthTicker(stopCh <-chan struct{}, intervalSeconds int) {
+	if intervalSeconds <= 0 {
+		intervalSeconds = 30 // default fallback
+	}
+	ticker := time.NewTicker(time.Duration(intervalSeconds) * time.Second)
 	go func() {
 		for {
 			select {
@@ -128,14 +135,16 @@ func StartHealthTicker(stopCh <-chan struct{}) {
 }
 
 // Helpers used by main and Nutanix client to record events
-func MarkCollectionStart(section string) {
+func MarkCollectionStart(section string) bool {
 	h := getHealth(section)
 	h.mu.Lock()
+	defer h.mu.Unlock()
 	if h.activeCollections > 0 {
 		h.errCollectionStillRunning++
+		return false // Collection already active, don't start another
 	}
 	h.activeCollections++
-	h.mu.Unlock()
+	return true // Collection started successfully
 }
 
 func MarkCollectionEnd(section string, success bool, duration time.Duration) {
@@ -146,6 +155,7 @@ func MarkCollectionEnd(section string, success bool, duration time.Duration) {
 		h.successfulPCCallNoErrors++
 	} else {
 		h.totalFailureCollectionDurationUS += uint64(duration / time.Microsecond)
+		h.failedCollections++
 	}
 	if h.activeCollections > 0 {
 		h.activeCollections--

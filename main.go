@@ -57,9 +57,8 @@ func main() {
 	// add config file watch
 	go monitorConfigFileChange()
 
-	// start exporter self-health 30s ticker
+	// start exporter self-health ticker (will be configured per section)
 	stopTicker := make(chan struct{})
-	nutanix.StartHealthTicker(stopTicker)
 	defer close(stopTicker)
 
 	flag.Parse()
@@ -99,8 +98,8 @@ func main() {
 		if len(sectionKey) == 0 {
 			sectionKey = "default"
 		}
-		nutanix.MarkCollectionStart(sectionKey)
-		defer func() { nutanix.MarkCollectionEnd(sectionKey, true, time.Since(collStart)) }()
+		started := nutanix.MarkCollectionStart(sectionKey)
+		defer func() { nutanix.MarkCollectionEnd(sectionKey, started, time.Since(collStart)) }()
 		params := r.URL.Query()
 		section := params.Get("section")
 		if len(section) == 0 {
@@ -144,28 +143,14 @@ func main() {
 
 		registry := prometheus.NewRegistry()
 
-		// always expose health per section (use host URL as key when available, else section)
-		healthSectionKey := section
-		if ok && len(conf.Host) > 0 {
-			healthSectionKey = conf.Host
-		}
-		// update sectionKey if conf.Host is available (track by host)
-		if ok && len(conf.Host) > 0 {
-			sectionKey = conf.Host
-		}
-		// For health-only requests, use a synthetic UUID; for normal requests, use cluster UUID if available
+		// For health-only requests, use a synthetic UUID; for normal requests, use section as identifier
 		healthUUID := "exporter-health"
-		if !healthOnly && ok {
-			// Try to get cluster UUID from config or use host as identifier
-			if len(conf.Host) > 0 {
-				healthUUID = conf.Host // Use host as UUID for health metrics
-			}
+		if !healthOnly {
+			healthUUID = section // Use section as UUID for health metrics
 		}
-		registry.MustRegister(nutanix.NewExporterHealthCollector(healthSectionKey, healthUUID))
+		registry.MustRegister(nutanix.NewExporterHealthCollector(sectionKey, healthUUID))
 		// If only health is requested, do not touch cluster/API at all
 		if healthOnly {
-			registry.MustRegister(prometheus.NewProcessCollector(prometheus.ProcessCollectorOpts{}))
-			registry.MustRegister(prometheus.NewGoCollector())
 			h := promhttp.HandlerFor(registry, promhttp.HandlerOpts{})
 			h.ServeHTTP(w, r)
 			return
@@ -173,6 +158,14 @@ func main() {
 
 		log.Infof("Host: %s", *nutanixURL)
 		nutanixAPI := nutanix.NewNutanix(*nutanixURL, *nutanixUser, *nutanixPassword, maxParallelReq)
+
+		// Start health ticker for this section (use collection interval if available)
+		collectionInterval := 30 // default
+		if ok && conf.MaxParallelRequests > 0 {
+			// Use a reasonable interval based on parallel requests
+			collectionInterval = 30 // could be made configurable
+		}
+		nutanix.StartHealthTicker(stopTicker, collectionInterval)
 
 		checkCollect := func(c map[string]bool, f string) bool {
 			val, exist := c[f]
