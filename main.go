@@ -153,7 +153,15 @@ func main() {
 		if ok && len(conf.Host) > 0 {
 			sectionKey = conf.Host
 		}
-		registry.MustRegister(nutanix.NewExporterHealthCollector(healthSectionKey))
+		// For health-only requests, use a synthetic UUID; for normal requests, use cluster UUID if available
+		healthUUID := "exporter-health"
+		if !healthOnly && ok {
+			// Try to get cluster UUID from config or use host as identifier
+			if len(conf.Host) > 0 {
+				healthUUID = conf.Host // Use host as UUID for health metrics
+			}
+		}
+		registry.MustRegister(nutanix.NewExporterHealthCollector(healthSectionKey, healthUUID))
 		// If only health is requested, do not touch cluster/API at all
 		if healthOnly {
 			registry.MustRegister(prometheus.NewProcessCollector(prometheus.ProcessCollectorOpts{}))
@@ -195,9 +203,6 @@ func main() {
 			log.Debugf("Register VirtualDisksCollector")
 			registry.MustRegister(nutanix.NewVirtualDisksCollector(nutanixAPI))
 		}
-
-		// exporter self health collector (always registered with per-section key)
-		registry.MustRegister(nutanix.NewExporterHealthCollector(sectionKey))
 
 		h := promhttp.HandlerFor(registry, promhttp.HandlerOpts{})
 		h.ServeHTTP(w, r)
