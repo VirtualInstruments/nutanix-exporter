@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/prometheus/client_golang/prometheus"
+	log "github.com/sirupsen/logrus"
 )
 
 // ExporterHealth keeps exporter self-health counters and durations.
@@ -112,7 +113,8 @@ func (c *ExporterHealthCollector) Collect(ch chan<- prometheus.Metric) {
 // HealthTicker increments poll cycles based on collection interval
 func StartHealthTicker(stopCh <-chan struct{}, intervalSeconds int) {
 	if intervalSeconds <= 0 {
-		intervalSeconds = 30 // default fallback
+		log.Errorf("Invalid collection interval: %d. Skipping health ticker for this configuration.", intervalSeconds)
+		return
 	}
 	ticker := time.NewTicker(time.Duration(intervalSeconds) * time.Second)
 	go func() {

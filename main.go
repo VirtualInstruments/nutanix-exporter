@@ -35,6 +35,7 @@ var (
 
 	configModTime        time.Time = time.Time{}
 	configFileWasMissing           = false
+	startedTickers                 = make(map[string]bool)
 )
 
 type cluster struct {
@@ -148,7 +149,8 @@ func main() {
 		if !healthOnly {
 			healthUUID = section // Use section as UUID for health metrics
 		}
-		registry.MustRegister(nutanix.NewExporterHealthCollector(sectionKey, healthUUID))
+		// Use the actual section from request, not sectionKey which might be "default"
+		registry.MustRegister(nutanix.NewExporterHealthCollector(section, healthUUID))
 		// If only health is requested, do not touch cluster/API at all
 		if healthOnly {
 			h := promhttp.HandlerFor(registry, promhttp.HandlerOpts{})
@@ -159,13 +161,17 @@ func main() {
 		log.Infof("Host: %s", *nutanixURL)
 		nutanixAPI := nutanix.NewNutanix(*nutanixURL, *nutanixUser, *nutanixPassword, maxParallelReq)
 
-		// Start health ticker for this section (use collection interval if available)
-		collectionInterval := 30 // default
-		if ok && conf.MaxParallelRequests > 0 {
-			// Use a reasonable interval based on parallel requests
-			collectionInterval = 30 // could be made configurable
+		// Start health ticker for this section only once per configuration
+		if !startedTickers[section] {
+			collectionInterval := 30 // default
+			if ok && conf.MaxParallelRequests > 0 {
+				// Use a reasonable interval based on parallel requests
+				collectionInterval = 30 // could be made configurable
+			}
+			nutanix.StartHealthTicker(stopTicker, collectionInterval)
+			startedTickers[section] = true
+			log.Debugf("Started health ticker for section: %s with interval: %d seconds", section, collectionInterval)
 		}
-		nutanix.StartHealthTicker(stopTicker, collectionInterval)
 
 		checkCollect := func(c map[string]bool, f string) bool {
 			val, exist := c[f]
