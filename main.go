@@ -17,6 +17,7 @@ import (
 	"nutanix-exporter/internal/nutanix"
 	"os"
 	"strings"
+	"sync"
 	"time"
 
 	"github.com/prometheus/client_golang/prometheus"
@@ -33,9 +34,10 @@ var (
 	listenAddress   = flag.String("listen-address", ":9405", "The address to lisiten on for HTTP requests.")
 	nutanixConfig   = flag.String("nutanix.conf", "", "Which Nutanixconf.yml file should be used")
 
-	configModTime        time.Time = time.Time{}
-	configFileWasMissing           = false
-	startedTickers                 = make(map[string]bool)
+	configModTime        time.Time    = time.Time{}
+	configFileWasMissing              = false
+	clusterUUIDCache                  = make(map[string]string) // Cache cluster UUID per section
+	clusterUUIDCacheMu   sync.RWMutex                           // Mutex for thread-safe cache access
 )
 
 type cluster struct {
@@ -58,9 +60,9 @@ func main() {
 	// add config file watch
 	go monitorConfigFileChange()
 
-	// start exporter self-health ticker (will be configured per section)
-	stopTicker := make(chan struct{})
-	defer close(stopTicker)
+	// Poll cycles are now tracked based on actual collection completions
+	// No separate ticker needed - each scrape request from Prometheus receiver
+	// represents a poll cycle
 
 	flag.Parse()
 
@@ -144,13 +146,48 @@ func main() {
 
 		registry := prometheus.NewRegistry()
 
-		// For health-only requests, use a synthetic UUID; for normal requests, use section as identifier
-		healthUUID := "exporter-health"
-		if !healthOnly {
-			healthUUID = section // Use section as UUID for health metrics
+		// Get cluster UUID for health metrics (needed for proper association)
+		healthUUID := "exporter-health"  // Default fallback for health-only requests (used as uuid)
+		clusterUUID := "exporter-health" // Default fallback for health-only requests (used as cluster_uuid)
+		var nutanixAPI *nutanix.Nutanix
+
+		if !healthOnly && ok {
+			// Check cache first (thread-safe)
+			clusterUUIDCacheMu.RLock()
+			cachedUUID, found := clusterUUIDCache[section]
+			clusterUUIDCacheMu.RUnlock()
+
+			if found {
+				healthUUID = cachedUUID
+				clusterUUID = cachedUUID // For cluster-level metrics, cluster_uuid and uuid are the same
+				log.Debugf("Using cached cluster UUID for section %s: %s", section, healthUUID)
+			} else {
+				// Create Nutanix API client and try to get cluster UUID
+				log.Infof("Host: %s", *nutanixURL)
+				nutanixAPI = nutanix.NewNutanix(*nutanixURL, *nutanixUser, *nutanixPassword, maxParallelReq)
+				clusterUUIDValue, err := nutanixAPI.GetClusterUUID()
+				if err != nil {
+					log.Errorf("Failed to get cluster UUID for health metrics: %v, using section name as fallback", err)
+					healthUUID = section // Fallback to section name
+					clusterUUID = section
+				} else {
+					healthUUID = clusterUUIDValue
+					clusterUUID = clusterUUIDValue // For cluster-level metrics, cluster_uuid and uuid are the same
+					// Cache it for future requests (thread-safe)
+					clusterUUIDCacheMu.Lock()
+					clusterUUIDCache[section] = clusterUUIDValue
+					clusterUUIDCacheMu.Unlock()
+					log.Infof("Successfully fetched and cached cluster UUID for section %s: %s", section, healthUUID)
+				}
+			}
+		} else if !healthOnly {
+			// Config section not found, use section name as fallback
+			healthUUID = section
+			clusterUUID = section
 		}
 		// Use the actual section from request, not sectionKey which might be "default"
-		registry.MustRegister(nutanix.NewExporterHealthCollector(section, healthUUID))
+		// Pass cluster_uuid, uuid, and section to the collector
+		registry.MustRegister(nutanix.NewExporterHealthCollector(section, healthUUID, clusterUUID))
 		// If only health is requested, do not touch cluster/API at all
 		if healthOnly {
 			h := promhttp.HandlerFor(registry, promhttp.HandlerOpts{})
@@ -158,20 +195,17 @@ func main() {
 			return
 		}
 
-		log.Infof("Host: %s", *nutanixURL)
-		nutanixAPI := nutanix.NewNutanix(*nutanixURL, *nutanixUser, *nutanixPassword, maxParallelReq)
-
-		// Start health ticker for this section only once per configuration
-		if !startedTickers[section] {
-			collectionInterval := 30 // default
-			if ok && conf.MaxParallelRequests > 0 {
-				// Use a reasonable interval based on parallel requests
-				collectionInterval = 30 // could be made configurable
+		// Ensure Nutanix API client is created if not already done
+		if nutanixAPI == nil {
+			if !ok || *nutanixURL == "" {
+				log.Errorf("Cannot create Nutanix API client: missing configuration")
+				return
 			}
-			nutanix.StartHealthTicker(stopTicker, collectionInterval)
-			startedTickers[section] = true
-			log.Debugf("Started health ticker for section: %s with interval: %d seconds", section, collectionInterval)
+			nutanixAPI = nutanix.NewNutanix(*nutanixURL, *nutanixUser, *nutanixPassword, maxParallelReq)
 		}
+
+		// Poll cycles are tracked automatically when MarkCollectionEnd is called
+		// No ticker needed - each scrape from Prometheus receiver = one poll cycle
 
 		checkCollect := func(c map[string]bool, f string) bool {
 			val, exist := c[f]

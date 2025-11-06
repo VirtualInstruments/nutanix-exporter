@@ -12,6 +12,7 @@ package nutanix
 import (
 	//	"os"
 	"crypto/tls"
+	"encoding/json"
 	"fmt"
 	"net/http"
 	"net/url"
@@ -114,4 +115,25 @@ func NewNutanix(url, username, password string, maxParallelReq int) *Nutanix {
 	}
 	log.Debugf("Max parallel request count is set to %d", nu.maxParallelRequests)
 	return &nu
+}
+
+// GetClusterUUID retrieves the cluster UUID from the Nutanix API
+func (g *Nutanix) GetClusterUUID() (string, error) {
+	resp, err := g.makeV2Request("GET", "/cluster/", nil)
+	if err != nil {
+		return "", fmt.Errorf("failed to get cluster info: %w", err)
+	}
+	defer resp.Body.Close()
+
+	var clusterInfo map[string]interface{}
+	if err := json.NewDecoder(resp.Body).Decode(&clusterInfo); err != nil {
+		return "", fmt.Errorf("failed to decode cluster info: %w", err)
+	}
+
+	uuid, ok := clusterInfo["uuid"].(string)
+	if !ok {
+		return "", fmt.Errorf("cluster UUID not found in response")
+	}
+
+	return uuid, nil
 }
