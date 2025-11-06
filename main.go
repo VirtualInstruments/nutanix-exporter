@@ -17,6 +17,7 @@ import (
 	"nutanix-exporter/internal/nutanix"
 	"os"
 	"strings"
+	"sync"
 	"time"
 
 	"github.com/prometheus/client_golang/prometheus"
@@ -33,8 +34,10 @@ var (
 	listenAddress   = flag.String("listen-address", ":9405", "The address to lisiten on for HTTP requests.")
 	nutanixConfig   = flag.String("nutanix.conf", "", "Which Nutanixconf.yml file should be used")
 
-	configModTime        time.Time = time.Time{}
-	configFileWasMissing           = false
+	configModTime        time.Time    = time.Time{}
+	configFileWasMissing              = false
+	clusterUUIDCache                  = make(map[string]string) // Cache cluster UUID per section
+	clusterUUIDCacheMu   sync.RWMutex                           // Mutex for thread-safe cache access
 )
 
 type cluster struct {
@@ -56,6 +59,10 @@ type cluster struct {
 func main() {
 	// add config file watch
 	go monitorConfigFileChange()
+
+	// Poll cycles are now tracked based on actual collection completions
+	// No separate ticker needed - each scrape request from Prometheus receiver
+	// represents a poll cycle
 
 	flag.Parse()
 
@@ -87,11 +94,23 @@ func main() {
 
 	//	http.Handle("/metrics", prometheus.Handler())
 	http.HandleFunc("/metrics", func(w http.ResponseWriter, r *http.Request) {
+		// mark collection boundaries for health per section
+		collStart := time.Now()
+		// section key might be parsed below; use temporary key first
+		sectionKey := r.URL.Query().Get("section")
+		if len(sectionKey) == 0 {
+			sectionKey = "default"
+		}
+		started := nutanix.MarkCollectionStart(sectionKey)
+		defer func() { nutanix.MarkCollectionEnd(sectionKey, started, time.Since(collStart)) }()
 		params := r.URL.Query()
 		section := params.Get("section")
 		if len(section) == 0 {
 			section = "default"
 		}
+
+		// health is always exposed; healthOnly narrows output
+		healthOnly := params.Get("health") == "true"
 
 		log.Infof("Section: %s", section)
 		log.Debug("Create Nutanix instance")
@@ -99,8 +118,9 @@ func main() {
 		var collecthostnics bool = false
 		var collectvmnics bool = false
 		var maxParallelReq int = 0
-		//Write new Parameters
-		if conf, ok := config[section]; ok {
+		//Write new Parameters (skip section requirement for healthOnly)
+		conf, ok := config[section]
+		if ok {
 			switch strings.ToLower(conf.LogLevel) {
 			case "debug":
 				log.SetLevel(log.DebugLevel)
@@ -119,43 +139,100 @@ func main() {
 			if vmnicsValue, exists := conf.Collect["vmnics"]; exists {
 				collectvmnics = vmnicsValue
 			}
-		} else {
+		} else if !healthOnly {
 			log.Errorf("Section '%s' not found in config file", section)
 			return
 		}
 
-		log.Infof("Host: %s", *nutanixURL)
-
-		nutanixAPI := nutanix.NewNutanix(*nutanixURL, *nutanixUser, *nutanixPassword, maxParallelReq)
-
 		registry := prometheus.NewRegistry()
+
+		// Get cluster UUID for health metrics (needed for proper association)
+		healthUUID := "exporter-health"  // Default fallback for health-only requests (used as uuid)
+		clusterUUID := "exporter-health" // Default fallback for health-only requests (used as cluster_uuid)
+		var nutanixAPI *nutanix.Nutanix
+
+		if !healthOnly && ok {
+			// Check cache first (thread-safe)
+			clusterUUIDCacheMu.RLock()
+			cachedUUID, found := clusterUUIDCache[section]
+			clusterUUIDCacheMu.RUnlock()
+
+			if found {
+				healthUUID = cachedUUID
+				clusterUUID = cachedUUID // For cluster-level metrics, cluster_uuid and uuid are the same
+				log.Debugf("Using cached cluster UUID for section %s: %s", section, healthUUID)
+			} else {
+				// Create Nutanix API client and try to get cluster UUID
+				log.Infof("Host: %s", *nutanixURL)
+				nutanixAPI = nutanix.NewNutanix(*nutanixURL, *nutanixUser, *nutanixPassword, maxParallelReq)
+				clusterUUIDValue, err := nutanixAPI.GetClusterUUID()
+				if err != nil {
+					log.Errorf("Failed to get cluster UUID for health metrics: %v, using section name as fallback", err)
+					healthUUID = section // Fallback to section name
+					clusterUUID = section
+				} else {
+					healthUUID = clusterUUIDValue
+					clusterUUID = clusterUUIDValue // For cluster-level metrics, cluster_uuid and uuid are the same
+					// Cache it for future requests (thread-safe)
+					clusterUUIDCacheMu.Lock()
+					clusterUUIDCache[section] = clusterUUIDValue
+					clusterUUIDCacheMu.Unlock()
+					log.Infof("Successfully fetched and cached cluster UUID for section %s: %s", section, healthUUID)
+				}
+			}
+		} else if !healthOnly {
+			// Config section not found, use section name as fallback
+			healthUUID = section
+			clusterUUID = section
+		}
+		// Use the actual section from request, not sectionKey which might be "default"
+		// Pass cluster_uuid, uuid, and section to the collector
+		registry.MustRegister(nutanix.NewExporterHealthCollector(section, healthUUID, clusterUUID))
+		// If only health is requested, do not touch cluster/API at all
+		if healthOnly {
+			h := promhttp.HandlerFor(registry, promhttp.HandlerOpts{})
+			h.ServeHTTP(w, r)
+			return
+		}
+
+		// Ensure Nutanix API client is created if not already done
+		if nutanixAPI == nil {
+			if !ok || *nutanixURL == "" {
+				log.Errorf("Cannot create Nutanix API client: missing configuration")
+				return
+			}
+			nutanixAPI = nutanix.NewNutanix(*nutanixURL, *nutanixUser, *nutanixPassword, maxParallelReq)
+		}
+
+		// Poll cycles are tracked automatically when MarkCollectionEnd is called
+		// No ticker needed - each scrape from Prometheus receiver = one poll cycle
 
 		checkCollect := func(c map[string]bool, f string) bool {
 			val, exist := c[f]
 			return !exist || (exist && val)
 		}
 
-		if checkCollect(config[section].Collect, "storage_containers") {
+		if !healthOnly && checkCollect(config[section].Collect, "storage_containers") {
 			log.Debugf("Register StorageContainersCollector")
 			registry.MustRegister(nutanix.NewStorageContainersCollector(nutanixAPI))
 		}
-		if checkCollect(config[section].Collect, "hosts") {
+		if !healthOnly && checkCollect(config[section].Collect, "hosts") {
 			log.Debugf("Register HostsCollector")
 			registry.MustRegister(nutanix.NewHostsCollector(nutanixAPI, collecthostnics))
 		}
-		if checkCollect(config[section].Collect, "cluster") {
+		if !healthOnly && checkCollect(config[section].Collect, "cluster") {
 			log.Debugf("Register ClusterCollector")
 			registry.MustRegister(nutanix.NewClusterCollector(nutanixAPI))
 		}
-		if checkCollect(config[section].Collect, "vms") {
+		if !healthOnly && checkCollect(config[section].Collect, "vms") {
 			log.Debugf("Register VmsCollector")
 			registry.MustRegister(nutanix.NewVmsCollector(nutanixAPI, collectvmnics))
 		}
-		if checkCollect(config[section].Collect, "snapshots") {
+		if !healthOnly && checkCollect(config[section].Collect, "snapshots") {
 			log.Debugf("Register Snapshots")
 			registry.MustRegister(nutanix.NewSnapshotsCollector(nutanixAPI))
 		}
-		if checkCollect(config[section].Collect, "virtual_disks") {
+		if !healthOnly && checkCollect(config[section].Collect, "virtual_disks") {
 			log.Debugf("Register VirtualDisksCollector")
 			registry.MustRegister(nutanix.NewVirtualDisksCollector(nutanixAPI))
 		}
