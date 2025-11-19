@@ -15,7 +15,7 @@ func TestExporterHealthCollector(t *testing.T) {
 	healthBySection = make(map[string]*ExporterHealth)
 	healthMu.Unlock()
 
-	collector := NewExporterHealthCollector("test-section", "test-uuid")
+	collector := NewExporterHealthCollector("test-section", "test-uuid", "test-cluster-uuid")
 
 	// Test Describe
 	descCh := make(chan *prometheus.Desc, 20)
@@ -104,6 +104,95 @@ func TestMarkCollectionEnd(t *testing.T) {
 	h.mu.RLock()
 	assert.Equal(t, uint64(1), h.failedCollections)
 	assert.Equal(t, uint64(100000), h.totalFailureCollectionDurationUS)
+	h.mu.RUnlock()
+}
+
+func TestMarkCollectionEndWithParallelCalls(t *testing.T) {
+	// Reset global state
+	healthMu.Lock()
+	healthBySection = make(map[string]*ExporterHealth)
+	healthMu.Unlock()
+
+	section := "test-section"
+
+	// Simulate parallel API calls scenario:
+	// - 10 API calls, each taking 100ms
+	// - If run in parallel, wall-clock time would be ~100ms
+	// - But sum of command durations would be 1000ms
+	// - Collection duration = command duration + processing overhead
+	// - Processing overhead = wall-clock (since calls overlapped) = 100ms
+	// - So collection duration = 1000ms + 100ms = 1100ms
+
+	// Start a collection
+	MarkCollectionStart(section)
+
+	// Simulate 10 parallel API calls (each 100ms)
+	// In reality these would run in parallel, but we'll mark them sequentially
+	for i := 0; i < 10; i++ {
+		MarkCmdSuccess(section, 100*time.Millisecond)
+	}
+
+	// End collection with short wall-clock time (simulating parallel execution)
+	// Wall-clock time is only 100ms because calls ran in parallel
+	wallClockDuration := 100 * time.Millisecond
+	MarkCollectionEnd(section, true, wallClockDuration)
+
+	h := getHealth(section)
+	h.mu.RLock()
+	// Command duration should be 10 * 100ms = 1000ms = 1000000 microseconds
+	assert.Equal(t, uint64(1000000), h.totalSuccessCmdExecDurationUS)
+	// Collection duration = command duration + processing overhead
+	// Processing overhead = wall-clock (100ms) = 100000 microseconds
+	// So collection duration = 1000000 + 100000 = 1100000 microseconds
+	expectedCollectionDuration := uint64(1100000) // 1000ms + 100ms
+	assert.Equal(t, expectedCollectionDuration, h.totalSuccessCollectionDurationUS,
+		"Collection duration should be command duration + processing overhead (wall-clock)")
+	assert.GreaterOrEqual(t, h.totalSuccessCollectionDurationUS, h.totalSuccessCmdExecDurationUS,
+		"Collection duration should be >= command duration to prevent negative values in UI formula")
+	h.mu.RUnlock()
+}
+
+func TestMarkCollectionEndWithSequentialCalls(t *testing.T) {
+	// Reset global state
+	healthMu.Lock()
+	healthBySection = make(map[string]*ExporterHealth)
+	healthMu.Unlock()
+
+	section := "test-section"
+
+	// Simulate sequential API calls scenario:
+	// - 5 API calls, each taking 50ms
+	// - If run sequentially, wall-clock time would be ~250ms (5 * 50ms) + processing overhead
+	// - Sum of command durations = 250ms
+	// - Wall-clock = 300ms (includes processing overhead)
+	// - Processing overhead = 300ms - 250ms = 50ms
+	// - Collection duration = 250ms + 50ms = 300ms
+
+	// Start a collection
+	MarkCollectionStart(section)
+
+	// Simulate 5 sequential API calls (each 50ms)
+	for i := 0; i < 5; i++ {
+		MarkCmdSuccess(section, 50*time.Millisecond)
+	}
+
+	// End collection with wall-clock time that includes processing overhead
+	// Wall-clock time = command duration (250ms) + processing overhead (50ms) = 300ms
+	wallClockDuration := 300 * time.Millisecond
+	MarkCollectionEnd(section, true, wallClockDuration)
+
+	h := getHealth(section)
+	h.mu.RLock()
+	// Command duration should be 5 * 50ms = 250ms = 250000 microseconds
+	assert.Equal(t, uint64(250000), h.totalSuccessCmdExecDurationUS)
+	// Collection duration = command duration + processing overhead
+	// Processing overhead = wall-clock - command duration = 300ms - 250ms = 50ms
+	// So collection duration = 250ms + 50ms = 300ms = 300000 microseconds
+	expectedCollectionDuration := uint64(300000) // 250ms + 50ms
+	assert.Equal(t, expectedCollectionDuration, h.totalSuccessCollectionDurationUS,
+		"Collection duration should be command duration + processing overhead")
+	assert.GreaterOrEqual(t, h.totalSuccessCollectionDurationUS, h.totalSuccessCmdExecDurationUS,
+		"Collection duration should be >= command duration")
 	h.mu.RUnlock()
 }
 

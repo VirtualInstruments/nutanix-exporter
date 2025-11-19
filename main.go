@@ -96,13 +96,6 @@ func main() {
 	http.HandleFunc("/metrics", func(w http.ResponseWriter, r *http.Request) {
 		// mark collection boundaries for health per section
 		collStart := time.Now()
-		// section key might be parsed below; use temporary key first
-		sectionKey := r.URL.Query().Get("section")
-		if len(sectionKey) == 0 {
-			sectionKey = "default"
-		}
-		started := nutanix.MarkCollectionStart(sectionKey)
-		defer func() { nutanix.MarkCollectionEnd(sectionKey, started, time.Since(collStart)) }()
 		params := r.URL.Query()
 		section := params.Get("section")
 		if len(section) == 0 {
@@ -118,8 +111,12 @@ func main() {
 		var collecthostnics bool = false
 		var collectvmnics bool = false
 		var maxParallelReq int = 0
+		// Section is always provided as host IP (e.g., "10.20.10.40") and should match config key
 		//Write new Parameters (skip section requirement for healthOnly)
 		conf, ok := config[section]
+		var healthSectionKey string // Key used for health tracking - must match what nutanix.go uses
+
+		// Health metrics should ALWAYS be collected, regardless of whether section is found or not
 		if ok {
 			switch strings.ToLower(conf.LogLevel) {
 			case "debug":
@@ -130,6 +127,10 @@ func main() {
 				log.SetLevel(log.InfoLevel)
 			}
 			*nutanixURL = conf.Host
+			// Use host URL as-is for health section key (must match what nutanix.go uses in g.url)
+			// nutanix.go uses g.url directly (e.g., "https://10.20.10.40:9440") for health tracking
+			// Since section = host IP and conf.Host = full URL, this ensures health tracking matches API calls
+			healthSectionKey = conf.Host
 			*nutanixUser = conf.Username
 			*nutanixPassword = conf.Password
 			maxParallelReq = conf.MaxParallelRequests
@@ -139,10 +140,31 @@ func main() {
 			if vmnicsValue, exists := conf.Collect["vmnics"]; exists {
 				collectvmnics = vmnicsValue
 			}
-		} else if !healthOnly {
-			log.Errorf("Section '%s' not found in config file", section)
+		} else {
+			// Section not found - still collect health metrics, but use section name as fallback
+			// For health-only requests or when section is not found, use section as healthSectionKey
+			healthSectionKey = section
+			if !healthOnly {
+				log.Warnf("Section '%s' not found in config file, but continuing to collect health metrics", section)
+			}
+		}
+
+		// Use healthSectionKey for all health tracking (must match what nutanix.go uses)
+		started := nutanix.MarkCollectionStart(healthSectionKey)
+		if !started {
+			// Collection already running, return early without tracking end
+			// (MarkCollectionEnd should only be called for collections that actually started)
 			return
 		}
+
+		// Track collection success - starts as true, set to false on errors
+		// A collection is considered failed if:
+		// - HTTP response writing fails (panic)
+		// - Other critical errors occur during collection
+		collectionSuccess := true
+		defer func() {
+			nutanix.MarkCollectionEnd(healthSectionKey, collectionSuccess, time.Since(collStart))
+		}()
 
 		registry := prometheus.NewRegistry()
 
@@ -185,9 +207,9 @@ func main() {
 			healthUUID = section
 			clusterUUID = section
 		}
-		// Use the actual section from request, not sectionKey which might be "default"
+		// Use healthSectionKey for collector (must match what nutanix.go uses for tracking)
 		// Pass cluster_uuid, uuid, and section to the collector
-		registry.MustRegister(nutanix.NewExporterHealthCollector(section, healthUUID, clusterUUID))
+		registry.MustRegister(nutanix.NewExporterHealthCollector(healthSectionKey, healthUUID, clusterUUID))
 		// If only health is requested, do not touch cluster/API at all
 		if healthOnly {
 			h := promhttp.HandlerFor(registry, promhttp.HandlerOpts{})
@@ -196,9 +218,15 @@ func main() {
 		}
 
 		// Ensure Nutanix API client is created if not already done
-		if nutanixAPI == nil {
+		// Only create API client if we need to collect regular metrics (not health-only)
+		if nutanixAPI == nil && !healthOnly {
 			if !ok || *nutanixURL == "" {
-				log.Errorf("Cannot create Nutanix API client: missing configuration")
+				// Section not found or missing config - but health metrics are already registered
+				// Serve only health metrics and return (this is a successful health-only collection)
+				log.Warnf("Cannot create Nutanix API client: missing configuration. Serving only health metrics.")
+				h := promhttp.HandlerFor(registry, promhttp.HandlerOpts{})
+				h.ServeHTTP(w, r)
+				// collectionSuccess remains true - we successfully served health metrics
 				return
 			}
 			nutanixAPI = nutanix.NewNutanix(*nutanixURL, *nutanixUser, *nutanixPassword, maxParallelReq)
@@ -207,38 +235,50 @@ func main() {
 		// Poll cycles are tracked automatically when MarkCollectionEnd is called
 		// No ticker needed - each scrape from Prometheus receiver = one poll cycle
 
-		checkCollect := func(c map[string]bool, f string) bool {
-			val, exist := c[f]
-			return !exist || (exist && val)
-		}
+		// Only register other collectors if section is found and not health-only
+		if !healthOnly && ok {
+			checkCollect := func(c map[string]bool, f string) bool {
+				val, exist := c[f]
+				return !exist || (exist && val)
+			}
 
-		if !healthOnly && checkCollect(config[section].Collect, "storage_containers") {
-			log.Debugf("Register StorageContainersCollector")
-			registry.MustRegister(nutanix.NewStorageContainersCollector(nutanixAPI))
-		}
-		if !healthOnly && checkCollect(config[section].Collect, "hosts") {
-			log.Debugf("Register HostsCollector")
-			registry.MustRegister(nutanix.NewHostsCollector(nutanixAPI, collecthostnics))
-		}
-		if !healthOnly && checkCollect(config[section].Collect, "cluster") {
-			log.Debugf("Register ClusterCollector")
-			registry.MustRegister(nutanix.NewClusterCollector(nutanixAPI))
-		}
-		if !healthOnly && checkCollect(config[section].Collect, "vms") {
-			log.Debugf("Register VmsCollector")
-			registry.MustRegister(nutanix.NewVmsCollector(nutanixAPI, collectvmnics))
-		}
-		if !healthOnly && checkCollect(config[section].Collect, "snapshots") {
-			log.Debugf("Register Snapshots")
-			registry.MustRegister(nutanix.NewSnapshotsCollector(nutanixAPI))
-		}
-		if !healthOnly && checkCollect(config[section].Collect, "virtual_disks") {
-			log.Debugf("Register VirtualDisksCollector")
-			registry.MustRegister(nutanix.NewVirtualDisksCollector(nutanixAPI))
+			if checkCollect(config[section].Collect, "storage_containers") {
+				log.Debugf("Register StorageContainersCollector")
+				registry.MustRegister(nutanix.NewStorageContainersCollector(nutanixAPI))
+			}
+			if checkCollect(config[section].Collect, "hosts") {
+				log.Debugf("Register HostsCollector")
+				registry.MustRegister(nutanix.NewHostsCollector(nutanixAPI, collecthostnics))
+			}
+			if checkCollect(config[section].Collect, "cluster") {
+				log.Debugf("Register ClusterCollector")
+				registry.MustRegister(nutanix.NewClusterCollector(nutanixAPI))
+			}
+			if checkCollect(config[section].Collect, "vms") {
+				log.Debugf("Register VmsCollector")
+				registry.MustRegister(nutanix.NewVmsCollector(nutanixAPI, collectvmnics))
+			}
+			if checkCollect(config[section].Collect, "snapshots") {
+				log.Debugf("Register Snapshots")
+				registry.MustRegister(nutanix.NewSnapshotsCollector(nutanixAPI))
+			}
+			if checkCollect(config[section].Collect, "virtual_disks") {
+				log.Debugf("Register VirtualDisksCollector")
+				registry.MustRegister(nutanix.NewVirtualDisksCollector(nutanixAPI))
+			}
 		}
 
 		h := promhttp.HandlerFor(registry, promhttp.HandlerOpts{})
-		h.ServeHTTP(w, r)
+		// Track if HTTP response writing fails
+		func() {
+			defer func() {
+				if r := recover(); r != nil {
+					collectionSuccess = false
+					log.Errorf("Panic while serving metrics: %v", r)
+				}
+			}()
+			h.ServeHTTP(w, r)
+		}()
 	})
 
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {

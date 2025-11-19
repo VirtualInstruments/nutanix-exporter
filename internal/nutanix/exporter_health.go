@@ -30,6 +30,9 @@ type ExporterHealth struct {
 
 	// internal state
 	activeCollections int
+	// Track command durations at collection start to calculate incremental duration per collection
+	cmdExecDurationAtCollectionStart uint64 // Success command duration when collection started
+	failureCmdExecDurationAtStart    uint64 // Failure command duration when collection started
 }
 
 // healthBySection keeps one health state per configuration/section
@@ -57,11 +60,11 @@ var (
 	descErrDNSFailure                    = prometheus.NewDesc("nutanix_exporter_ErrorPCNoDataDNSLookupFailure_C", "Exporter: DNS lookup failures", []string{"cluster_uuid", "uuid", "section"}, nil)
 	descSuccessDeviceCmd                 = prometheus.NewDesc("nutanix_exporter_SuccessDeviceCommand_C", "Exporter: successful device/API commands", []string{"cluster_uuid", "uuid", "section"}, nil)
 	descTotalSuccessCmdExecDurationUS    = prometheus.NewDesc("nutanix_exporter_TotalSuccessDeviceCmdExecDuration_US", "Exporter: total duration of successful API commands (microseconds)", []string{"cluster_uuid", "uuid", "section"}, nil)
-	descTotalSuccessCollectionDurationUS = prometheus.NewDesc("nutanix_exporter_TotalSuccessDeviceCollectionDuration_US", "Exporter: total duration of successful collections (microseconds)", []string{"cluster_uuid", "uuid", "section"}, nil)
+	descTotalSuccessCollectionDurationUS = prometheus.NewDesc("nutanix_exporter_TotalSuccessDeviceCollectionDuration_US", "Exporter: total duration of successful collections (microseconds). Represents command execution time + processing overhead (response parsing, metric formatting, etc.). Always >= TotalSuccessDeviceCmdExecDuration_US.", []string{"cluster_uuid", "uuid", "section"}, nil)
 	descFailureDeviceCmd                 = prometheus.NewDesc("nutanix_exporter_FailureDeviceCommand_C", "Exporter: failed device/API commands", []string{"cluster_uuid", "uuid", "section"}, nil)
 	descTotalFailureCmdExecDurationUS    = prometheus.NewDesc("nutanix_exporter_TotalFailureDeviceCmdExecDuration_US", "Exporter: total duration of failed API commands (microseconds)", []string{"cluster_uuid", "uuid", "section"}, nil)
-	descTotalFailureCollectionDurationUS = prometheus.NewDesc("nutanix_exporter_TotalFailureDeviceCollectionDuration_US", "Exporter: total duration of failed collections (microseconds)", []string{"cluster_uuid", "uuid", "section"}, nil)
-	descTotalPollCycles                  = prometheus.NewDesc("nutanix_exporter_TotalPollCycles_C", "Exporter: total poll cycles (30s ticker)", []string{"cluster_uuid", "uuid", "section"}, nil)
+	descTotalFailureCollectionDurationUS = prometheus.NewDesc("nutanix_exporter_TotalFailureDeviceCollectionDuration_US", "Exporter: total duration of failed collections (microseconds). Represents command execution time + processing overhead. Always >= TotalFailureDeviceCmdExecDuration_US.", []string{"cluster_uuid", "uuid", "section"}, nil)
+	descTotalPollCycles                  = prometheus.NewDesc("nutanix_exporter_TotalPollCycles_C", "Exporter: total poll cycles (cumulative counter, increments per completed collection)", []string{"cluster_uuid", "uuid", "section"}, nil)
 	descSuccessfulPCCallNoErrors         = prometheus.NewDesc("nutanix_exporter_SuccessfulPCCallNoErrors_C", "Exporter: successful poll cycles with no errors", []string{"cluster_uuid", "uuid", "section"}, nil)
 	descFailedCollections                = prometheus.NewDesc("nutanix_exporter_FailedCollections_C", "Exporter: failed collection attempts", []string{"cluster_uuid", "uuid", "section"}, nil)
 )
@@ -129,6 +132,9 @@ func MarkCollectionStart(section string) bool {
 		return false // Collection already active, don't start another
 	}
 	h.activeCollections++
+	// Capture command durations at collection start to calculate incremental duration
+	h.cmdExecDurationAtCollectionStart = h.totalSuccessCmdExecDurationUS
+	h.failureCmdExecDurationAtStart = h.totalFailureCmdExecDurationUS
 	return true // Collection started successfully
 }
 
@@ -139,10 +145,48 @@ func MarkCollectionEnd(section string, success bool, duration time.Duration) {
 	// This tracks actual scrape/collection cycles from Prometheus receiver
 	h.totalPollCycles++
 	if success {
-		h.totalSuccessCollectionDurationUS += uint64(duration / time.Microsecond)
+		wallClockDurationUS := uint64(duration / time.Microsecond)
+		// Calculate incremental command duration for this collection
+		// This is the sum of all API call durations that occurred during this collection
+		incrementalCmdDurationUS := h.totalSuccessCmdExecDurationUS - h.cmdExecDurationAtCollectionStart
+
+		// Collection duration = command execution time + processing overhead
+		// Processing overhead includes: response parsing, metric formatting, HTTP writing, etc.
+		// - Sequential calls: wall-clock >= command duration, so processing = wall-clock - command duration
+		// - Parallel calls: wall-clock < command duration (calls overlapped), so processing = wall-clock
+		var processingOverheadUS uint64
+		if wallClockDurationUS >= incrementalCmdDurationUS {
+			// Sequential: processing overhead = wall-clock - command duration
+			processingOverheadUS = wallClockDurationUS - incrementalCmdDurationUS
+		} else {
+			// Parallel: processing overhead = wall-clock (all API calls overlapped in time)
+			processingOverheadUS = wallClockDurationUS
+		}
+
+		// Collection duration = command execution time + processing overhead
+		collectionDurationUS := incrementalCmdDurationUS + processingOverheadUS
+		h.totalSuccessCollectionDurationUS += collectionDurationUS
+
 		h.successfulPCCallNoErrors++
 	} else {
-		h.totalFailureCollectionDurationUS += uint64(duration / time.Microsecond)
+		wallClockDurationUS := uint64(duration / time.Microsecond)
+		// Calculate incremental failure command duration for this collection
+		incrementalFailureCmdDurationUS := h.totalFailureCmdExecDurationUS - h.failureCmdExecDurationAtStart
+
+		// Same logic for failed collections
+		var processingOverheadUS uint64
+		if wallClockDurationUS >= incrementalFailureCmdDurationUS {
+			// Sequential: processing overhead = wall-clock - command duration
+			processingOverheadUS = wallClockDurationUS - incrementalFailureCmdDurationUS
+		} else {
+			// Parallel: processing overhead = wall-clock (all API calls overlapped in time)
+			processingOverheadUS = wallClockDurationUS
+		}
+
+		// Collection duration = command execution time + processing overhead
+		collectionDurationUS := incrementalFailureCmdDurationUS + processingOverheadUS
+		h.totalFailureCollectionDurationUS += collectionDurationUS
+
 		h.failedCollections++
 	}
 	if h.activeCollections > 0 {
