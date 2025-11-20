@@ -60,6 +60,10 @@ func main() {
 	// add config file watch
 	go monitorConfigFileChange()
 
+	// Poll cycles are now tracked based on actual collection completions
+	// No separate ticker needed - each scrape request from Prometheus receiver
+	// represents a poll cycle
+
 	flag.Parse()
 
 	//Use locale configfile
@@ -90,6 +94,15 @@ func main() {
 
 	//	http.Handle("/metrics", prometheus.Handler())
 	http.HandleFunc("/metrics", func(w http.ResponseWriter, r *http.Request) {
+		// mark collection boundaries for health per section
+		collStart := time.Now()
+		// section key might be parsed below; use temporary key first
+		sectionKey := r.URL.Query().Get("section")
+		if len(sectionKey) == 0 {
+			sectionKey = "default"
+		}
+		started := nutanix.MarkCollectionStart(sectionKey)
+		defer func() { nutanix.MarkCollectionEnd(sectionKey, started, time.Since(collStart)) }()
 		params := r.URL.Query()
 		sectionParam := params.Get("section")
 		healthOnly := strings.EqualFold(params.Get("health"), "true")
