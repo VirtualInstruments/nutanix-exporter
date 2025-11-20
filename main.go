@@ -60,10 +60,6 @@ func main() {
 	// add config file watch
 	go monitorConfigFileChange()
 
-	// Poll cycles are now tracked based on actual collection completions
-	// No separate ticker needed - each scrape request from Prometheus receiver
-	// represents a poll cycle
-
 	flag.Parse()
 
 	//Use locale configfile
@@ -94,16 +90,67 @@ func main() {
 
 	//	http.Handle("/metrics", prometheus.Handler())
 	http.HandleFunc("/metrics", func(w http.ResponseWriter, r *http.Request) {
-		// mark collection boundaries for health per section
-		collStart := time.Now()
 		params := r.URL.Query()
-		section := params.Get("section")
-		if len(section) == 0 {
-			section = "default"
+		sectionParam := params.Get("section")
+		healthOnly := strings.EqualFold(params.Get("health"), "true")
+
+		registry := prometheus.NewRegistry()
+
+		// If section is not provided, iterate through all sections and collect health for all
+		if len(sectionParam) == 0 {
+			log.Infof("No section specified, collecting health metrics for all configured sections")
+			// Iterate through all sections in config
+			for sectionName, conf := range config {
+				healthSectionKey := conf.Host
+				if len(healthSectionKey) == 0 {
+					healthSectionKey = sectionName // Fallback to section name if host is empty
+				}
+
+				// Get cluster UUID for this section (from cache if available)
+				healthUUID := "exporter-health"
+				clusterUUID := "exporter-health"
+
+				// Try to get from cache first
+				clusterUUIDCacheMu.RLock()
+				cachedUUID, found := clusterUUIDCache[sectionName]
+				clusterUUIDCacheMu.RUnlock()
+
+				if found {
+					healthUUID = cachedUUID
+					clusterUUID = cachedUUID
+				} else if !healthOnly && len(conf.Host) > 0 {
+					// Try to fetch cluster UUID if not health-only and host is configured
+					// Use a temporary API client just for UUID lookup
+					tempAPI := nutanix.NewNutanix(conf.Host, conf.Username, conf.Password, conf.MaxParallelRequests)
+					clusterUUIDValue, err := tempAPI.GetClusterUUID()
+					if err != nil {
+						log.Debugf("Failed to get cluster UUID for section %s: %v, using fallback", sectionName, err)
+						healthUUID = sectionName
+						clusterUUID = sectionName
+					} else {
+						healthUUID = clusterUUIDValue
+						clusterUUID = clusterUUIDValue
+						// Cache it for future requests
+						clusterUUIDCacheMu.Lock()
+						clusterUUIDCache[sectionName] = clusterUUIDValue
+						clusterUUIDCacheMu.Unlock()
+					}
+				}
+
+				// Register health collector for this section
+				registry.MustRegister(nutanix.NewExporterHealthCollector(healthSectionKey, healthUUID, clusterUUID))
+			}
+
+			// For all-sections mode, only return health metrics (not regular metrics)
+			// This prevents overwhelming the system with too many metric collections at once
+			h := promhttp.HandlerFor(registry, promhttp.HandlerOpts{})
+			h.ServeHTTP(w, r)
+			return
 		}
 
-		// health is always exposed; healthOnly narrows output
-		healthOnly := params.Get("health") == "true"
+		// Single section mode - original behavior
+		section := sectionParam
+		collStart := time.Now()
 
 		log.Infof("Section: %s", section)
 		log.Debug("Create Nutanix instance")
@@ -165,8 +212,6 @@ func main() {
 		defer func() {
 			nutanix.MarkCollectionEnd(healthSectionKey, collectionSuccess, time.Since(collStart))
 		}()
-
-		registry := prometheus.NewRegistry()
 
 		// Get cluster UUID for health metrics (needed for proper association)
 		healthUUID := "exporter-health"  // Default fallback for health-only requests (used as uuid)
