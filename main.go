@@ -96,21 +96,71 @@ func main() {
 
 		registry := prometheus.NewRegistry()
 
-		// If section is not provided, iterate through all sections and collect health for all
+		// If section is not provided, collect metrics for all sections
 		if len(sectionParam) == 0 {
-			log.Infof("No section specified, collecting health metrics for all configured sections")
-			// Iterate through all sections in config
+			// If health=true with no section, collect health metrics for all sections only
+			if healthOnly {
+				log.Infof("health=true with no section specified, collecting health metrics for all configured sections")
+				// Iterate through all sections in config
+				for sectionName, conf := range config {
+					healthSectionKey := conf.Host
+					if len(healthSectionKey) == 0 {
+						healthSectionKey = sectionName // Fallback to section name if host is empty
+					}
+
+					// Get cluster UUID for this section (from cache if available)
+					healthUUID := "exporter-health"
+					clusterUUID := "exporter-health"
+
+					// Try to get from cache first
+					clusterUUIDCacheMu.RLock()
+					cachedUUID, found := clusterUUIDCache[sectionName]
+					clusterUUIDCacheMu.RUnlock()
+
+					if found {
+						healthUUID = cachedUUID
+						clusterUUID = cachedUUID
+					} else if len(conf.Host) > 0 {
+						// Try to fetch cluster UUID if host is configured
+						// Use a temporary API client just for UUID lookup
+						tempAPI := nutanix.NewNutanix(conf.Host, conf.Username, conf.Password, conf.MaxParallelRequests)
+						clusterUUIDValue, err := tempAPI.GetClusterUUID()
+						if err != nil {
+							log.Debugf("Failed to get cluster UUID for section %s: %v, using fallback", sectionName, err)
+							healthUUID = sectionName
+							clusterUUID = sectionName
+						} else {
+							healthUUID = clusterUUIDValue
+							clusterUUID = clusterUUIDValue
+							// Cache it for future requests
+							clusterUUIDCacheMu.Lock()
+							clusterUUIDCache[sectionName] = clusterUUIDValue
+							clusterUUIDCacheMu.Unlock()
+						}
+					}
+
+					// Register health collector for this section
+					registry.MustRegister(nutanix.NewExporterHealthCollector(healthSectionKey, healthUUID, clusterUUID))
+				}
+
+				// For all-sections health mode, only return health metrics (not regular metrics)
+				h := promhttp.HandlerFor(registry, promhttp.HandlerOpts{})
+				h.ServeHTTP(w, r)
+				return
+			}
+
+			// No section and no health=true: collect regular + health metrics for all sections
+			log.Infof("No section specified, collecting regular + health metrics for all configured sections")
 			for sectionName, conf := range config {
 				healthSectionKey := conf.Host
 				if len(healthSectionKey) == 0 {
-					healthSectionKey = sectionName // Fallback to section name if host is empty
+					healthSectionKey = sectionName
 				}
 
-				// Get cluster UUID for this section (from cache if available)
+				// Get cluster UUID for this section
 				healthUUID := "exporter-health"
 				clusterUUID := "exporter-health"
 
-				// Try to get from cache first
 				clusterUUIDCacheMu.RLock()
 				cachedUUID, found := clusterUUIDCache[sectionName]
 				clusterUUIDCacheMu.RUnlock()
@@ -118,9 +168,7 @@ func main() {
 				if found {
 					healthUUID = cachedUUID
 					clusterUUID = cachedUUID
-				} else if !healthOnly && len(conf.Host) > 0 {
-					// Try to fetch cluster UUID if not health-only and host is configured
-					// Use a temporary API client just for UUID lookup
+				} else if len(conf.Host) > 0 {
 					tempAPI := nutanix.NewNutanix(conf.Host, conf.Username, conf.Password, conf.MaxParallelRequests)
 					clusterUUIDValue, err := tempAPI.GetClusterUUID()
 					if err != nil {
@@ -130,7 +178,6 @@ func main() {
 					} else {
 						healthUUID = clusterUUIDValue
 						clusterUUID = clusterUUIDValue
-						// Cache it for future requests
 						clusterUUIDCacheMu.Lock()
 						clusterUUIDCache[sectionName] = clusterUUIDValue
 						clusterUUIDCacheMu.Unlock()
@@ -139,10 +186,46 @@ func main() {
 
 				// Register health collector for this section
 				registry.MustRegister(nutanix.NewExporterHealthCollector(healthSectionKey, healthUUID, clusterUUID))
+
+				// Register regular collectors for this section
+				if len(conf.Host) > 0 {
+					nutanixAPI := nutanix.NewNutanix(conf.Host, conf.Username, conf.Password, conf.MaxParallelRequests)
+
+					checkCollect := func(c map[string]bool, f string) bool {
+						val, exist := c[f]
+						return !exist || (exist && val)
+					}
+
+					if checkCollect(conf.Collect, "storage_containers") {
+						registry.MustRegister(nutanix.NewStorageContainersCollector(nutanixAPI))
+					}
+					if checkCollect(conf.Collect, "hosts") {
+						var collecthostnics bool = false
+						if hostnicsValue, exists := conf.Collect["hostnics"]; exists {
+							collecthostnics = hostnicsValue
+						}
+						registry.MustRegister(nutanix.NewHostsCollector(nutanixAPI, collecthostnics))
+					}
+					if checkCollect(conf.Collect, "cluster") {
+						registry.MustRegister(nutanix.NewClusterCollector(nutanixAPI))
+					}
+					if checkCollect(conf.Collect, "vms") {
+						var collectvmnics bool = false
+						if vmnicsValue, exists := conf.Collect["vmnics"]; exists {
+							collectvmnics = vmnicsValue
+						}
+						registry.MustRegister(nutanix.NewVmsCollector(nutanixAPI, collectvmnics))
+					}
+					if checkCollect(conf.Collect, "snapshots") {
+						registry.MustRegister(nutanix.NewSnapshotsCollector(nutanixAPI))
+					}
+					if checkCollect(conf.Collect, "virtual_disks") {
+						registry.MustRegister(nutanix.NewVirtualDisksCollector(nutanixAPI))
+					}
+				}
 			}
 
-			// For all-sections mode, only return health metrics (not regular metrics)
-			// This prevents overwhelming the system with too many metric collections at once
+			// Return all metrics (regular + health) for all sections
 			h := promhttp.HandlerFor(registry, promhttp.HandlerOpts{})
 			h.ServeHTTP(w, r)
 			return
