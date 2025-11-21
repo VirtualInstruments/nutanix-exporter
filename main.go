@@ -96,7 +96,7 @@ func main() {
 
 		registry := prometheus.NewRegistry()
 
-		// If section is not provided, collect metrics for all sections
+		// If section is not provided, default to "default" section
 		if len(sectionParam) == 0 {
 			// If health=true with no section, collect health metrics for all sections only
 			if healthOnly {
@@ -149,86 +149,9 @@ func main() {
 				return
 			}
 
-			// No section and no health=true: collect regular + health metrics for all sections
-			log.Infof("No section specified, collecting regular + health metrics for all configured sections")
-			for sectionName, conf := range config {
-				healthSectionKey := conf.Host
-				if len(healthSectionKey) == 0 {
-					healthSectionKey = sectionName
-				}
-
-				// Get cluster UUID for this section
-				healthUUID := "exporter-health"
-				clusterUUID := "exporter-health"
-
-				clusterUUIDCacheMu.RLock()
-				cachedUUID, found := clusterUUIDCache[sectionName]
-				clusterUUIDCacheMu.RUnlock()
-
-				if found {
-					healthUUID = cachedUUID
-					clusterUUID = cachedUUID
-				} else if len(conf.Host) > 0 {
-					tempAPI := nutanix.NewNutanix(conf.Host, conf.Username, conf.Password, conf.MaxParallelRequests)
-					clusterUUIDValue, err := tempAPI.GetClusterUUID()
-					if err != nil {
-						log.Debugf("Failed to get cluster UUID for section %s: %v, using fallback", sectionName, err)
-						healthUUID = sectionName
-						clusterUUID = sectionName
-					} else {
-						healthUUID = clusterUUIDValue
-						clusterUUID = clusterUUIDValue
-						clusterUUIDCacheMu.Lock()
-						clusterUUIDCache[sectionName] = clusterUUIDValue
-						clusterUUIDCacheMu.Unlock()
-					}
-				}
-
-				// Register health collector for this section
-				registry.MustRegister(nutanix.NewExporterHealthCollector(healthSectionKey, healthUUID, clusterUUID))
-
-				// Register regular collectors for this section
-				if len(conf.Host) > 0 {
-					nutanixAPI := nutanix.NewNutanix(conf.Host, conf.Username, conf.Password, conf.MaxParallelRequests)
-
-					checkCollect := func(c map[string]bool, f string) bool {
-						val, exist := c[f]
-						return !exist || (exist && val)
-					}
-
-					if checkCollect(conf.Collect, "storage_containers") {
-						registry.MustRegister(nutanix.NewStorageContainersCollector(nutanixAPI))
-					}
-					if checkCollect(conf.Collect, "hosts") {
-						var collecthostnics bool = false
-						if hostnicsValue, exists := conf.Collect["hostnics"]; exists {
-							collecthostnics = hostnicsValue
-						}
-						registry.MustRegister(nutanix.NewHostsCollector(nutanixAPI, collecthostnics))
-					}
-					if checkCollect(conf.Collect, "cluster") {
-						registry.MustRegister(nutanix.NewClusterCollector(nutanixAPI))
-					}
-					if checkCollect(conf.Collect, "vms") {
-						var collectvmnics bool = false
-						if vmnicsValue, exists := conf.Collect["vmnics"]; exists {
-							collectvmnics = vmnicsValue
-						}
-						registry.MustRegister(nutanix.NewVmsCollector(nutanixAPI, collectvmnics))
-					}
-					if checkCollect(conf.Collect, "snapshots") {
-						registry.MustRegister(nutanix.NewSnapshotsCollector(nutanixAPI))
-					}
-					if checkCollect(conf.Collect, "virtual_disks") {
-						registry.MustRegister(nutanix.NewVirtualDisksCollector(nutanixAPI))
-					}
-				}
-			}
-
-			// Return all metrics (regular + health) for all sections
-			h := promhttp.HandlerFor(registry, promhttp.HandlerOpts{})
-			h.ServeHTTP(w, r)
-			return
+			// No section and no health=true: default to "default" section (original behavior)
+			// This preserves backward compatibility - returns only regular metrics for default section
+			sectionParam = "default"
 		}
 
 		// Single section mode - original behavior
@@ -242,11 +165,9 @@ func main() {
 		var collectvmnics bool = false
 		var maxParallelReq int = 0
 		// Section is always provided as host IP (e.g., "10.20.10.40") and should match config key
-		//Write new Parameters (skip section requirement for healthOnly)
 		conf, ok := config[section]
 		var healthSectionKey string // Key used for health tracking - must match what nutanix.go uses
 
-		// Health metrics should ALWAYS be collected, regardless of whether section is found or not
 		if ok {
 			switch strings.ToLower(conf.LogLevel) {
 			case "debug":
@@ -271,15 +192,16 @@ func main() {
 				collectvmnics = vmnicsValue
 			}
 		} else {
-			// Section not found - still collect health metrics, but use section name as fallback
-			// For health-only requests or when section is not found, use section as healthSectionKey
+			// Section not found
 			healthSectionKey = section
 			if !healthOnly {
-				log.Warnf("Section '%s' not found in config file, but continuing to collect health metrics", section)
+				log.Warnf("Section '%s' not found in config file", section)
 			}
 		}
 
-		// Use healthSectionKey for all health tracking (must match what nutanix.go uses)
+		// Always track collection cycles (for both regular and health metrics)
+		// This ensures health metrics are updated even when collecting regular metrics
+		// Health metrics are only exposed when health=true is explicitly requested
 		started := nutanix.MarkCollectionStart(healthSectionKey)
 		if !started {
 			// Collection already running, return early without tracking end
@@ -288,73 +210,69 @@ func main() {
 		}
 
 		// Track collection success - starts as true, set to false on errors
-		// A collection is considered failed if:
-		// - HTTP response writing fails (panic)
-		// - Other critical errors occur during collection
 		collectionSuccess := true
 		defer func() {
 			nutanix.MarkCollectionEnd(healthSectionKey, collectionSuccess, time.Since(collStart))
 		}()
 
 		// Get cluster UUID for health metrics (needed for proper association)
-		healthUUID := "exporter-health"  // Default fallback for health-only requests (used as uuid)
-		clusterUUID := "exporter-health" // Default fallback for health-only requests (used as cluster_uuid)
+		healthUUID := "exporter-health"  // Default fallback (used as uuid)
+		clusterUUID := "exporter-health" // Default fallback (used as cluster_uuid)
 		var nutanixAPI *nutanix.Nutanix
 
-		if !healthOnly && ok {
-			// Check cache first (thread-safe)
-			clusterUUIDCacheMu.RLock()
-			cachedUUID, found := clusterUUIDCache[section]
-			clusterUUIDCacheMu.RUnlock()
-
-			if found {
-				healthUUID = cachedUUID
-				clusterUUID = cachedUUID // For cluster-level metrics, cluster_uuid and uuid are the same
-				log.Debugf("Using cached cluster UUID for section %s: %s", section, healthUUID)
-			} else {
-				// Create Nutanix API client and try to get cluster UUID
-				log.Infof("Host: %s", *nutanixURL)
-				nutanixAPI = nutanix.NewNutanix(*nutanixURL, *nutanixUser, *nutanixPassword, maxParallelReq)
-				clusterUUIDValue, err := nutanixAPI.GetClusterUUID()
-				if err != nil {
-					log.Errorf("Failed to get cluster UUID for health metrics: %v, using section name as fallback", err)
-					healthUUID = section // Fallback to section name
-					clusterUUID = section
-				} else {
-					healthUUID = clusterUUIDValue
-					clusterUUID = clusterUUIDValue // For cluster-level metrics, cluster_uuid and uuid are the same
-					// Cache it for future requests (thread-safe)
-					clusterUUIDCacheMu.Lock()
-					clusterUUIDCache[section] = clusterUUIDValue
-					clusterUUIDCacheMu.Unlock()
-					log.Infof("Successfully fetched and cached cluster UUID for section %s: %s", section, healthUUID)
-				}
-			}
-		} else if !healthOnly {
-			// Config section not found, use section name as fallback
-			healthUUID = section
-			clusterUUID = section
-		}
-		// Use healthSectionKey for collector (must match what nutanix.go uses for tracking)
-		// Pass cluster_uuid, uuid, and section to the collector
-		registry.MustRegister(nutanix.NewExporterHealthCollector(healthSectionKey, healthUUID, clusterUUID))
-		// If only health is requested, do not touch cluster/API at all
 		if healthOnly {
+			// For health-only requests, try to get cluster UUID
+			if ok {
+				// Check cache first (thread-safe)
+				clusterUUIDCacheMu.RLock()
+				cachedUUID, found := clusterUUIDCache[section]
+				clusterUUIDCacheMu.RUnlock()
+
+				if found {
+					healthUUID = cachedUUID
+					clusterUUID = cachedUUID
+					log.Debugf("Using cached cluster UUID for section %s: %s", section, healthUUID)
+				} else if len(conf.Host) > 0 {
+					// Create Nutanix API client and try to get cluster UUID
+					log.Infof("Host: %s", *nutanixURL)
+					tempAPI := nutanix.NewNutanix(*nutanixURL, *nutanixUser, *nutanixPassword, maxParallelReq)
+					clusterUUIDValue, err := tempAPI.GetClusterUUID()
+					if err != nil {
+						log.Debugf("Failed to get cluster UUID for health metrics: %v, using section name as fallback", err)
+						healthUUID = section // Fallback to section name
+						clusterUUID = section
+					} else {
+						healthUUID = clusterUUIDValue
+						clusterUUID = clusterUUIDValue
+						// Cache it for future requests (thread-safe)
+						clusterUUIDCacheMu.Lock()
+						clusterUUIDCache[section] = clusterUUIDValue
+						clusterUUIDCacheMu.Unlock()
+						log.Infof("Successfully fetched and cached cluster UUID for section %s: %s", section, healthUUID)
+					}
+				}
+			} else {
+				// Config section not found, use section name as fallback
+				healthUUID = section
+				clusterUUID = section
+			}
+
+			// Register health collector only when health=true is explicitly requested
+			registry.MustRegister(nutanix.NewExporterHealthCollector(healthSectionKey, healthUUID, clusterUUID))
 			h := promhttp.HandlerFor(registry, promhttp.HandlerOpts{})
 			h.ServeHTTP(w, r)
 			return
 		}
 
-		// Ensure Nutanix API client is created if not already done
-		// Only create API client if we need to collect regular metrics (not health-only)
-		if nutanixAPI == nil && !healthOnly {
+		// Regular metrics collection (healthOnly is false)
+		// Health metrics are tracked but not exposed - only register regular collectors
+
+		// Ensure Nutanix API client is created
+		if nutanixAPI == nil {
 			if !ok || *nutanixURL == "" {
-				// Section not found or missing config - but health metrics are already registered
-				// Serve only health metrics and return (this is a successful health-only collection)
-				log.Warnf("Cannot create Nutanix API client: missing configuration. Serving only health metrics.")
-				h := promhttp.HandlerFor(registry, promhttp.HandlerOpts{})
-				h.ServeHTTP(w, r)
-				// collectionSuccess remains true - we successfully served health metrics
+				// Section not found or missing config
+				log.Errorf("Cannot create Nutanix API client: missing configuration for section '%s'", section)
+				http.Error(w, fmt.Sprintf("Section '%s' not found in config", section), http.StatusNotFound)
 				return
 			}
 			nutanixAPI = nutanix.NewNutanix(*nutanixURL, *nutanixUser, *nutanixPassword, maxParallelReq)
