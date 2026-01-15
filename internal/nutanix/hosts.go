@@ -18,19 +18,50 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-const KEY_HOST_PROPERTIES = "properties"
+const (
+	KEY_HOST_PROPERTIES = "properties"
+	METRIC_HA_RESERVED  = "ha_memory_reserved_bytes"
+	METRIC_HA_RESERVED_PCT= "ha_memory_reserved_percentage"
+)
 
 // HostsExporter
 type HostsExporter struct {
 	*nutanixExporter
 	networkExporters map[string]*HostNicsExporter
 	collecthostnics  bool
+	haEntities       map[string]float64 // id -> {memory_size, ha_reserved}
+}
+
+func (e *HostsExporter) fetchHaEntities(cluster_uid string) {
+
+	url := "/utils/entities?entityType=host&projection=ha_memory_reserved_bytes&proxyClusterUuid=" + cluster_uid
+	entities, err := e.api.fetchAllPagesV1(url, nil)
+	if err != nil {
+		log.Errorf("HA entities fetch failed: %v", err)
+		return
+	}
+
+	e.haEntities = make(map[string]float64)
+
+	for _, entRaw := range entities {
+		ent := entRaw.(map[string]interface{})
+		hostID := ent["id"].(string)
+		e.haEntities[hostID] = e.valueToFloat64(ent["ha_memory_reserved_bytes"])
+	}
+	log.Infof("HA entities loaded for %d hosts", len(e.haEntities))
+}
+
+func (e *HostsExporter) getHaReserved(hostID string) float64 {
+	if v, ok := e.haEntities[hostID]; ok {
+		return v
+	}
+	return 0
 }
 
 // Describe - Implemente prometheus.Collector interface
 // See https://github.com/prometheus/client_golang/blob/master/prometheus/collector.go
 func (e *HostsExporter) Describe(ch chan<- *prometheus.Desc) {
-
+	e.fetchHaEntities(e.)
 	entities, err := e.api.fetchAllPages("/hosts", nil)
 	if err != nil {
 		e.result = nil
@@ -138,6 +169,17 @@ func (e *HostsExporter) addCalculatedStats(ent map[string]interface{}, stats map
 	}
 	stats[METRIC_TOTAL_WRITE_IO_SIZE] = total_size - read_size
 
+	// ---------- Extract HA host ID ----------
+	vmid, ok := ent["service_vmid"].(string)
+	if !ok || !strings.Contains(vmid, "::") {
+		log.Warnf("Invalid service_vmid for host %v", ent["uuid"])
+		return
+	}
+	hostID := strings.Split(vmid, "::")[1]
+
+	// ---------- HA reserved ----------
+	haReserved := e.getHaReserved(hostID)
+
 	// Add free memory stat
 	mem_total := e.valueToFloat64(ent["memory_capacity_in_bytes"])
 	var mem_usage_ppm float64 = 0
@@ -148,9 +190,29 @@ func (e *HostsExporter) addCalculatedStats(ent map[string]interface{}, stats map
 			mem_usage_ppm = v
 		}
 	}
-	mem_used := (mem_usage_ppm / 1000000) * mem_total
-	stats[METRIC_MEM_USAGE_BYTES] = mem_used
-	stats[METRIC_MEM_FREE_BYTES] = mem_total - mem_used
+
+	memUsedHypervisor := (mem_usage_ppm / 1000000) * mem_total
+
+	// ---------- Prism ui memory ----------
+	memUsedTotal := memUsedHypervisor + haReserved
+	memFree := mem_total - memUsedTotal
+
+	stats[METRIC_MEM_USAGE_BYTES] = memUsedTotal
+	stats[METRIC_MEM_FREE_BYTES] = memFree
+	stats[METRIC_HA_RESERVED] = haReserved
+
+	if memTotal > 0 {
+		stats[METRIC_HA_RESERVED_PCT] = (haReserved / memTotal) * 100
+	}
+
+	log.Debugf(
+		"Host %s memory: total=%.1fGB used=%.1fGB free=%.1fGB ha=%.1fGB",
+		hostID,
+		mem_total/1024/1024/1024,
+		memUsedTotal/1024/1024/1024,
+		memFree/1024/1024/1024,
+		haReserved/1024/1024/1024,
+	)
 }
 
 // Collect - Implement prometheus.Collector interface
@@ -297,6 +359,8 @@ func NewHostsCollector(_api *Nutanix, collecthostnics bool) *HostsExporter {
 				METRIC_TOTAL_WRITE_IO_SIZE: true,
 				METRIC_MEM_USAGE_BYTES:     true,
 				METRIC_MEM_FREE_BYTES:      true,
+				METRIC_HA_RESERVED:         true,
+				METRIC_HA_RESERVED_PCT: true
 			},
 		},
 	}

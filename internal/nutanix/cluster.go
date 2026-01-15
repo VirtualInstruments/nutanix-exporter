@@ -19,11 +19,6 @@ import (
 
 const KEY_CLUSTER_PROPERTIES = "properties"
 
-const (
-	METRIC_CLUSTER_MEM_HA_RESERVED_BYTES   = "memory_ha_reserved_bytes"
-	METRIC_CLUSTER_MEM_USAGE_WITH_HA_BYTES = "memory_usage_with_ha_bytes"
-)
-
 // ClusterExporter
 type ClusterExporter struct {
 	*nutanixExporter
@@ -119,42 +114,6 @@ func (e *ClusterExporter) addCalculatedStats(stats map[string]interface{}) {
 		}
 	}
 	stats[METRIC_TOTAL_WRITE_IO_SIZE] = total_size - read_size
-
-	// CLUSTER MEMORY WITH HA
-	resp, err := e.api.fetchAllPages("/hosts", nil)
-	if err != nil || len(resp) == 0 {
-		log.Error("hosts discovery failed")
-		return
-	}
-
-	// Total cluster memory
-	var clusterMemTotal float64
-	for _, h := range resp {
-		ent := h.(map[string]interface{})
-		clusterMemTotal += e.valueToFloat64(ent["memory_capacity_in_bytes"])
-	}
-
-	// HA reservation (Reserve 1 node)
-	haReserved := e.getMaxHostMemoryBytes(resp)
-
-	// Usable memory after HA
-	usableMem := clusterMemTotal - haReserved
-	if usableMem <= 0 {
-		log.Error("usable cluster memory <= 0 after HA")
-		return
-	}
-
-	// Hypervisor usage percentage (NO HA)
-	var memUsagePPM float64
-	if val, ok := stats["hypervisor_memory_usage_ppm"]; ok {
-		memUsagePPM = e.valueToFloat64(val)
-	}
-
-	// Used memory WITH HA (matches Prism Element)
-	memUsedWithHA := (memUsagePPM / 1000000) * usableMem
-
-	stats[METRIC_CLUSTER_MEM_HA_RESERVED_BYTES] = haReserved
-	stats[METRIC_CLUSTER_MEM_USAGE_WITH_HA_BYTES] = memUsedWithHA
 }
 
 // Collect - Implement prometheus.Collector interface
@@ -253,25 +212,11 @@ func NewClusterCollector(_api *Nutanix) *ClusterExporter {
 				"hypervisor_num_received_bytes":         true,
 				"hypervisor_num_transmitted_bytes":      true,
 				// Calculated
-				METRIC_TOTAL_WRITE_IO_SIZE:             true,
-				METRIC_CLUSTER_MEM_HA_RESERVED_BYTES:   true,
-				METRIC_CLUSTER_MEM_USAGE_WITH_HA_BYTES: true,
+				METRIC_TOTAL_WRITE_IO_SIZE: true,
 			},
 		},
 	}
 
 	return exporter
 
-}
-
-func (e *ClusterExporter) getMaxHostMemoryBytes(hosts []interface{}) float64 {
-	var max float64 = 0
-	for _, h := range hosts {
-		ent := h.(map[string]interface{})
-		mem := e.valueToFloat64(ent["memory_capacity_in_bytes"])
-		if mem > max {
-			max = mem
-		}
-	}
-	return max
 }
