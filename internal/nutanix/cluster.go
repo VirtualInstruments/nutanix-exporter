@@ -127,23 +127,34 @@ func (e *ClusterExporter) addCalculatedStats(stats map[string]interface{}) {
 		return
 	}
 
+	// Total cluster memory
 	var clusterMemTotal float64
 	for _, h := range resp {
 		ent := h.(map[string]interface{})
 		clusterMemTotal += e.valueToFloat64(ent["memory_capacity_in_bytes"])
 	}
 
+	// HA reservation (Reserve 1 node)
+	haReserved := e.getMaxHostMemoryBytes(resp)
+
+	// Usable memory after HA
+	usableMem := clusterMemTotal - haReserved
+	if usableMem <= 0 {
+		log.Error("usable cluster memory <= 0 after HA")
+		return
+	}
+
+	// Hypervisor usage percentage (NO HA)
 	var memUsagePPM float64
 	if val, ok := stats["hypervisor_memory_usage_ppm"]; ok {
 		memUsagePPM = e.valueToFloat64(val)
 	}
 
-	memUsedHypervisor := (memUsagePPM / 1000000) * clusterMemTotal
-
-	haReserved := e.getMaxHostMemoryBytes(resp)
+	// Used memory WITH HA (matches Prism Element)
+	memUsedWithHA := (memUsagePPM / 1000000) * usableMem
 
 	stats[METRIC_CLUSTER_MEM_HA_RESERVED_BYTES] = haReserved
-	stats[METRIC_CLUSTER_MEM_USAGE_WITH_HA_BYTES] = memUsedHypervisor + haReserved
+	stats[METRIC_CLUSTER_MEM_USAGE_WITH_HA_BYTES] = memUsedWithHA
 }
 
 // Collect - Implement prometheus.Collector interface
