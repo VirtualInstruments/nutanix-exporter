@@ -21,7 +21,6 @@ import (
 const (
 	KEY_HOST_PROPERTIES = "properties"
 	METRIC_HA_RESERVED  = "ha_memory_reserved_bytes"
-	METRIC_HA_RESERVED_PCT= "ha_memory_reserved_percentage"
 )
 
 // HostsExporter
@@ -61,7 +60,12 @@ func (e *HostsExporter) getHaReserved(hostID string) float64 {
 // Describe - Implemente prometheus.Collector interface
 // See https://github.com/prometheus/client_golang/blob/master/prometheus/collector.go
 func (e *HostsExporter) Describe(ch chan<- *prometheus.Desc) {
-	e.fetchHaEntities(e.)
+	uuid, err := e.api.GetClusterUUID()
+	if err != nil {
+		log.Error("failed to get cluster uuid skipping ha metrics cal")
+
+	}
+	e.fetchHaEntities(uuid)
 	entities, err := e.api.fetchAllPages("/hosts", nil)
 	if err != nil {
 		e.result = nil
@@ -200,10 +204,6 @@ func (e *HostsExporter) addCalculatedStats(ent map[string]interface{}, stats map
 	stats[METRIC_MEM_USAGE_BYTES] = memUsedTotal
 	stats[METRIC_MEM_FREE_BYTES] = memFree
 	stats[METRIC_HA_RESERVED] = haReserved
-
-	if memTotal > 0 {
-		stats[METRIC_HA_RESERVED_PCT] = (haReserved / memTotal) * 100
-	}
 
 	log.Debugf(
 		"Host %s memory: total=%.1fGB used=%.1fGB free=%.1fGB ha=%.1fGB",
@@ -360,7 +360,6 @@ func NewHostsCollector(_api *Nutanix, collecthostnics bool) *HostsExporter {
 				METRIC_MEM_USAGE_BYTES:     true,
 				METRIC_MEM_FREE_BYTES:      true,
 				METRIC_HA_RESERVED:         true,
-				METRIC_HA_RESERVED_PCT: true
 			},
 		},
 	}
