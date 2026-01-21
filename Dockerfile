@@ -13,7 +13,7 @@ WORKDIR /nutanix-exporter
 COPY . .
 RUN echo "> GOPATH: " $GOPATH
 RUN go get -d
-RUN CGO_ENABLED=0 GOOS=linux go build -a -tags netgo -ldflags -w
+RUN CGO_ENABLED=0 GOOS=linux go build -a -tags netgo -ldflags -w -buildvcs=false
 
 # Final image.
 FROM quay.io/prometheus/busybox:latest
