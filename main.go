@@ -101,47 +101,9 @@ func main() {
 			// If health=true with no section, collect health metrics for all sections only
 			if healthOnly {
 				log.Infof("health=true with no section specified, collecting health metrics for all configured sections")
-				// Iterate through all sections in config
-				for sectionName, conf := range config {
-					healthSectionKey := conf.Host
-					if len(healthSectionKey) == 0 {
-						healthSectionKey = sectionName // Fallback to section name if host is empty
-					}
 
-					// Get cluster UUID for this section (from cache if available)
-					healthUUID := "exporter-health"
-					clusterUUID := "exporter-health"
-
-					// Try to get from cache first
-					clusterUUIDCacheMu.RLock()
-					cachedUUID, found := clusterUUIDCache[sectionName]
-					clusterUUIDCacheMu.RUnlock()
-
-					if found {
-						healthUUID = cachedUUID
-						clusterUUID = cachedUUID
-					} else if len(conf.Host) > 0 {
-						// Try to fetch cluster UUID if host is configured
-						// Use a temporary API client just for UUID lookup
-						tempAPI := nutanix.NewNutanix(conf.Host, conf.Username, conf.Password, conf.MaxParallelRequests)
-						clusterUUIDValue, err := tempAPI.GetClusterUUID()
-						if err != nil {
-							log.Debugf("Failed to get cluster UUID for section %s: %v, using fallback", sectionName, err)
-							healthUUID = sectionName
-							clusterUUID = sectionName
-						} else {
-							healthUUID = clusterUUIDValue
-							clusterUUID = clusterUUIDValue
-							// Cache it for future requests
-							clusterUUIDCacheMu.Lock()
-							clusterUUIDCache[sectionName] = clusterUUIDValue
-							clusterUUIDCacheMu.Unlock()
-						}
-					}
-
-					// Register health collector for this section
-					registry.MustRegister(nutanix.NewExporterHealthCollector(healthSectionKey, healthUUID, clusterUUID))
-				}
+				// Use AllSectionsHealthCollector to collect health metrics for ALL sections in one call
+				registry.MustRegister(nutanix.NewAllSectionsHealthCollector())
 
 				// For all-sections health mode, only return health metrics (not regular metrics)
 				h := promhttp.HandlerFor(registry, promhttp.HandlerOpts{})
