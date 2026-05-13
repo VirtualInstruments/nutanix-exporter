@@ -27,10 +27,10 @@ func TestExporterHealthCollector(t *testing.T) {
 		descs = append(descs, desc)
 	}
 
-	// Should have 13 descriptors (all health metrics)
-	assert.Len(t, descs, 13)
+	// Should have 14 descriptors (all health metrics including coll_errors)
+	assert.Len(t, descs, 14)
 
-	// Test Collect with initial values
+	// Test Collect with initial values (no error set, so 13 metrics)
 	metricCh := make(chan prometheus.Metric, 20)
 	collector.Collect(metricCh)
 	close(metricCh)
@@ -40,7 +40,7 @@ func TestExporterHealthCollector(t *testing.T) {
 		metrics = append(metrics, metric)
 	}
 
-	// Should have 13 metrics
+	// Should have 13 metrics (coll_errors only emitted when lastError is set)
 	assert.Len(t, metrics, 13)
 
 	// Verify all metrics have correct descriptors
@@ -413,4 +413,76 @@ func TestGetHealth(t *testing.T) {
 	// Test that instances are valid
 	assert.NotNil(t, h1)
 	assert.NotNil(t, h3)
+}
+
+func TestSetLastError(t *testing.T) {
+	// Reset global state
+	healthMu.Lock()
+	healthBySection = make(map[string]*ExporterHealth)
+	healthMu.Unlock()
+
+	section := "test-error-section"
+
+	// Initially no error
+	err := GetLastError(section)
+	assert.Empty(t, err)
+
+	// Set an error
+	SetLastError(section, "Authentication failed (HTTP 401)")
+	err = GetLastError(section)
+	assert.Equal(t, "Authentication failed (HTTP 401)", err)
+
+	// Clear the error
+	ClearLastError(section)
+	err = GetLastError(section)
+	assert.Empty(t, err)
+}
+
+func TestCollErrorMetricEmission(t *testing.T) {
+	// Reset global state
+	healthMu.Lock()
+	healthBySection = make(map[string]*ExporterHealth)
+	healthMu.Unlock()
+
+	section := "test-coll-error-section"
+	collector := NewExporterHealthCollector(section, "test-uuid", "test-cluster-uuid")
+
+	// Without error - should have 13 metrics
+	metricCh := make(chan prometheus.Metric, 20)
+	collector.Collect(metricCh)
+	close(metricCh)
+
+	count := 0
+	for range metricCh {
+		count++
+	}
+	assert.Equal(t, 13, count, "Without error should have 13 metrics")
+
+	// Set an error
+	SetLastError(section, "Test error message")
+
+	// With error - should have 14 metrics (including coll_errors)
+	metricCh2 := make(chan prometheus.Metric, 20)
+	collector.Collect(metricCh2)
+	close(metricCh2)
+
+	count2 := 0
+	for range metricCh2 {
+		count2++
+	}
+	assert.Equal(t, 14, count2, "With error should have 14 metrics including coll_errors")
+
+	// Clear error
+	ClearLastError(section)
+
+	// After clearing - back to 13 metrics
+	metricCh3 := make(chan prometheus.Metric, 20)
+	collector.Collect(metricCh3)
+	close(metricCh3)
+
+	count3 := 0
+	for range metricCh3 {
+		count3++
+	}
+	assert.Equal(t, 13, count3, "After clearing error should have 13 metrics")
 }

@@ -33,6 +33,9 @@ type ExporterHealth struct {
 	// Track command durations at collection start to calculate incremental duration per collection
 	cmdExecDurationAtCollectionStart uint64 // Success command duration when collection started
 	failureCmdExecDurationAtStart    uint64 // Failure command duration when collection started
+
+	// Detailed error message for CAPI reporting
+	lastError string
 }
 
 // healthBySection keeps one health state per configuration/section
@@ -67,6 +70,8 @@ var (
 	descTotalPollCycles                  = prometheus.NewDesc("nutanix_exporter_TotalPollCycles_C", "Exporter: total poll cycles (cumulative counter, increments per completed collection)", []string{"cluster_uuid", "uuid", "section"}, nil)
 	descSuccessfulPCCallNoErrors         = prometheus.NewDesc("nutanix_exporter_SuccessfulPCCallNoErrors_C", "Exporter: successful poll cycles with no errors", []string{"cluster_uuid", "uuid", "section"}, nil)
 	descFailedCollections                = prometheus.NewDesc("nutanix_exporter_FailedCollections_C", "Exporter: failed collection attempts", []string{"cluster_uuid", "uuid", "section"}, nil)
+	// Collection error metric with detailed error message for CAPI
+	descCollErrors = prometheus.NewDesc("nutanix_exporter_coll_errors", "Exporter: collection errors with detailed message", []string{"cluster_uuid", "uuid", "section", "error_msg", "collector"}, nil)
 )
 
 // ExporterHealthCollector exposes ExporterHealth as Prometheus metrics
@@ -90,6 +95,7 @@ func (c *ExporterHealthCollector) Describe(ch chan<- *prometheus.Desc) {
 	ch <- descTotalPollCycles
 	ch <- descSuccessfulPCCallNoErrors
 	ch <- descFailedCollections
+	ch <- descCollErrors
 }
 
 func (c *ExporterHealthCollector) Collect(ch chan<- prometheus.Metric) {
@@ -111,6 +117,11 @@ func (c *ExporterHealthCollector) Collect(ch chan<- prometheus.Metric) {
 	ch <- prometheus.MustNewConstMetric(descTotalPollCycles, prometheus.CounterValue, float64(h.totalPollCycles), c.clusterUUID, c.uuid, c.section)
 	ch <- prometheus.MustNewConstMetric(descSuccessfulPCCallNoErrors, prometheus.CounterValue, float64(h.successfulPCCallNoErrors), c.clusterUUID, c.uuid, c.section)
 	ch <- prometheus.MustNewConstMetric(descFailedCollections, prometheus.CounterValue, float64(h.failedCollections), c.clusterUUID, c.uuid, c.section)
+
+	// Emit collection error metric with detailed error message if present
+	if h.lastError != "" {
+		ch <- prometheus.MustNewConstMetric(descCollErrors, prometheus.GaugeValue, 1, c.clusterUUID, c.uuid, c.section, h.lastError, "nutanix")
+	}
 }
 
 // StartHealthTicker is deprecated - no longer used.
@@ -228,4 +239,95 @@ func IncException(section string) {
 	h.mu.Lock()
 	h.errException++
 	h.mu.Unlock()
+}
+
+// SetLastError stores a detailed error message for the section
+// This will be emitted as a metric label for CAPI to consume
+func SetLastError(section string, errMsg string) {
+	h := getHealth(section)
+	h.mu.Lock()
+	h.lastError = errMsg
+	h.mu.Unlock()
+}
+
+// GetLastError retrieves the last error message for the section
+func GetLastError(section string) string {
+	h := getHealth(section)
+	h.mu.RLock()
+	defer h.mu.RUnlock()
+	return h.lastError
+}
+
+// ClearLastError clears the last error message for the section
+func ClearLastError(section string) {
+	h := getHealth(section)
+	h.mu.Lock()
+	h.lastError = ""
+	h.mu.Unlock()
+}
+
+// AllSectionsHealthCollector collects health metrics for ALL configured sections
+// This is used when health=true is called without a specific section parameter
+type AllSectionsHealthCollector struct{}
+
+func NewAllSectionsHealthCollector() *AllSectionsHealthCollector {
+	return &AllSectionsHealthCollector{}
+}
+
+func (c *AllSectionsHealthCollector) Describe(ch chan<- *prometheus.Desc) {
+	ch <- descErrConnTimeout
+	ch <- descErrCollectionStillRunning
+	ch <- descErrException
+	ch <- descErrDNSFailure
+	ch <- descSuccessDeviceCmd
+	ch <- descTotalSuccessCmdExecDurationUS
+	ch <- descTotalSuccessCollectionDurationUS
+	ch <- descFailureDeviceCmd
+	ch <- descTotalFailureCmdExecDurationUS
+	ch <- descTotalFailureCollectionDurationUS
+	ch <- descTotalPollCycles
+	ch <- descSuccessfulPCCallNoErrors
+	ch <- descFailedCollections
+	ch <- descCollErrors
+}
+
+func (c *AllSectionsHealthCollector) Collect(ch chan<- prometheus.Metric) {
+	healthMu.RLock()
+	// Copy sections to avoid holding lock during metric emission
+	sections := make([]string, 0, len(healthBySection))
+	for section := range healthBySection {
+		sections = append(sections, section)
+	}
+	healthMu.RUnlock()
+
+	// Emit health metrics for each section
+	for _, section := range sections {
+		h := getHealth(section)
+		h.mu.RLock()
+
+		// Use section as cluster_uuid and uuid for consistency
+		clusterUUID := section
+		uuid := section
+
+		ch <- prometheus.MustNewConstMetric(descErrConnTimeout, prometheus.CounterValue, float64(h.errConnTimeout), clusterUUID, uuid, section)
+		ch <- prometheus.MustNewConstMetric(descErrCollectionStillRunning, prometheus.CounterValue, float64(h.errCollectionStillRunning), clusterUUID, uuid, section)
+		ch <- prometheus.MustNewConstMetric(descErrException, prometheus.CounterValue, float64(h.errException), clusterUUID, uuid, section)
+		ch <- prometheus.MustNewConstMetric(descErrDNSFailure, prometheus.CounterValue, float64(h.errDNSFailure), clusterUUID, uuid, section)
+		ch <- prometheus.MustNewConstMetric(descSuccessDeviceCmd, prometheus.CounterValue, float64(h.successDeviceCmd), clusterUUID, uuid, section)
+		ch <- prometheus.MustNewConstMetric(descTotalSuccessCmdExecDurationUS, prometheus.CounterValue, float64(h.totalSuccessCmdExecDurationUS), clusterUUID, uuid, section)
+		ch <- prometheus.MustNewConstMetric(descTotalSuccessCollectionDurationUS, prometheus.CounterValue, float64(h.totalSuccessCollectionDurationUS), clusterUUID, uuid, section)
+		ch <- prometheus.MustNewConstMetric(descFailureDeviceCmd, prometheus.CounterValue, float64(h.failureDeviceCmd), clusterUUID, uuid, section)
+		ch <- prometheus.MustNewConstMetric(descTotalFailureCmdExecDurationUS, prometheus.CounterValue, float64(h.totalFailureCmdExecDurationUS), clusterUUID, uuid, section)
+		ch <- prometheus.MustNewConstMetric(descTotalFailureCollectionDurationUS, prometheus.CounterValue, float64(h.totalFailureCollectionDurationUS), clusterUUID, uuid, section)
+		ch <- prometheus.MustNewConstMetric(descTotalPollCycles, prometheus.CounterValue, float64(h.totalPollCycles), clusterUUID, uuid, section)
+		ch <- prometheus.MustNewConstMetric(descSuccessfulPCCallNoErrors, prometheus.CounterValue, float64(h.successfulPCCallNoErrors), clusterUUID, uuid, section)
+		ch <- prometheus.MustNewConstMetric(descFailedCollections, prometheus.CounterValue, float64(h.failedCollections), clusterUUID, uuid, section)
+
+		// Emit collection error metric with detailed error message if present
+		if h.lastError != "" {
+			ch <- prometheus.MustNewConstMetric(descCollErrors, prometheus.GaugeValue, 1, clusterUUID, uuid, section, h.lastError, "nutanix")
+		}
+
+		h.mu.RUnlock()
+	}
 }
