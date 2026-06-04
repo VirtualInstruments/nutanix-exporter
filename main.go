@@ -194,6 +194,8 @@ func main() {
 					healthUUID = cachedUUID
 					clusterUUID = cachedUUID
 					log.Debugf("Using cached cluster UUID for section %s: %s", section, healthUUID)
+					// Also store in health tracking for AllSectionsHealthCollector
+					nutanix.SetClusterUUID(healthSectionKey, cachedUUID)
 				} else if len(conf.Host) > 0 {
 					// Create Nutanix API client and try to get cluster UUID
 					log.Infof("Host: %s", *nutanixURL)
@@ -211,6 +213,8 @@ func main() {
 						clusterUUIDCache[section] = clusterUUIDValue
 						clusterUUIDCacheMu.Unlock()
 						log.Infof("Successfully fetched and cached cluster UUID for section %s: %s", section, healthUUID)
+						// Also store in health tracking for AllSectionsHealthCollector
+						nutanix.SetClusterUUID(healthSectionKey, clusterUUIDValue)
 					}
 				}
 			} else {
@@ -238,6 +242,33 @@ func main() {
 				return
 			}
 			nutanixAPI = nutanix.NewNutanix(*nutanixURL, *nutanixUser, *nutanixPassword, maxParallelReq)
+		}
+
+		// Fetch and store cluster UUID for health metrics during regular collection
+		// This ensures AllSectionsHealthCollector has the correct UUID even without health=true requests
+		if ok {
+			// Check if we already have the cluster UUID cached
+			clusterUUIDCacheMu.RLock()
+			cachedUUID, found := clusterUUIDCache[section]
+			clusterUUIDCacheMu.RUnlock()
+
+			if found {
+				// Use cached UUID and ensure it's stored in health tracking
+				nutanix.SetClusterUUID(healthSectionKey, cachedUUID)
+			} else {
+				// Try to fetch cluster UUID
+				clusterUUIDValue, err := nutanixAPI.GetClusterUUID()
+				if err != nil {
+					log.Debugf("Failed to get cluster UUID during regular collection: %v", err)
+				} else {
+					// Cache it and store in health tracking
+					clusterUUIDCacheMu.Lock()
+					clusterUUIDCache[section] = clusterUUIDValue
+					clusterUUIDCacheMu.Unlock()
+					nutanix.SetClusterUUID(healthSectionKey, clusterUUIDValue)
+					log.Debugf("Fetched and cached cluster UUID during regular collection: %s", clusterUUIDValue)
+				}
+			}
 		}
 
 		// Poll cycles are tracked automatically when MarkCollectionEnd is called
