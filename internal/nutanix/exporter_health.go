@@ -36,6 +36,10 @@ type ExporterHealth struct {
 
 	// Detailed error message for CAPI reporting
 	lastError string
+
+	// Actual Nutanix cluster UUID (retrieved from API)
+	// This is used for proper metric labeling instead of the section URL
+	clusterUUID string
 }
 
 // healthBySection keeps one health state per configuration/section
@@ -266,6 +270,24 @@ func ClearLastError(section string) {
 	h.mu.Unlock()
 }
 
+// SetClusterUUID stores the actual Nutanix cluster UUID for the section
+// This should be called after successfully retrieving the cluster UUID from the API
+func SetClusterUUID(section string, clusterUUID string) {
+	h := getHealth(section)
+	h.mu.Lock()
+	h.clusterUUID = clusterUUID
+	h.mu.Unlock()
+}
+
+// GetStoredClusterUUID retrieves the stored cluster UUID for the section
+// Returns empty string if not set
+func GetStoredClusterUUID(section string) string {
+	h := getHealth(section)
+	h.mu.RLock()
+	defer h.mu.RUnlock()
+	return h.clusterUUID
+}
+
 // AllSectionsHealthCollector collects health metrics for ALL configured sections
 // This is used when health=true is called without a specific section parameter
 type AllSectionsHealthCollector struct{}
@@ -305,9 +327,12 @@ func (c *AllSectionsHealthCollector) Collect(ch chan<- prometheus.Metric) {
 		h := getHealth(section)
 		h.mu.RLock()
 
-		// Use section as cluster_uuid and uuid for consistency
-		clusterUUID := section
-		uuid := section
+		// Use stored cluster UUID if available, otherwise fall back to section
+		clusterUUID := h.clusterUUID
+		if clusterUUID == "" {
+			clusterUUID = section // Fallback to section URL if cluster UUID not yet retrieved
+		}
+		uuid := clusterUUID // Use same value for uuid label
 
 		ch <- prometheus.MustNewConstMetric(descErrConnTimeout, prometheus.CounterValue, float64(h.errConnTimeout), clusterUUID, uuid, section)
 		ch <- prometheus.MustNewConstMetric(descErrCollectionStillRunning, prometheus.CounterValue, float64(h.errCollectionStillRunning), clusterUUID, uuid, section)
