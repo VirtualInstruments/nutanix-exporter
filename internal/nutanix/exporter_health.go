@@ -327,10 +327,10 @@ func (c *AllSectionsHealthCollector) Collect(ch chan<- prometheus.Metric) {
 		h := getHealth(section)
 		h.mu.RLock()
 
-		// Use stored cluster UUID if available, otherwise fall back to section
+		// Use stored cluster UUID if available, otherwise use empty string for cluster_uuid label to indicate unknown cluster
 		clusterUUID := h.clusterUUID
 		if clusterUUID == "" {
-			clusterUUID = section // Fallback to section URL if cluster UUID not yet retrieved
+			clusterUUID = ""
 		}
 		uuid := clusterUUID // Use same value for uuid label
 

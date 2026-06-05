@@ -177,9 +177,9 @@ func main() {
 			nutanix.MarkCollectionEnd(healthSectionKey, collectionSuccess, time.Since(collStart))
 		}()
 
-		// Get cluster UUID for health metrics (needed for proper association)
-		healthUUID := "exporter-health"  // Default fallback (used as uuid)
-		clusterUUID := "exporter-health" // Default fallback (used as cluster_uuid)
+		// Get cluster UUID for health metrics - this is needed for health tracking and should be done before any API calls
+		healthUUID := ""  //
+		clusterUUID := "" //
 		var nutanixAPI *nutanix.Nutanix
 
 		if healthOnly {
@@ -202,9 +202,9 @@ func main() {
 					tempAPI := nutanix.NewNutanix(*nutanixURL, *nutanixUser, *nutanixPassword, maxParallelReq)
 					clusterUUIDValue, err := tempAPI.GetClusterUUID()
 					if err != nil {
-						log.Debugf("Failed to get cluster UUID for health metrics: %v, using section name as fallback", err)
-						healthUUID = section // Fallback to section name
-						clusterUUID = section
+						log.Debugf("Failed to get cluster UUID for health metrics: %v", err)
+						healthUUID = ""
+						clusterUUID = ""
 					} else {
 						healthUUID = clusterUUIDValue
 						clusterUUID = clusterUUIDValue
@@ -218,9 +218,9 @@ func main() {
 					}
 				}
 			} else {
-				// Config section not found, use section name as fallback
-				healthUUID = section
-				clusterUUID = section
+				// Config section not found - use defaults (empty UUIDs) for health metrics to indicate unknown cluster
+				healthUUID = ""
+				clusterUUID = ""
 			}
 
 			// Register health collector only when health=true is explicitly requested
